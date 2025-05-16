@@ -1,54 +1,5 @@
         // 文件数据 - 你可以修改这里来添加你的文件
-        const files = [
-            {
-                name: "示例文档.pdf",
-                size: "2.4 MB",
-                date: "2023-05-15",
-                downloads: 1245,
-                url: "https://example.com/files/sample.pdf",
-                type: "pdf"
-            },
-            {
-                name: "软件安装包.exe",
-                size: "45.7 MB",
-                date: "2023-06-02",
-                downloads: 892,
-                url: "https://example.com/files/software.exe",
-                type: "exe"
-            },
-            {
-                name: "高清图片合集.zip",
-                size: "156 MB",
-                date: "2023-04-28",
-                downloads: 567,
-                url: "https://example.com/files/images.zip",
-                type: "zip"
-            },
-            {
-                name: "学习资料.docx",
-                size: "8.1 MB",
-                date: "2023-05-30",
-                downloads: 1023,
-                url: "https://example.com/files/document.docx",
-                type: "word"
-            },
-            {
-                name: "演示视频.mp4",
-                size: "256 MB",
-                date: "2023-06-10",
-                downloads: 432,
-                url: "https://example.com/files/video.mp4",
-                type: "video"
-            },
-            {
-                name: "源代码.tar.gz",
-                size: "12.3 MB",
-                date: "2023-06-05",
-                downloads: 789,
-                url: "https://example.com/files/code.tar.gz",
-                type: "code"
-            }
-        ];
+        const files = [];
 
         // 文件类型对应的图标
         const fileIcons = {
@@ -66,10 +17,6 @@
             const fileListElement = document.getElementById('fileList');
             fileListElement.innerHTML = '';
 
-            if (filteredFiles.length === 0) {
-                fileListElement.innerHTML = '<p style="grid-column: 1 / -1; text-align: center;">没有找到匹配的文件</p>';
-                return;
-            }
 
             filteredFiles.forEach(file => {
                 const fileType = file.type || 'default';
@@ -88,7 +35,7 @@
                         <span><i class="fas fa-download"></i> ${file.downloads}</span>
                     </div>
                     <a href="${file.url}" class="download-btn" download>
-                        <i class="fas fa-download"></i> 下载
+                        <i class="fas fa-download"></i> 去详情页面
                     </a>
                 `;
                 fileListElement.appendChild(fileCard);
@@ -113,3 +60,33 @@
 
         // 初始化渲染
         renderFileList();
+
+
+
+async function getSubDirs(owner, repo, path = 'control') {
+  const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+  
+  try {
+    const { data } = await axios.get(url);
+    const dirs = data.filter(item => item.type === "dir").map(item => item.name);
+    console.log("Directories:", dirs);
+    return dirs;
+  } catch (error) {
+    console.error("Error fetching directories:", error.response?.status || error.message);
+    return [];
+  }
+}
+
+
+getSubDirs('zitzhen', 'CoCo-Community', 'packages').then(dirNames => {
+    // 将目录名转为文件对象数组
+    const fileObjs = dirNames.map(name => ({
+        name: name,
+        type: "code",
+        size: "未知",
+        date: "未知",
+        downloads: "未知",
+        url: "#" 
+    }));
+    renderFileList(fileObjs);
+});
