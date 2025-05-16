@@ -1,4 +1,8 @@
-        // 文件数据 - 你可以修改这里来添加你的文件
+document.addEventListener('DOMContentLoaded', function() {
+    const Loading_text = document.getElementById('Loading_text');
+    const Loading =document.getElementById('Loading')
+
+            // 文件数据
         const files = [];
 
         // 文件类型对应的图标
@@ -78,7 +82,7 @@ async function getSubDirs(owner, repo, path = 'control') {
 }
 
 
-getSubDirs('zitzhen', 'CoCo-Community', 'packages').then(dirNames => {
+getSubDirs('zitzhen', 'CoCo-Community', 'control').then(dirNames => {
     // 将目录名转为文件对象数组
     const fileObjs = dirNames.map(name => ({
         name: name,
@@ -89,4 +93,8 @@ getSubDirs('zitzhen', 'CoCo-Community', 'packages').then(dirNames => {
         url: "#" 
     }));
     renderFileList(fileObjs);
+    Loading_text.style.display = 'none';
+    Loading.style.display = 'none';
+
+});
 });
