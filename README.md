@@ -9,16 +9,16 @@ CoCo-Community，全称为ZIT-CoCo-Community
 ---
 ## 快速体验：
 GitHub Pages链接：https://zitzhen.github.io/CoCo-Community/
+
 Cloudflare链接（推荐）：https://coco-community.pages.dev/
 
 ---
 
 ## ZIT-CoCo-Community开发者名单
 
-| 姓名   | 头像 |
-| ------ | ---- |
-| 刘小圳 | <img src="https://avatars.githubusercontent.com/u/149680880?v=4" width="50" height="50" alt="刘小圳的图片"> |
-
+| 姓名   | 头像 | Github |
+| ------ | ---- | ------ |
+| 刘小圳 | <img src="https://avatars.githubusercontent.com/u/149680880?v=4" width="50" height="50" alt="刘小圳的图片"> | [Github](https://github.com/Iamliuxiaozhen) |
 ---
 
 ## 控件贡献名单
