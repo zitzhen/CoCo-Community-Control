@@ -9,6 +9,7 @@ const Loading = document.getElementById('Loading');
 const error_windows_br = document.getElementById('error_windows_br');
 const error_prompt_small_windows_br = document.getElementById('error_prompt_small_windows_br');
 const presentation_of_the_document = document.getElementById('presentation_of_the_document');
+const file_name = document.getElementById('file_name');
 
 function new_error(error = "") {
     console.error("触发错误");
@@ -105,6 +106,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             // 使用marked库解析Markdown内容
             const html_introduce = marked.parse(introduce);
             presentation_of_the_document.innerHTML = html_introduce;
+            file_name.innerHTML = filename;
             
             // 加载完成后隐藏加载动画
             Loading.style.display = 'none';
