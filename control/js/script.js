@@ -23,47 +23,54 @@ function off_error_button() {
 }
 
 // 获取项目描述
-async function Get_the_description(name) {
-  try {
-    const response = await fetch(`https://api.github.com/repos/zitzhen/CoCo-Community/contents/control/${name}`); 
-    
+function Get_the_description(name) {
+fetch(`https://api.github.com/repos/zitzhen/CoCo-Community/contents/control/${path}/README.md`) 
+  .then(response => {
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
+    // 将响应解析为JSON
+    return response.json();
+  })
+  .then(data => {
+    // 解析后的JSON数据
+    //console.log('完整响应数据:', data);
     
-    const data = await response.json();
+    // 读取content属性的值
     const content = data.content;
-    
-    console.log('content值:', content);
-    return content; 
-    
-  } catch (error) {
+    //console.log('content值:', content);
+
+    return content;
+  })
+  .catch(error => {
+    // 处理请求或解析过程中出现的错误
     console.error('请求出错:', error);
-    new_error(error) 
-  }
+    new_error(error)
+  });
 }
 
 // 获取版本列表
-async function Get_the_version(path = '') {
-    try {
-        const apiUrl = `https://api.github.com/repos/zitzhen/CoCo-Community/contents/control/${path}/README.md`;
-        const response = await fetch(apiUrl);
-        
-        if (!response.ok) {
-            throw new Error('网络请求失败');
-        }
-        
-        const data = await response.json();
-        
-        // 只返回目录类型的项目
-        if (!Array.isArray(data)) return [];
-        return data
-            .filter(item => item.type === 'dir')
-            .map(dir => dir.name);
-    } catch (error) {
-        console.error('获取版本列表出错:', error);
-        return [];
-    }
+function Get_the_version(path = '') {
+    const apiUrl = `https://api.github.com/repos/zitzhen/CoCo-Community/contents/control/${path}/README.md`;
+    
+    return fetch(apiUrl)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('网络请求失败');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // 只返回目录类型的项目
+            if (!Array.isArray(data)) return [];
+            return data
+                .filter(item => item.type === 'dir')
+                .map(dir => dir.name);
+        })
+        .catch(error => {
+            console.error('获取版本时出错:', error);
+            return []; // 返回空数组作为错误处理
+        });
 }
 
 // 页面加载完成后执行
@@ -100,7 +107,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         
         try {
             // 获取版本列表和项目描述
-            const versions = await Get_the_version(filename);
+            const versions = Get_the_version(filename);
             const introduce = await Get_the_description(filename);  
             
             // 使用marked库解析Markdown内容
