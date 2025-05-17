@@ -1,13 +1,19 @@
-function not_found() {
-    console.error("触发404错误");
+function new_error(error = "") {
+    console.error("触发错误");
         Loading.style.display = 'none';
         File_Information.style.display = 'none';
         error_prompt_small_windows.style.display = 'block';
         error_windows.style.display = 'block';
-        Something_went_wrong_text.innerHTML = '找不到文件';
-        error_prompt_text_one.innerHTML = '请检查参数中的文件名是否正确';
         error_windows_br.style.display = 'block';
         error_prompt_small_windows_br.style.display = 'block';
+    if (error){
+        Something_went_wrong_text.innerHTML = '找不到文件';
+        error_prompt_text_one.innerHTML = '请检查参数中的文件名是否正确';
+    }
+    else{
+        Something_went_wrong_text.innerHTML = error;
+        error_prompt_text_one.innerHTML = "错误信息<br>"+error;
+    }
 
 }
 
@@ -18,30 +24,29 @@ function off_error_button() {
 
 // 获取项目描述
 async function Get_the_description(name) {
-    try {
-        const response = await fetch(`https://api.github.com/repos/zitzhen/CoCo-Community/contents/control/${name}/README.md`, {
-            headers: {
-                'Accept': 'application/vnd.github.v3+raw'  
-            }
-        });
-        
-        if (!response.ok) {
-            throw new Error('网络请求失败');
-        }
-        
-        console.log("response".response)
-        return  response.text.content(); 
-    } catch (error) {
-        console.error('获取描述出错:', error);
-        not_found();
-        return ""; // 返回空字符串作为回退
+  try {
+    const response = await fetch(`https://api.github.com/repos/zitzhen/CoCo-Community/contents/control/${name}`); 
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
+    
+    const data = await response.json();
+    const content = data.content;
+    
+    console.log('content值:', content);
+    return content; 
+    
+  } catch (error) {
+    console.error('请求出错:', error);
+    new_error(error) 
+  }
 }
 
 // 获取版本列表
 async function Get_the_version(path = '') {
     try {
-        const apiUrl = `https://api.github.com/repos/zitzhen/CoCo-Community/contents/${path}`;
+        const apiUrl = `https://api.github.com/repos/zitzhen/CoCo-Community/contents/control/${path}/README.md`;
         const response = await fetch(apiUrl);
         
         if (!response.ok) {
@@ -96,7 +101,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         try {
             // 获取版本列表和项目描述
             const versions = await Get_the_version(filename);
-            const introduce = await Get_the_description(filename);  // 修正了拼写错误
+            const introduce = await Get_the_description(filename);  
             
             // 使用marked库解析Markdown内容
             const html_introduce = marked.parse(introduce);
@@ -106,7 +111,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             Loading.style.display = 'none';
         } catch (error) {
             console.error('加载内容出错:', error);
-            not_found();
+            new_error(error);
         }
     }
 });
