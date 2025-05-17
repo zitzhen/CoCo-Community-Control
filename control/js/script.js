@@ -39,8 +39,11 @@ async function Get_the_description(name) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        // README.md 内容是 base64 编码
-        const content = atob(data.content.replace(/\n/g, ''));
+        // 正确解码 base64 为 UTF-8 字符串
+        const base64 = data.content.replace(/\n/g, '');
+        const binary = atob(base64);
+        const bytes = Uint8Array.from([...binary].map(char => char.charCodeAt(0)));
+        const content = new TextDecoder('utf-8').decode(bytes);
         return content;
     } catch (error) {
         console.error('请求出错:', error);
