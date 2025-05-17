@@ -72,6 +72,7 @@ async function Get_the_version(path = '') {
             .map(dir => dir.name);
     } catch (error) {
         console.error('获取版本时出错:', error);
+        new_error(error)
         return [];
     }
 }
