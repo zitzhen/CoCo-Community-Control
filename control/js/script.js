@@ -21,9 +21,13 @@ function new_error(error = "") {
     if (error){
         Something_went_wrong_text.innerHTML = "错误信息";
         error_prompt_text_one.innerHTML = "错误信息<br>" + error;
+        document.title = "发生错误|ZIT-CoCo-Community";
+        history.replaceState(null, "发生错误|ZIT-CoCo-Community", window.location.href);
     } else {
         Something_went_wrong_text.innerHTML = '找不到文件';
         error_prompt_text_one.innerHTML = '请检查参数中的文件名是否正确';
+        document.title = "404 not found|找不到控件|ZIT-CoCo-Community";
+        history.replaceState(null, "404 not found|找不到控件|ZIT-CoCo-Community", window.location.href);
     }
 }
 
@@ -86,6 +90,8 @@ document.addEventListener('DOMContentLoaded', async function() {
         error_windows.style.display = 'block';
         Something_went_wrong_text.innerHTML = '未检测到参数';
         error_prompt_text_one.innerHTML = '请检查URL中的name参数';
+        document.title = "400 Bad Request|错误请求|ZIT-CoCo-Community";
+        history.replaceState(null, "400 Bad Request|错误请求|ZIT-CoCo-Community", window.location.href);
     } else {
         // 隐藏错误提示元素
         error_windows_br.style.display = 'none';
@@ -102,6 +108,8 @@ document.addEventListener('DOMContentLoaded', async function() {
             
             // 加载完成后隐藏加载动画
             Loading.style.display = 'none';
+            document.title = filename + "|控件详情|ZIT-CoCo-Community";
+            history.replaceState(null, filename + "|控件详情|ZIT-CoCo-Community", window.location.href);
         } catch (error) {
             console.error('加载内容出错:', error);
             new_error(error);
