@@ -77,6 +77,28 @@ async function Get_the_version(path = '') {
     }
 }
 
+// 获取配置文件
+async function Get_the_jsonData(name) {
+    try {
+        const url = `https://api.github.com/repos/zitzhen/CoCo-Community/contents/control/${name}/information.json`;
+        const response = await fetch(url);  
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        const content = data.content; 
+        const decodedContent = atob(content); 
+        
+        return decodedContent;
+    } catch (error) {
+        console.error('获取配置文件出错:', error);
+        new_error(error);  
+        return [];
+    }
+}
+
 // 页面加载完成后执行
 document.addEventListener('DOMContentLoaded', async function() {
     // 从URL获取参数
@@ -102,8 +124,10 @@ document.addEventListener('DOMContentLoaded', async function() {
         try {
             // 获取版本列表和项目描述
             const versions = await Get_the_version(filename);
-            const introduce = await Get_the_description(filename);  
-            
+            console.log(versions)
+            const introduce = await Get_the_description(filename);
+            const jsonData =  await Get_the_jsonData(filename); 
+            console.log(jsonData);
             // 使用marked库解析Markdown内容
             const html_introduce = marked.parse(introduce);
             presentation_of_the_document.innerHTML = html_introduce;
