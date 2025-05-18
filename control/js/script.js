@@ -169,8 +169,8 @@ document.addEventListener('DOMContentLoaded', async function() {
             const jsonDataStr =  await Get_the_jsonData(filename);
             const jsonData = JSON.parse(jsonDataStr); 
             const controls = await Get_controls(filename,jsonData.Version_number_list[jsonData.Version_number_list.length - 1]);
-            const size =(controls.size/1048576);
-            const creator_ID = controls.author;
+            const size =(controls.size/1024);
+            const creator_ID = jsonData.author;
             console.log(creator_ID);
             const creator_information = await get_Creator_Information(creator_ID);
             const avatar = creator_information.avatar_url;
@@ -182,8 +182,8 @@ document.addEventListener('DOMContentLoaded', async function() {
             const html_introduce = marked.parse(introduce);
             presentation_of_the_document.innerHTML = html_introduce;
             file_name.innerHTML = filename;
-            size.innerHTML = size+"MIB";
-            size2.innerHTML =size;
+            size.innerHTML = "大小"+size+"KIB";
+            size2.innerHTML =size+"KIB";
             avatar_src.src = avatar;
             HTML_author_name.innerHTML = author_name;
             HTML_bio.innerHTML = author_bio;
