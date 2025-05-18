@@ -14,6 +14,7 @@ const size = document.getElementById('size');
 const size2 = document.getElementById('size2');
 const avatar_src = document.getElementById('avatar_src');
 const HTML_author_name = document.getElementById('HTML_author_name');
+const HTML_bio = document.getElementById("HTML_bio");
 
 function new_error(error = "") {
     console.error("触发错误");
@@ -172,6 +173,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             const creator_information = await get_Creator_Information(creator_ID);
             const avatar = creator_information.avatar_url;
             const author_name = creator_information.name;
+            const author_bio = creator_information.bio;
             console.log(jsonData);
             // 使用marked库解析Markdown内容
             const html_introduce = marked.parse(introduce);
@@ -181,6 +183,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             size2.innerHTML =size;
             avatar_src.src = avatar;
             HTML_author_name.innerHTML = author_name;
+            HTML_bio = author_bio;
             
             // 加载完成后隐藏加载动画
             Loading.style.display = 'none';
