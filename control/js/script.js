@@ -185,7 +185,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             size2.innerHTML =size;
             avatar_src.src = avatar;
             HTML_author_name.innerHTML = author_name;
-            HTML_bio = author_bio;
+            HTML_bio.innerHTML = author_bio;
             download.href = downloadurl;
             
             // 加载完成后隐藏加载动画
