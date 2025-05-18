@@ -275,3 +275,7 @@
             border-top: 1px solid var(--border-color);
             font-size: 0.9rem;
         }
+
+        .HTML_explanatory_text{
+            border: 1px solid rgba(0, 0, 0, 0.3);
+        }
