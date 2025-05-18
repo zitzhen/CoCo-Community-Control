@@ -171,6 +171,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             const controls = await Get_controls(filename,jsonData.Version_number_list[jsonData.Version_number_list.length - 1]);
             const size =(controls.size/1048576);
             const creator_ID = controls.author;
+            console.log(creator_ID);
             const creator_information = await get_Creator_Information(creator_ID);
             const avatar = creator_information.avatar_url;
             const author_name = creator_information.name;
