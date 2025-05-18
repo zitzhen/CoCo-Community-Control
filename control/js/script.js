@@ -12,6 +12,8 @@ const presentation_of_the_document = document.getElementById('presentation_of_th
 const file_name = document.getElementById('file_name');
 const size = document.getElementById('size');
 const size2 = document.getElementById('size2');
+const avatar_src = document.getElementById('avatar_src');
+const HTML_author_name = document.getElementById('HTML_author_name');
 
 function new_error(error = "") {
     console.error("触发错误");
@@ -118,6 +120,23 @@ async function Get_controls(name,version) {
     }
 }
 
+//获取创作者信息
+async function get_Creator_Information(id) {
+    try{
+        const url = `https://api.github.com/users/${id}`
+        const response = await fetch(url);
+        if (!response.ok){
+            throw new Error(`HTTP error! status :${response.status}`)
+        }
+        const data = await response.json();
+        return data;
+    } catch(error){
+        console.error("获取Github创作者信息出错",error);
+        new_error(error);
+        return [];
+    }
+    
+}
 // 页面加载完成后执行
 document.addEventListener('DOMContentLoaded', async function() {
     // 从URL获取参数
@@ -149,6 +168,10 @@ document.addEventListener('DOMContentLoaded', async function() {
             const jsonData = JSON.parse(jsonDataStr); 
             const controls = await Get_controls(filename,jsonData.Version_number_list[jsonData.Version_number_list.length - 1]);
             const size =(controls.size/1048576);
+            const creator_ID = controls.author;
+            const creator_information = await get_Creator_Information(creator_ID);
+            const avatar = creator_information.avatar_url;
+            const author_name = creator_information.name;
             console.log(jsonData);
             // 使用marked库解析Markdown内容
             const html_introduce = marked.parse(introduce);
@@ -156,6 +179,8 @@ document.addEventListener('DOMContentLoaded', async function() {
             file_name.innerHTML = filename;
             size.innerHTML = size;
             size2.innerHTML =size;
+            avatar_src.src = avatar;
+            HTML_author_name.innerHTML = author_name;
             
             // 加载完成后隐藏加载动画
             Loading.style.display = 'none';
