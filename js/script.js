@@ -91,11 +91,10 @@ getSubDirs('zitzhen', 'CoCo-Community', 'control').then(dirNames => {
         size: "未知",
         date: "未知",
         downloads: "未知",
-        url: "#" 
+        url:  window.location.origin + `/control/${name}` // 修正这里
     }));
     renderFileList(fileObjs);
     Loading_text.style.display = 'none';
     Loading.style.display = 'none';
-
 });
 });
