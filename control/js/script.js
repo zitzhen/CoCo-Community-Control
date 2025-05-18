@@ -181,7 +181,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             const html_introduce = marked.parse(introduce);
             presentation_of_the_document.innerHTML = html_introduce;
             file_name.innerHTML = filename;
-            size.innerHTML = size;
+            size.innerHTML = size+"MIB";
             size2.innerHTML =size;
             avatar_src.src = avatar;
             HTML_author_name.innerHTML = author_name;
