@@ -10,6 +10,7 @@ const error_windows_br = document.getElementById('error_windows_br');
 const error_prompt_small_windows_br = document.getElementById('error_prompt_small_windows_br');
 const presentation_of_the_document = document.getElementById('presentation_of_the_document');
 const file_name = document.getElementById('file_name');
+const size = document.getElementById('size');
 
 function new_error(error = "") {
     console.error("触发错误");
@@ -99,6 +100,23 @@ async function Get_the_jsonData(name) {
     }
 }
 
+//获取控件
+async function Get_controls(name,version) {
+    try{
+        const url =`https://api.github.com/repos/zitzhen/CoCo-Community/contents/control/${name}/${version}/control.jsx`
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        return data;
+    }  catch (error) {
+        console.error('获取控件出错:', error);
+        new_error(error);  
+        return [];
+    }
+}
+
 // 页面加载完成后执行
 document.addEventListener('DOMContentLoaded', async function() {
     // 从URL获取参数
@@ -126,12 +144,16 @@ document.addEventListener('DOMContentLoaded', async function() {
             const versions = await Get_the_version(filename);
             console.log(versions)
             const introduce = await Get_the_description(filename);
-            const jsonData =  await Get_the_jsonData(filename); 
+            const jsonDataStr =  await Get_the_jsonData(filename);
+            const jsonData = JSON.parse(jsonDataStr); 
+            const controls = await Get_controls(filename,jsonData.Version_number_list[jsonData.Version_number_list.length - 1]);
+            const size =(controls.size/1048576);
             console.log(jsonData);
             // 使用marked库解析Markdown内容
             const html_introduce = marked.parse(introduce);
             presentation_of_the_document.innerHTML = html_introduce;
             file_name.innerHTML = filename;
+            size.innerHTML = size;
             
             // 加载完成后隐藏加载动画
             Loading.style.display = 'none';
