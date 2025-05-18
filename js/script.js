@@ -74,7 +74,7 @@ async function getSubDirs(owner, repo, path = 'control') {
     const { data } = await axios.get(url);
     let dirs = data.filter(item => item.type === "dir").map(item => item.name);
     // 过滤掉 CS 和 JS 文件夹
-    dirs = dirs.filter(name => name !== 'CS' && name !== 'JS');
+    dirs = dirs.filter(name => name !== 'css' && name !== 'js');
     console.log("Directories:", dirs);
     return dirs;
   } catch (error) {
