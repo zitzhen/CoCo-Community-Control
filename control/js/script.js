@@ -11,6 +11,7 @@ const error_prompt_small_windows_br = document.getElementById('error_prompt_smal
 const presentation_of_the_document = document.getElementById('presentation_of_the_document');
 const file_name = document.getElementById('file_name');
 const size = document.getElementById('size');
+const size2 = document.getElementById('size2');
 
 function new_error(error = "") {
     console.error("触发错误");
@@ -154,6 +155,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             presentation_of_the_document.innerHTML = html_introduce;
             file_name.innerHTML = filename;
             size.innerHTML = size;
+            size2.innerHTML =size;
             
             // 加载完成后隐藏加载动画
             Loading.style.display = 'none';
