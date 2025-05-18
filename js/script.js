@@ -72,7 +72,9 @@ async function getSubDirs(owner, repo, path = 'control') {
   
   try {
     const { data } = await axios.get(url);
-    const dirs = data.filter(item => item.type === "dir").map(item => item.name);
+    let dirs = data.filter(item => item.type === "dir").map(item => item.name);
+    // 过滤掉 CS 和 JS 文件夹
+    dirs = dirs.filter(name => name !== 'CS' && name !== 'JS');
     console.log("Directories:", dirs);
     return dirs;
   } catch (error) {
@@ -80,7 +82,6 @@ async function getSubDirs(owner, repo, path = 'control') {
     return [];
   }
 }
-
 
 getSubDirs('zitzhen', 'CoCo-Community', 'control').then(dirNames => {
     // 将目录名转为文件对象数组
