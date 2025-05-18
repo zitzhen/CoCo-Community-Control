@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <span><i class="fas fa-calendar-alt"></i> ${file.date}</span>
                         <span><i class="fas fa-download"></i> ${file.downloads}</span>
                     </div>
-                    <a href="${file.url}" class="download-btn" download>
+                    <a href="${file.url}" class="download-btn">
                         <i class="fas fa-download"></i> 去详情页面
                     </a>
                 `;
