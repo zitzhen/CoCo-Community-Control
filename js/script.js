@@ -84,19 +84,13 @@ async function getSubDirs(owner, repo, path = 'control') {
 }
 
 getSubDirs('zitzhen', 'CoCo-Community', 'control').then(dirNames => {
-    let basePath = '';
-    if (!window.location.hostname === 'zitzhen.github.io') {
-        basePath = '/control?name=';
-    } else {
-        basePath = '/CoCo-Community/control?name=';
-    }
     const fileObjs = dirNames.map(name => ({
         name: name,
         type: "code",
         size: "未知",
         date: "未知",
         downloads: "未知",
-        url: window.location.origin + basePath + name
+        url:  window.location.origin + `/control?name=${name}`
     }));
 
     renderFileList(fileObjs);
