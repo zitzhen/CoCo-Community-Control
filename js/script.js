@@ -85,7 +85,7 @@ async function getSubDirs(owner, repo, path = 'control') {
 
 getSubDirs('zitzhen', 'CoCo-Community', 'control').then(dirNames => {
     let basePath = '';
-    if (window.location.hostname === 'zitzhen.github.io') {
+    if (!window.location.hostname === 'zitzhen.github.io') {
         basePath = '/control?name=';
     } else {
         basePath = '/CoCo-Community/control?name=';
