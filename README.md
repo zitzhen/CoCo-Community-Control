@@ -10,7 +10,9 @@ CoCo-Community，全称为ZIT-CoCo-Community
 ## 快速体验：
 GitHub Pages链接：https://zitzhen.github.io/CoCo-Community/
 
-Cloudflare链接（推荐）：https://coco-community.pages.dev/
+Cloudflare链接：https://coco-community.pages.dev/
+
+ZIT-CoCo-Community官方链接（推荐）：https://cc.zitzhen.cn/
 
 ---
 
