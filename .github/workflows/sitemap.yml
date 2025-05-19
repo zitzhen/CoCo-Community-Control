@@ -15,7 +15,7 @@ jobs:
         uses: cicirello/generate-sitemap@v1
         with:
           base-url-path: "https://cc.zitzhen.cn"
-          change-frequency: "weekly"
+          #change-frequency: "weekly" 忽视已被移除的参数
           
       - name: Commit and push changes
         run: |
