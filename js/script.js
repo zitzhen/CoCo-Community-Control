@@ -93,6 +93,9 @@ getSubDirs('zitzhen', 'CoCo-Community', 'control').then(dirNames => {
         url:  window.location.origin + `/control?name=${name}`
     }));
 
+    files.length = 0; // 清空原有内容
+    files.push(...fileObjs); // 更新全局 files 数组
+
     renderFileList(fileObjs);
     Loading_text.style.display = 'none';
     Loading.style.display = 'none';
