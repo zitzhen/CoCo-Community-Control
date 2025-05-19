@@ -84,15 +84,21 @@ async function getSubDirs(owner, repo, path = 'control') {
 }
 
 getSubDirs('zitzhen', 'CoCo-Community', 'control').then(dirNames => {
-    // 将目录名转为文件对象数组
+    let basePath = '';
+    if (window.location.hostname === 'zitzhen.github.io') {
+        basePath = '/control?name=';
+    } else {
+        basePath = '/CoCo-Community/control?name=';
+    }
     const fileObjs = dirNames.map(name => ({
         name: name,
         type: "code",
         size: "未知",
         date: "未知",
         downloads: "未知",
-        url:  window.location.origin + `/control?name=${name}` // 修正这里
+        url: window.location.origin + basePath + name
     }));
+
     renderFileList(fileObjs);
     Loading_text.style.display = 'none';
     Loading.style.display = 'none';
