@@ -8,19 +8,23 @@ on:
 jobs:
   generate-sitemap:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # 确保有推送权限
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4  # 使用最新版本
       
       - name: Generate sitemap
         uses: cicirello/generate-sitemap@v1
         with:
           base-url-path: "https://cc.zitzhen.cn"
-          #change-frequency: "weekly" 忽视已被移除的参数
           
-      - name: Commit and push changes
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          git add sitemap.xml
-          git commit -m "Update sitemap"
-          git push
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "Update sitemap"
+          title: "Update sitemap"
+          body: "自动生成并更新 sitemap.xml"
+          branch: "auto/update-sitemap-$(date +%s)"  # 避免分支冲突
+          base: main  # 明确目标分支
+          add-paths: sitemap.xml
+          delete-branch: true  # 合并后自动删除临时分支
