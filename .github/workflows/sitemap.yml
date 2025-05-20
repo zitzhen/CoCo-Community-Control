@@ -18,6 +18,7 @@ jobs:
         uses: cicirello/generate-sitemap@v1
         with:
           base-url-path: "https://cc.zitzhen.cn"
+          exclude-paths: "404.html,google46eebdeb664df7df.html" # 排除的文件或目录
 
       - name: Check sitemap.xml exists
         run: ls -l sitemap.xml
