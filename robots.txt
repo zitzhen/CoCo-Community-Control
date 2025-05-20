@@ -10,4 +10,4 @@ Disallow:
 User-agent: *
 Disallow:
 
-Sitemap: /sitemap.xml
+Sitemap: https://cc.zitzhen.cn/sitemap.xml
