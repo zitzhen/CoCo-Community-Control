@@ -3,7 +3,7 @@ on:
   push:
     branches: [ main ]
   schedule:
-    - cron: '0 0 * * *' # 每天运行一次
+    - cron: '0 0 * * *'
 
 jobs:
   generate-sitemap:
@@ -14,25 +14,29 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Find control subdirectories
-        id: find-control
-        run: |
-          # 获取control目录下所有一级子目录（排除css和js）
-          dirs=$(find control -maxdepth 1 -mindepth 1 -type d -not -name "css" -not -name "js" -printf "%p/,")
-          # 格式化输出为逗号分隔的字符串
-          echo "additional_paths=${dirs%,}" >> $GITHUB_OUTPUT
-
-      - name: Generate sitemap
+      - name: Generate base sitemap
         uses: cicirello/generate-sitemap@v1
         with:
           base-url-path: "https://cc.zitzhen.cn"
           exclude-paths: "404.html,google46eebdeb664df7df.html,control/css,control/js"
-          additional-paths: ${{ steps.find-control.outputs.additional_paths }}
-          slash: true
-          preserve-trailing-slash: false
 
-      - name: Check sitemap.xml exists
-        run: ls -l sitemap.xml
+      - name: Add control subdirectories
+        run: |
+          # 扫描control目录下的一级子目录（排除css/js）
+          find control -maxdepth 1 -mindepth 1 -type d \
+            -not -name "css" -not -name "js" | while read dir; do
+            # 将目录路径转换为URL格式
+            url_path="https://cc.zitzhen.cn/${dir}/"
+            # 将URL插入到sitemap.xml的<urlset>标签前
+            sed -i "/<\/urlset>/i \ \ <url>\n\ \ \ \ <loc>${url_path//\//\\/}<\/loc>\n\ \ <\/url>" sitemap.xml
+          done
+
+      - name: Validate sitemap
+        run: |
+          echo "=== Sitemap Content ==="
+          cat sitemap.xml
+          echo "=== Control Paths Added ==="
+          grep -oP '<loc>\Khttps://cc.zitzhen.cn/control/[^<]+' sitemap.xml
 
       - name: Set git user
         run: |
