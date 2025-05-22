@@ -141,9 +141,17 @@ async function get_Creator_Information(id) {
 }
 // 页面加载完成后执行
 document.addEventListener('DOMContentLoaded', async function() {
-    // 从URL获取参数
+    // 优先从URL查询参数获取name，否则从路径获取
+    let filename = null;
     const urlParams = new URLSearchParams(window.location.search);
-    const filename = urlParams.get('name'); 
+    filename = urlParams.get('name');
+    if (!filename) {
+        // 从路径 /control/xxx 获取 xxx
+        const pathMatch = window.location.pathname.match(/\/control\/([^\/\?]+)/);
+        if (pathMatch && pathMatch[1]) {
+            filename = decodeURIComponent(pathMatch[1]);
+        }
+    }
 
     // 检查是否提供了文件名参数
     if (!filename) {
