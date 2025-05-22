@@ -14,12 +14,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Find control subdirectories
+        id: find-control
+        run: |
+          # 获取control目录下所有一级子目录（排除css和js）
+          dirs=$(find control -maxdepth 1 -mindepth 1 -type d -not -name "css" -not -name "js" -printf "%p/,")
+          # 格式化输出为逗号分隔的字符串
+          echo "additional_paths=${dirs%,}" >> $GITHUB_OUTPUT
+
       - name: Generate sitemap
         uses: cicirello/generate-sitemap@v1
         with:
           base-url-path: "https://cc.zitzhen.cn"
-          exclude-paths: "404.html,google46eebdeb664df7df.html,/control/css,/control/js" # 排除的文件或目录
-          include-paths: "/control" # 明确包含control文件夹
+          exclude-paths: "404.html,google46eebdeb664df7df.html,control/css,control/js"
+          additional-paths: ${{ steps.find-control.outputs.additional_paths }}
+          slash: true
+          preserve-trailing-slash: false
 
       - name: Check sitemap.xml exists
         run: ls -l sitemap.xml
