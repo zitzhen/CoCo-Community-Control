@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const Loading =document.getElementById('Loading');
     const github_error = document.getElementById("github_error");
     if (window.location.origin.includes("github.io")){
-        github_error();
+        not_github();
     }
 
             // 文件数据
