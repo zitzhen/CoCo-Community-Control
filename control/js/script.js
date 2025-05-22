@@ -152,9 +152,9 @@ document.addEventListener('DOMContentLoaded', async function() {
             filename = decodeURIComponent(pathMatch[1]);
         }
     }
-
+    
     // 检查是否提供了文件名参数
-    if (!filename) {
+    if(filename == "index.html" || filename == "name" || filename == ":name" || !filename) {
         console.error("无效参数");
         Loading.style.display = 'none';
         File_Information.style.display = 'none';
