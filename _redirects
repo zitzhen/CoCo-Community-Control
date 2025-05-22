@@ -1,2 +1,2 @@
 # _redirects 文件
-/control/:name    /control/?name=:splat   200
+/control/:name    /control/?name=:name   200
