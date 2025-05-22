@@ -1,6 +1,14 @@
+function not_github(){
+    github_error.style.display = 'block';
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     const Loading_text = document.getElementById('Loading_text');
-    const Loading =document.getElementById('Loading')
+    const Loading =document.getElementById('Loading');
+    const github_error = document.getElementById("github_error");
+    if (window.location.origin.includes("github.io")){
+        github_error();
+    }
 
             // 文件数据
         const files = [];
