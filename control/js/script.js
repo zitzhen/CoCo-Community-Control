@@ -153,6 +153,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
     }
     
+    console.log(filename);
     // 检查是否提供了文件名参数
     if(filename == "index.html" || filename == "name" || filename == ":name" || !filename) {
         console.error("无效参数");
