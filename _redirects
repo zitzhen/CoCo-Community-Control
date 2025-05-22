@@ -1,3 +1,4 @@
 # _redirects 文件
 /control/?name=:name    /control/:name   301
 /control/:name    /control/?name=:name   200
+/control/:name/   /control/:name   301
