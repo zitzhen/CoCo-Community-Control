@@ -14,6 +14,9 @@ Cloudflare链接：https://coco-community.pages.dev/
 
 ZIT-CoCo-Community官方链接（推荐）：https://cc.zitzhen.cn/
 
+> [!warning]
+>
+> 我们将在以后关闭GitHub Pages的访问
 ---
 
 ## ZIT-CoCo-Community开发者名单
@@ -22,7 +25,9 @@ ZIT-CoCo-Community官方链接（推荐）：https://cc.zitzhen.cn/
 | ------ | ---- | ------ |
 | 刘小圳 | <img src="https://avatars.githubusercontent.com/u/149680880?v=4" width="50" height="50" alt="刘小圳的图片"> | [Github](https://github.com/Iamliuxiaozhen) |
 ---
-
+## 上传您的自定义控件：
+>你可以通过发送到：liuxiaozhen2024@163.com
+---
 ## 控件贡献名单
 
 | 昵称   | 贡献数量/个 |
