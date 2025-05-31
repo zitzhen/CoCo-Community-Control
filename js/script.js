@@ -98,7 +98,7 @@ getSubDirs('zitzhen', 'CoCo-Community', 'control').then(dirNames => {
         size: "未知",
         date: "未知",
         downloads: "未知",
-        url:  window.location.origin + `/control?name=${name}`
+        url:  window.location.origin + `/control/${name}`
     }));
 
     files.length = 0; // 清空原有内容
