@@ -16,6 +16,7 @@ const avatar_src = document.getElementById('avatar_src');
 const HTML_author_name = document.getElementById('HTML_author_name');
 const HTML_bio = document.getElementById("HTML_bio");
 const download = document.getElementById("download");
+const source = document.getElementById("source");
 
 function new_error(error = "") {
     console.error("触发错误");
@@ -197,6 +198,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             HTML_author_name.innerHTML = author_name;
             HTML_bio.innerHTML = author_bio;
             download.href = downloadurl;
+            source.href = downloadurl;
             
             // 加载完成后隐藏加载动画
             Loading.style.display = 'none';
