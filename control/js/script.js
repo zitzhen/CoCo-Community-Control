@@ -10,7 +10,7 @@ const error_windows_br = document.getElementById('error_windows_br');
 const error_prompt_small_windows_br = document.getElementById('error_prompt_small_windows_br');
 const presentation_of_the_document = document.getElementById('presentation_of_the_document');
 const file_name = document.getElementById('file_name');
-const size = document.getElementById('size');
+const html_size = document.getElementById('size');
 const size2 = document.getElementById('size2');
 const avatar_src = document.getElementById('avatar_src');
 const HTML_author_name = document.getElementById('HTML_author_name');
@@ -192,7 +192,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             const html_introduce = marked.parse(introduce);
             presentation_of_the_document.innerHTML = html_introduce;
             file_name.innerHTML = filename;
-            size.innerHTML = "大小"+size+"KIB";
+            html_size.textContent = "大小："+size+"KIB";
             size2.innerHTML =size+"KIB";
             avatar_src.src = avatar;
             HTML_author_name.innerHTML = author_name;
