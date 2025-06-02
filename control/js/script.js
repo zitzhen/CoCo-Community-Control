@@ -46,16 +46,11 @@ function off_error_button() {
 // 获取项目描述
 async function Get_the_description(name) {
     try {
-        const response = await fetch(`https://api.github.com/repos/zitzhen/CoCo-Community/contents/control/${name}/README.md`);
+        const response = await fetch(`${name}/README.md`);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const data = await response.json();
-        // 正确解码 base64 为 UTF-8 字符串
-        const base64 = data.content.replace(/\n/g, '');
-        const binary = atob(base64);
-        const bytes = Uint8Array.from([...binary].map(char => char.charCodeAt(0)));
-        const content = new TextDecoder('utf-8').decode(bytes);
+        const content = await response.text();
         return content;
     } catch (error) {
         console.error('请求出错:', error);
@@ -66,13 +61,13 @@ async function Get_the_description(name) {
 
 // 获取版本列表
 async function Get_the_version(path = '') {
-    const apiUrl = `https://api.github.com/repos/zitzhen/CoCo-Community/contents/control/${path}`;
+    const apiUrl = `${path}`;
     try {
         const response = await fetch(apiUrl);
         if (!response.ok) {
             throw new Error('网络请求失败');
         }
-        const data = await response.json();
+        const data = await response.text();
         if (!Array.isArray(data)) return [];
         return data
             .filter(item => item.type === 'dir')
@@ -87,7 +82,7 @@ async function Get_the_version(path = '') {
 // 获取配置文件
 async function Get_the_jsonData(name) {
     try {
-        const url = `https://api.github.com/repos/zitzhen/CoCo-Community/contents/control/${name}/information.json`;
+        const url = `${name}/information.json`;
         const response = await fetch(url);  
         
         if (!response.ok) {
@@ -95,10 +90,8 @@ async function Get_the_jsonData(name) {
         }
         
         const data = await response.json();
-        const content = data.content; 
-        const decodedContent = atob(content); 
-        
-        return decodedContent;
+        console.log(data);
+        return data;
     } catch (error) {
         console.error('获取配置文件出错:', error);
         new_error(error);  
@@ -109,13 +102,17 @@ async function Get_the_jsonData(name) {
 //获取控件
 async function Get_controls(name,version) {
     try{
-        const url =`https://api.github.com/repos/zitzhen/CoCo-Community/contents/control/${name}/${version}/control.jsx`
+        const url =`${name}/${version}/control.jsx`
         const response = await fetch(url);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const data = await response.json();
-        return data;
+        const data = await response.text();
+        const size = response.headers.get('Content-Length');
+        return {
+            data:data,
+            size:size
+        };
     }  catch (error) {
         console.error('获取控件出错:', error);
         new_error(error);  
@@ -177,16 +174,16 @@ document.addEventListener('DOMContentLoaded', async function() {
             console.log(versions)
             const introduce = await Get_the_description(filename);
             const jsonDataStr =  await Get_the_jsonData(filename);
-            const jsonData = JSON.parse(jsonDataStr); 
+            const jsonData = jsonDataStr; 
             const controls = await Get_controls(filename,jsonData.Version_number_list[jsonData.Version_number_list.length - 1]);
-            const size =(controls.size/1024);
+            let size =(controls.size/1024);
+            size = size.toFixed(2);
             const creator_ID = jsonData.author;
             console.log(creator_ID);
             const creator_information = await get_Creator_Information(creator_ID);
             const avatar = creator_information.avatar_url;
             const author_name = creator_information.name;
             const author_bio = creator_information.bio;
-            const downloadurl = controls.download_url;
             console.log(jsonData);
             // 使用marked库解析Markdown内容
             const html_introduce = marked.parse(introduce);
@@ -197,8 +194,8 @@ document.addEventListener('DOMContentLoaded', async function() {
             avatar_src.src = avatar;
             HTML_author_name.innerHTML = author_name;
             HTML_bio.innerHTML = author_bio;
-            download.href = downloadurl;
-            source.href = downloadurl;
+            download.href = "https://cc.zitzhen.cn/control/" + filename + "/" + jsonData.Version_number_list[jsonData.Version_number_list.length - 1] + "/control.jsx";
+            source.href = "https://cc.zitzhen.cn/control/" + filename + "/" + jsonData.Version_number_list[jsonData.Version_number_list.length - 1] + "/control.jsx";
             
             // 加载完成后隐藏加载动画
             Loading.style.display = 'none';
