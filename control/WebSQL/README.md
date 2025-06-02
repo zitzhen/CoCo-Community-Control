@@ -20,7 +20,7 @@
 - 1073741824 1GB
 ### 5.执行成功时
 
-![当(WebSQL) 执行成功时 [(仅插入)最新行数][查询结果][影响行数]](images/1.png)
+![当(WebSQL) 执行成功时 [(仅插入)最新行数][查询结果][影响行数]](https://cc.zitzhen.cn/control/WebSQL/images/1.png)
 
 当任务执行成功时触发。
 
@@ -34,7 +34,7 @@
 
 ### 6.当执行失败时
 
-![当(WebSql) 执行失败时(错误码) (错误信息)](images/2.png)
+![当(WebSql) 执行失败时(错误码) (错误信息)](https://cc.zitzhen.cn/control/WebSQL/images/2.png)
 
 当任务执行失败时触发。
 
@@ -47,8 +47,9 @@
 
 ### 5.执行任务
 
-![调用(WebSQL)执行人物：SQL语句() 嵌入参数()](images/3.png)
-执行读写任务，执行成功则触发 [执行成功时](images/1.png) 事件，失败则触发 [执行失败时](images/2.png) 事件。
+![调用(WebSQL)执行人物：SQL语句() 嵌入参数()](https://cc.zitzhen.cn/control/WebSQL/images/3.png)
+
+执行读写任务，执行成功则触发 [执行成功时](https://cc.zitzhen.cn/control/WebSQL/images/1.png) 事件，失败则触发 [执行失败时](https://cc.zitzhen.cn/control/WebSQL/images/2.png) 事件。
 
 ##### 参数说明
 |属性名|输入类型|说明|
@@ -58,9 +59,9 @@
 
 #### 5.1执行只读任务
 
-![调用(WebSQl)执行只读人物 SQl语句() 嵌入参数()](images/4.png)
+![调用(WebSQl)执行只读人物 SQl语句() 嵌入参数()](https://cc.zitzhen.cn/control/WebSQL/images/4.png)
 
-执行只读任务，执行成功则触发 [执行成功时](images/1.png) 事件，失败则触发 [执行失败时](images/2.png) 事件。
+执行只读任务，执行成功则触发 [执行成功时](https://cc.zitzhen.cn/control/WebSQL/images/1.png) 事件，失败则触发 [执行失败时](https://cc.zitzhen.cn/control/WebSQL/images/2.png) 事件。
 
 ##### 参数说明
 |属性名|输入类型|说明|
