@@ -30,10 +30,10 @@ ZIT-CoCo-Community官方链接（推荐）：https://cc.zitzhen.cn/
 ---
 ## 控件贡献名单
 
-| 昵称   | 贡献数量/个 |
-| ------ | ----------- |
-| 刘小圳 | 1           |
-| 小宏 | 1 |
+| 昵称   |头像| 贡献数量/个 |
+| ------ |---| ----------- |
+| 刘小圳 |<a href="https://github.com/iamliuxiaozhen"><img src="https://avatars.githubusercontent.com/u/149680880?v=4" width="50" height="50" alt="刘小圳的图片"></a> | 1           |
+| 小宏 |<a href="https://github.com/xiaohong2022"><img src="https://avatars.githubusercontent.com/u/97574185?v=4" width="50" height="50" alt="刘小圳的图片"></a> |6 |
 
 
 ## 许可证
