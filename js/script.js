@@ -41,11 +41,13 @@ document.addEventListener('DOMContentLoaded', function() {
                         <i class="fas ${iconClass}"></i>
                     </div>
                     <div class="file-name">${file.name}</div>
+                    <!--
                     <div class="file-info">
                         <span><i class="fas fa-database"></i> ${file.size}</span>
                         <span><i class="fas fa-calendar-alt"></i> ${file.date}</span>
                         <span><i class="fas fa-download"></i> ${file.downloads}</span>
                     </div>
+                    -->
                     <a href="${file.url}" class="download-btn">
                         <i class="fas fa-download"></i> 去详情页面
                     </a>
