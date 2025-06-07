@@ -1,6 +1,11 @@
 # 这是CoCo-Community
 
----
+![GitHub Stars](https://img.shields.io/github/stars/zitzhen/CoCo-Community?style=flat)
+![GitHub Forks](https://img.shields.io/github/forks/zitzhen/CoCo-Community?style=flat)
+![GitHub Issues](https://img.shields.io/github/issues/zitzhen/CoCo-Community?style=flat)
+![GitHub Top Language](https://img.shields.io/github/languages/top/zitzhen/CoCo-Community?style=flat)
+
+
 
 CoCo-Community，全称为ZIT-CoCo-Community  
 这是由于ZIT小圳创科工作室的创造的编程猫CoCo编辑器社区，目前提供自定义控件下载服务，后续会支持论坛的交流，目前与ZIT-Community隔离
