@@ -27,6 +27,8 @@ ZIT-CoCo-Community官方链接（推荐）：https://cc.zitzhen.cn/
 ---
 ## 上传您的自定义控件：
 >你可以通过发送到：liuxiaozhen2024@163.com
+>
+>你也可以通过GitHub议题向我们提交您的自定义控件哦~
 ---
 ## 控件贡献名单
 
