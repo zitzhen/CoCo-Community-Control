@@ -16,6 +16,7 @@ CoCo-Community，全称为ZIT-CoCo-Community
 
 [Github](https://github.com/zitzhen/CoCo-Community)  
 [Gitee](https://gitee.com/hello-oliver/CoCo-Community)  
+[Gitlab](https://gitlab.com/oliverxiaozhen/CoCo-Community/)  
 > 若您发现未在此公布的平台出现仓库，请您即使举报并联系ZIT-CoCo-Community开发者名单
 
 ---
