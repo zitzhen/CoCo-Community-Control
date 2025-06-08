@@ -20,15 +20,12 @@ CoCo-Community，全称为ZIT-CoCo-Community
 
 ---
 ## 快速体验：
-GitHub Pages链接：https://zitzhen.github.io/CoCo-Community/
-
-Cloudflare链接：https://coco-community.pages.dev/
+>[!note]重定向
+>
+>自从2025年06月08日 15:40 起，通过GitHub Pages链接和Cloudflare Pages链接访问的，将重定向至ZIT-CoCo-Comunity官方链接
 
 ZIT-CoCo-Community官方链接（推荐）：https://cc.zitzhen.cn/
 
-> [!warning]
->
-> 我们将在以后关闭GitHub Pages的访问
 ---
 
 ## ZIT-CoCo-Community开发者名单
