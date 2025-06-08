@@ -19,6 +19,8 @@ CoCo-Community，全称为ZIT-CoCo-Community
 >请勿在Gitlab上访问ZIT-CoCo-Community，因为Gitlab上的此项目准备移除
 >
 > 若您发现未在此公布的平台出现仓库，请您即使举报并联系ZIT-CoCo-Community开发者名单
+>
+>签名提交一切认证请以GitHub为主。
 
 ---
 ## 快速体验：
