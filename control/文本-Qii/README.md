@@ -11,7 +11,7 @@
 
 ![文本积木](https://cc.zitzhen.cn/control/文本-Qii/images/2.webp)
 
-通过积木设置文本时，可以使用\n换行，也可以直接回车进行换行。
+通过积木设置文本时，可以使用`\n`换行，也可以直接回车进行换行。
 
 <div style="border-left: 5px solid rgb(0, 225, 255); padding-left: 10px;">
 <h2> 下载</h2>
