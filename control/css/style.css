@@ -146,6 +146,11 @@
             line-height: 1.7;
         }
 
+        .file-description img {
+            height: auto;  
+            max-width: 500px;  
+            width: auto;  
+        }
         .version-list {
             list-style: none;
             padding: 0;
