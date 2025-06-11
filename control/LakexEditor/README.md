@@ -31,7 +31,7 @@
 <h3>1.内容变化<h3>
 </div>
 
-![当内容发送变化时](images/1.png)
+![当内容发送变化时](https://cc.zitzhen.cn/control/LakexEditor/images/1.png)
 
 当 文档内容 变化时 触发。
 
@@ -43,7 +43,7 @@
 <h3>2.焦点获得<h3>
 </div>
 
-![获得焦点时](images/2.png)
+![获得焦点时](https://cc.zitzhen.cn/control/LakexEditor/images/2.png)
 
 当 文档 获得 输入焦点时 触发。
 
@@ -51,7 +51,7 @@
 <h3>3.焦点失去<h3>
 </div>
 
-![失去焦点时](images/3.png)
+![失去焦点时](https://cc.zitzhen.cn/control/LakexEditor/images/3.png)
 
 当 文档 选区变化时 触发。
 
@@ -59,7 +59,7 @@
 <h3>4.选区变化<h3>
 </div>
 
-![选区变化](images/4.png)
+![选区变化](https://cc.zitzhen.cn/control/LakexEditor/images/4.png)
 
 当 文档 选区变化时 触发。
 
@@ -76,7 +76,7 @@
 <h3>5.图片视频文件上传<h3>
 </div>
 
-![当图片视频文件上传时](images/5.png)
+![当图片视频文件上传时](https://cc.zitzhen.cn/control/LakexEditor/images/5.png)
 
 因 LakexEditor 需要 自定义 图片视频文件上传 才能正常使用 图片/视频/文件 插入功能，
 所以就提供了这么一个事件。
@@ -95,7 +95,7 @@
 <h3>6.初始化<h3>
 </div>
 
-![初始化](images/6.png)
+![初始化](https://cc.zitzhen.cn/control/LakexEditor/images/6.png)
 
 <div style="background-color: rgb(255, 161, 161);border-radius: 5px;">
 ❗如果你想 <b>屏幕一打开就初始化</b> 的话，
@@ -108,7 +108,7 @@
 <h3>7.重新初始化<h3>
 </div>
 
-![重新初始化](images/7.png)
+![重新初始化](https://cc.zitzhen.cn/control/LakexEditor/images/7.png)
 
 将 原有的 LakexEditor 销毁 并 按照配置 重新初始化 LakexEditor。
 
@@ -116,7 +116,7 @@
 <h3>8.设置文档内容<h3>
 </div>
 
-![设置格式](images/8.png)
+![设置格式](https://cc.zitzhen.cn/control/LakexEditor/images/8.png)
 
 将传入的内容 按照 内容格式 设置文档内容。
 
@@ -129,7 +129,7 @@
 <h3>9. 获取文档内容<h3>
 </div>
 
-![获取文档内容](images/9.png)
+![获取文档内容](https://cc.zitzhen.cn/control/LakexEditor/images/9.png)
 
 将文档 按照 特定的格式 输出。
 
@@ -142,7 +142,7 @@
 <h3>10.操作类型</h3>
 </div>
 
-![调用操作类型](images/10.png)
+![调用操作类型](https://cc.zitzhen.cn/control/LakexEditor/images/10.png)
 
 用于 当内容更变 事件。
 - 用户手动：用户自己编辑 触发的。
@@ -152,7 +152,7 @@
 <h3>11.上传类型</h3>
 </div>
 
-![调用上传图片](images/11.png)
+![调用上传图片](https://cc.zitzhen.cn/control/LakexEditor/images/11.png)
 
 用于 图片视频文件上传 事件。
 - 图片。
@@ -163,7 +163,7 @@
 <h3>12. 图片视频文件上传异步返回</h3>
 </div>
 
-![图片视频文件上传异步](images/12.png)
+![图片视频文件上传异步](https://cc.zitzhen.cn/control/LakexEditor/images/12.png)
 
 请与 <a>当图片视频文件上传时</a> 共同使用！
 
@@ -250,7 +250,7 @@ cardSelect,|,undo,redo,formatPainter,clearFormat,|,style,fontsize,bold,italic,st
 >“微数据库” 是 本地储存 中的 “微数据库” 控件。
 >官方文档：https://codemao.yuque.com/kzbwh0/coco_guide/local-storage
 
-![积木](images/13.png)
+![积木](https://cc.zitzhen.cn/control/LakexEditor/images/13.png)
 
 #### 不同情况下使用内容格式
 - 自带格式：适用于转到 <a>LakexEditorViewer</a> 查看
