@@ -101,7 +101,7 @@
 ❗如果你想 <b>屏幕一打开就初始化</b> 的话，
 
 记得 <b>每次打开屏幕 都要 调用这块积木一遍，</b>
-不然 <b>一切换屏幕 原有就会被 coco 覆盖。<b>
+不然 <b>一切换屏幕 原有就会被 coco 覆盖。</b>
 </div>
 
 <div style="border-left: 5px solid rgb(0, 132, 255); padding-left: 10px;">
@@ -151,3 +151,54 @@
 <div style="border-left: 5px solid rgb(0, 132, 255); padding-left: 10px;">
 <h3>11.上传类型</h3>
 </div>
+
+![调用上传图片](images/11.png)
+
+用于 图片视频文件上传 事件。
+- 图片。
+- 视频。
+- 文件。
+
+<div style="border-left: 5px solid rgb(0, 132, 255); padding-left: 10px;">
+<h3>12. 图片视频文件上传异步返回</h3>
+</div>
+
+![图片视频文件上传异步](images/12.png)
+
+请与 <a>当图片视频文件上传时</a> 共同使用！
+
+|属性|类型|说明|
+|---|---|---|
+|UUID|字符串|用于区分其他文件上传的唯一UUID。|
+|链接|字符串|文件上传后的链接。|
+|封面（链接）|字符串|上传视频的话，显示视频封面的链接。|
+
+<div style="border-left: 5px solid rgb(255, 208, 0); padding-left: 10px;">
+<h3>13. 工具栏默认编辑配置</h3>
+</div>
+
+`属性`  ***类型:*** `字符串` ***默认值:*** <a style="color: green;">看下面的示例</a>
+在非表格编辑的时候，在工具栏中显示的按钮。
+***示例：***
+
+```Plain Text
+cardSelect,|,undo,redo,formatPainter,clearFormat,|,style,fontsize,bold,italic,strikethrough,underline,mixedTextStyle,|,color,bgColor,|,alignment,unorderedList,orderedList,indent,lineHeight,|,taskList,link,quote,hr
+```
+
+<div style="border-left: 5px solid rgb(255, 208, 0); padding-left: 10px;">
+<h3> 14. 工具栏表格编辑配置</h3>
+</div>
+
+`属性`  ***类型:*** `字符串` ***默认值:*** <a style="color: green;">看下面的示例</a>
+在表格编辑的时候，在工具栏中显示的按钮。
+***示例：***
+```Bash
+cardSelect,|,undo,redo,formatPainter,clearFormat,|,style,fontsize,bold,italic,strikethrough,underline,mixedTextStyle,|,color,bgColor,tableCellBgColor,tableBorderVisible,|,alignment,tableVerticalAlign,tableMergeCell,|,unorderedList,orderedList,indent,lineHeight,|,taskList,link,quote,hr
+```
+
+<div style="border-left: 5px solid rgb(255, 208, 0); padding-left: 10px;">
+<h3> 15.深色主题</h3>
+</div>
+
+`属性`  ***类型:*** `布尔值` ***默认值:*** `false`
+采用深色主题初始化界面
