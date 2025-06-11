@@ -202,3 +202,63 @@ cardSelect,|,undo,redo,formatPainter,clearFormat,|,style,fontsize,bold,italic,st
 
 `属性`  ***类型:*** `布尔值` ***默认值:*** `false`
 采用深色主题初始化界面
+
+
+### 工具栏配置字符串格式
+>格式：将所有项使用 , 隔开。
+> —— 来自于 LakexEditor 官方文档
+
+- |：分隔线
+
+- cardSelect：插入面板
+- undo：撤销
+- redo：重做
+- formatPainter：格式刷
+- clearFormat：清除格式
+- style：设置标题和正文
+- fontsize：字号
+- bold：加粗
+- italic：斜体
+- strikethrough：删除线
+- underline：下划线
+- mixedTextStyle：更多文本样式
+- color：字体颜色
+- bgColor：背景颜色
+- alignment：对齐样式
+- unorderedList：无序列表
+- orderedList：有序列表
+- indent：缩进调整
+- lineHeight：行高
+- taskList：任务列表
+- link：超链接
+- quote：引用
+- hr：分割线
+
+- tableCellBgColor：单元格背景颜色（表格专用）
+- tableBorderVisible：单元格是否显示边框（表格专用）
+- tableVerticalAlign：垂直对齐（表格专用）
+- tableMergeCell：合并单元格（表格专用）
+
+### 格式
+- 自带格式
+- HTML
+- 纯文本
+- 字典
+
+### 小“寄”巧
+#### 图片视频文件都上传到编程猫对象储存
+>“微数据库” 是 本地储存 中的 “微数据库” 控件。
+>官方文档：https://codemao.yuque.com/kzbwh0/coco_guide/local-storage
+
+![积木](images/13.png)
+
+#### 不同情况下使用内容格式
+- 自带格式：适用于转到 <a>LakexEditorViewer</a> 查看
+- HTML：适用于 另存为网页文件
+- 纯文本：适用于 判断文档内字数
+- 字典：适用于 储存 编辑器 里的文档，方便下次打开继续编辑
+
+---
+控件文档作者：小宏  
+Markdown排版：小圳  
+>在排版过程中，部分文字有做改动，部分超链接未完全可用。
