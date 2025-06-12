@@ -143,3 +143,10 @@
                 width: 70%;
             }
         }
+
+        .bottom-button {
+        display: flex;
+        gap: 16px; /* 按钮间距，可调整 */
+        align-items: center;
+        justify-content: center;
+    }
