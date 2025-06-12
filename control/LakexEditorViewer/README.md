@@ -37,7 +37,7 @@
 <h4>1.初始化</h4>
 </div>
 
-![初始化积木](images/1.png)
+![初始化积木](https://cc.zitzhen.cn/control/LakexEditorViewer/images/1.png)
 
 按照配置 初始化 LakexEditorViewer。
 
@@ -45,7 +45,7 @@
 <h4>2.设置文档内容</h4>
 </div>
 
-![设置文档内容](images/2.png)
+![设置文档内容](https://cc.zitzhen.cn/control/LakexEditorViewer/images/2.png)
 
 将传入的内容 按照 内容格式 设置文档内容。
 
