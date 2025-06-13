@@ -4,3 +4,6 @@
 /control/:name/   /control/:name   301
 # 将 coco-community.pages.dev 的所有请求 301 重定向到 cc.zitzhen.cn，保留路径和参数
 https://coco-community.pages.dev/* https://cc.zitzhen.cn/:splat 301
+
+# 让404.html的页面返回 HTTP 404 而不是 200
+/* /404.html 404
