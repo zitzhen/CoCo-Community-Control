@@ -12,7 +12,7 @@ sync_from_github:
     - git remote add github https://github.com/zitzhen/CoCo-Community.git || true  # 添加 GitHub 远程（会忽略错误）
     - git fetch github  # 获取 GitHub 最新代码
     - git checkout main  # 切换到 GitLab 的主分支（如 main 或 master）
-    - git merge github/main --no-edit --allow-unrelated-histories  # 合并 GitHub 的 main 分支（避免手动确认）
-    - git push origin main  # 推送回 GitLab
+    - git reset --hard github/main  # 强制用 GitHub main 分支覆盖本地
+    - git push origin main --force  # 强制推送到 GitLab
   rules:
     - if: $CI_PIPELINE_SOURCE == "web"  # 仅允许手动触发
