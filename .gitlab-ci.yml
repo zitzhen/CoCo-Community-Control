@@ -1,0 +1,18 @@
+stages:
+  - sync
+
+sync_from_github:
+  stage: sync
+  only:
+    - web  # 仅允许手动触发
+  script:
+    - echo "开始从 GitHub 同步代码..."
+    - git config --global user.name "GitLab Sync Bot"
+    - git config --global user.email "gitlab-bot@example.com"
+    - git remote add github https://github.com/zitzhen/CoCo-Community.git || true  # 添加 GitHub 远程（会忽略错误）
+    - git fetch github  # 获取 GitHub 最新代码
+    - git checkout main  # 切换到 GitLab 的主分支（如 main 或 master）
+    - git merge github/main --no-edit --allow-unrelated-histories  # 合并 GitHub 的 main 分支（避免手动确认）
+    - git push origin main  # 推送回 GitLab
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "web"  # 仅允许手动触发
