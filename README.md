@@ -17,7 +17,7 @@ CoCo-Community，全称为ZIT-CoCo-Community
 [Github](https://github.com/zitzhen/CoCo-Community)  
 [Gitee](https://gitee.com/hello-oliver/CoCo-Community)  
 [Gitlab（极狐）](https://jihulab.com/zitzhen/CoCo-Community)  
->自2025年06月13日以来，Gitlab的访问已恢复。
+>自2025年06月13日以来，Gitlab的访问已恢复，但是，请您尽量不要通过Gitlab访问CoCo-Community，因为Gitlab的镜像仓库频繁发生错误
 >
 > 若您发现未在此公布的平台出现仓库，请您即使举报并联系ZIT-CoCo-Community开发者名单
 >
