@@ -6,7 +6,7 @@ async function fetch_information(name) {
   try {
     const response = await fetch("all/" + name + "/information.json");
     if (!response.ok) throw new Error('请求失败');
-    const data = await response.json();
+    const data = await response.text();
     console.log(data);
   } catch (error) {
     console.error('错误:', error);
@@ -39,7 +39,7 @@ async function main() {
       throw new Error('Network response was not ok');
     }
     
-    const data = await response.text();
+    const data = await response.json();
     console.log(data);
     q1essay.style.display = 'none';
     
