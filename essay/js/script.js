@@ -13,10 +13,10 @@ async function fetch_information(name) {
   }
 }
 
-function add_essay(essay_name){
+function add_essay(essay_name,url = ""){
   essay.innerHTML += `
     <div class="article-card">
-      <img src="" alt="文章缩略图" class="article-thumbnail">
+      <img src="${url}" alt="${essay_name}" class="article-thumbnail">
       <div class="article-content">
           <h3 class="article-title"><a href="article-detail.html">${essay_name}</a></h3>
           <div class="article-meta">
