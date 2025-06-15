@@ -2,10 +2,21 @@ const essay = document.getElementById("essay");
 const q1essay = document.getElementById("q1essay");
 const Loading = document.getElementById("Loading");
 
+async function fetch_information(name) {
+  try {
+    const response = await fetch("all/" + name + "/information.json");
+    if (!response.ok) throw new Error('请求失败');
+    const data = await response.json();
+    console.log(data);
+  } catch (error) {
+    console.error('错误:', error);
+  }
+}
+
 function add_essay(essay_name){
   essay.innerHTML += `
     <div class="article-card">
-      <img src="https://via.placeholder.com/300x200?text=技术文章" alt="文章缩略图" class="article-thumbnail">
+      <img src="" alt="文章缩略图" class="article-thumbnail">
       <div class="article-content">
           <h3 class="article-title"><a href="article-detail.html">${essay_name}</a></h3>
           <div class="article-meta">
@@ -21,24 +32,33 @@ function add_essay(essay_name){
     </div>`;
 }
 
-fetch('https://api.github.com/repos/zitzhen/CoCo-Community/contents/essay/all')
-  .then(response => {
+async function main() {
+  try {
+    const response = await fetch('https://api.github.com/repos/zitzhen/CoCo-Community/contents/essay/all');
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
-    return response.json();
-  })
-.then(data => {
-  console.log(data);
-  for (let i = 0; i < data.length; i++) {
+    
+    const data = await response.json();
+    console.log(data);
     q1essay.style.display = 'none';
-    console.log(data[i]);
-    let name = data[i].name;
-    console.log(name);
-    if (!(name==="example")){
+    
+    for (let i = 0; i < data.length; i++) {
+      console.log(data[i]);
+      let name = data[i].name;
+      console.log(name);
+      
+      if (name !== "example") {
+        const information = await fetch_information(name);
         add_essay(name);
+      }
+
     }
+    
+    Loading.style.display = 'none';
+  } catch (error) {
+    console.error('Error:', error);
   }
-  Loading.style.display = 'none';
-  })
-  .catch(error => console.error('Error:', error));
+}
+
+main();
