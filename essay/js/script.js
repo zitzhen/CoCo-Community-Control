@@ -1,4 +1,6 @@
 const essay = document.getElementById("essay");
+const q1essay = document.getElementById("q1essay");
+const Loading = document.getElementById("Loading");
 
 function add_essay(essay_name){
   essay.innerHTML += `
@@ -15,11 +17,6 @@ function add_essay(essay_name){
           <p class="article-excerpt">
               正在加载
           </p>
-          <div class="article-tags">
-              <a href="#" class="article-tag">API</a>
-              <a href="#" class="article-tag">开发指南</a>
-              <a href="#" class="article-tag">RESTful</a>
-          </div>
       </div>
     </div>`;
 }
@@ -34,10 +31,12 @@ fetch('https://api.github.com/repos/zitzhen/CoCo-Community/contents/essay/all')
 .then(data => {
   console.log(data);
   for (let i = 0; i < data.length; i++) {
+    q1essay.style.display = 'none';
     console.log(data[i]);
-    let name = data[i].name; // 或 data[i]['name']
+    let name = data[i].name;
     console.log(name);
     add_essay(name);
   }
+  Loading.style.display = 'none';
   })
   .catch(error => console.error('Error:', error));
