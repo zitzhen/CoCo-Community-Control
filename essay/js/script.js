@@ -13,15 +13,15 @@ async function fetch_information(name) {
   }
 }
 
-function add_essay(essay_name,url = ""){
+function add_essay(essay_name,url = "",author = "",release_date = ""){
   essay.innerHTML += `
     <div class="article-card">
       <img src="${url}" alt="${essay_name}" class="article-thumbnail">
       <div class="article-content">
           <h3 class="article-title"><a href="article-detail.html">${essay_name}</a></h3>
           <div class="article-meta">
-              <span class="article-meta-item"><i class="fas fa-user"></i> 正在加载</span>
-              <span class="article-meta-item"><i class="fas fa-calendar-alt"></i> 正在加载</span>
+              <span class="article-meta-item"><i class="fas fa-user"></i>${author}</span>
+              <span class="article-meta-item"><i class="fas fa-calendar-alt"></i>${release_date}</span>
               <span class="article-meta-item"><i class="fas fa-eye"></i> 正在加载</span>
               <span class="article-meta-item"><i class="fas fa-comments"></i> 正在加载</span>
           </div>
