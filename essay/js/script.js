@@ -35,7 +35,9 @@ fetch('https://api.github.com/repos/zitzhen/CoCo-Community/contents/essay/all')
     console.log(data[i]);
     let name = data[i].name;
     console.log(name);
-    add_essay(name);
+    if (!(name==="example")){
+        add_essay(name);
+    }
   }
   Loading.style.display = 'none';
   })
