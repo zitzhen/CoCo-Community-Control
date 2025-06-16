@@ -7,7 +7,7 @@ async function fetch_information(name) {
     const response = await fetch("all/" + name + "/information.json");
     if (!response.ok) throw new Error('请求失败');
     const data = await response.text();
-    console.log(data);
+    //console.log(data);
   } catch (error) {
     console.error('错误:', error);
   }
@@ -50,6 +50,7 @@ async function main() {
       
       if (name !== "example") {
         const information = await fetch_information(name);
+        console.log(information);
         add_essay(name);
       }
 
