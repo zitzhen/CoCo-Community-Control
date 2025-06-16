@@ -18,7 +18,7 @@ function add_essay(essay_name,url = "",author = "",release_date = ""){
     <div class="article-card">
       <img src="${url}" alt="${essay_name}" class="article-thumbnail">
       <div class="article-content">
-          <h3 class="article-title"><a href="article-detail.html">${essay_name}</a></h3>
+          <h3 class="article-title"><a href="all/${essay_name}">${essay_name}</a></h3>
           <div class="article-meta">
               <span class="article-meta-item"><i class="fas fa-user"></i>${author}</span>
               <span class="article-meta-item"><i class="fas fa-calendar-alt"></i>${release_date}</span>
