@@ -8,8 +8,10 @@ async function fetch_information(name) {
     if (!response.ok) throw new Error('请求失败');
     const data = await response.text();
     //console.log(data);
+    return data;
   } catch (error) {
     console.error('错误:', error);
+    return null;
   }
 }
 
