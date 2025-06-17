@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文章详情</title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --background-color: #f5f7fa;
+            --card-color: #ffffff;
+            --text-color: #333333;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --border-color: #e1e4e8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* 头部样式 */
+        .site-header {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: var(--shadow);
+            width: 100%;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            width: 100%;
+            position: relative;
+        }
+
+        /* 返回按钮样式 */
+        .back-btn {
+            color: white;
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .back-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .back-btn i {
+            margin-right: 5px;
+        }
+
+        /* 标题居中 */
+        .header-title {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            margin: 0;
+            font-size: 1.8rem;
+        }
+
+        /* 平衡布局的空div */
+        .header-spacer {
+            width: 120px;
+        }
+
+        /* 主内容区域 */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 2rem;
+            width: 100%;
+            flex: 1;
+        }
+
+        /* 文章区域 */
+        .article-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .article-header {
+            background-color: var(--card-color);
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .article-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+
+        .article-meta {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .article-meta-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .article-meta-item i {
+            margin-right: 5px;
+        }
+
+        .article-tags {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .article-tag {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background-color: #f0f7ff;
+            color: var(--primary-color);
+            border-radius: 4px;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .article-tag:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .article-thumbnail {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+
+        .article-content {
+            background-color: var(--card-color);
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        /* Markdown内容样式 */
+        .markdown-body {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: #24292e;
+        }
+
+        .markdown-body h1,
+        .markdown-body h2,
+        .markdown-body h3,
+        .markdown-body h4,
+        .markdown-body h5,
+        .markdown-body h6 {
+            margin-top: 24px;
+            margin-bottom: 16px;
+            font-weight: 600;
+            line-height: 1.25;
+        }
+
+        .markdown-body h1 {
+            padding-bottom: 0.3em;
+            font-size: 1.8em;
+            border-bottom: 1px solid #eaecef;
+        }
+
+        .markdown-body h2 {
+            padding-bottom: 0.3em;
+            font-size: 1.5em;
+            border-bottom: 1px solid #eaecef;
+        }
+
+        .markdown-body p {
+            margin-top: 0;
+            margin-bottom: 16px;
+        }
+
+        .markdown-body ul,
+        .markdown-body ol {
+            padding-left: 2em;
+            margin-top: 0;
+            margin-bottom: 16px;
+        }
+
+        .markdown-body blockquote {
+            padding: 0 1em;
+            color: #6a737d;
+            border-left: 0.25em solid #dfe2e5;
+            margin: 0 0 16px 0;
+        }
+
+        .markdown-body pre {
+            padding: 16px;
+            overflow: auto;
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            line-height: 1.45;
+        }
+
+        .markdown-body code {
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+            font-size: 85%;
+            background-color: rgba(27, 31, 35, 0.05);
+            border-radius: 3px;
+            padding: 0.2em 0.4em;
+        }
+
+        .markdown-body pre code {
+            background-color: transparent;
+            padding: 0;
+        }
+
+        .markdown-body table {
+            border-spacing: 0;
+            border-collapse: collapse;
+            display: block;
+            width: 100%;
+            overflow: auto;
+        }
+
+        .markdown-body table th {
+            font-weight: 600;
+        }
+
+        .markdown-body table th,
+        .markdown-body table td {
+            padding: 6px 13px;
+            border: 1px solid #dfe2e5;
+        }
+
+        .markdown-body table tr {
+            background-color: #fff;
+            border-top: 1px solid #c6cbd1;
+        }
+
+        .markdown-body table tr:nth-child(2n) {
+            background-color: #f6f8fa;
+        }
+
+        /* 作者信息 */
+        .author-card {
+            background-color: var(--card-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            margin-top: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .author-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-color);
+        }
+
+        .author-info {
+            flex: 1;
+        }
+
+        .author-name {
+            font-size: 1.2rem;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .author-bio {
+            color: #666;
+            margin-bottom: 0.8rem;
+            font-size: 0.9rem;
+        }
+
+        .author-social {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .author-social a {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            text-decoration: none;
+        }
+
+        /* 相关文章 */
+        .related-articles {
+            background-color: var(--card-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            margin-top: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+        }
+
+        .section-title i {
+            margin-right: 10px;
+            color: var(--primary-color);
+        }
+
+        .related-article-list {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .related-article {
+            display: flex;
+            gap: 1rem;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .related-article:last-child {
+            border-bottom: none;
+        }
+
+        .related-article-thumbnail {
+            width: 80px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .related-article-title {
+            font-size: 1rem;
+            margin: 0;
+            line-height: 1.3;
+        }
+
+        .related-article-title a {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .related-article-title a:hover {
+            color: var(--primary-color);
+        }
+
+        .related-article-meta {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 0.3rem;
+        }
+
+        /* 评论区 */
+        .comments-section {
+            background-color: var(--card-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            margin-top: 2rem;
+        }
+
+        .comment-form {
+            margin-bottom: 2rem;
+        }
+
+        .comment-form textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            min-height: 120px;
+            margin-bottom: 1rem;
+            font-family: inherit;
+        }
+
+        .comment-form button {
+            padding: 0.7rem 1.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .comment-form button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .comment-list {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .comment {
+            display: grid;
+            grid-template-columns: 60px 1fr;
+            gap: 1rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .comment:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .comment-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .comment-content {
+            flex: 1;
+        }
+
+        .comment-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .comment-author {
+            font-weight: bold;
+            margin-right: 0.8rem;
+        }
+
+        .comment-date {
+            color: #666;
+            font-size: 0.8rem;
+        }
+
+        .comment-text {
+            line-height: 1.6;
+        }
+
+        .comment-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.8rem;
+        }
+
+        .comment-action {
+            color: #666;
+            font-size: 0.8rem;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .comment-action:hover {
+            color: var(--primary-color);
+        }
+
+        /* 侧边栏 */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            padding-top: 2rem;
+        }
+
+        .sidebar-card {
+            background-color: var(--card-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .popular-article {
+            display: flex;
+            gap: 1rem;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .popular-article:last-child {
+            border-bottom: none;
+        }
+
+        .popular-article-thumbnail {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .popular-article-title {
+            font-size: 0.95rem;
+            margin: 0;
+            line-height: 1.3;
+        }
+
+        .popular-article-title a {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .popular-article-title a:hover {
+            color: var(--primary-color);
+        }
+
+        .popular-article-views {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 0.3rem;
+        }
+
+        .tag-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tag-cloud-item {
+            display: inline-block;
+            padding: 0.4rem 0.8rem;
+            background-color: #f0f7ff;
+            color: var(--primary-color);
+            border-radius: 4px;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .tag-cloud-item:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .tag-cloud-item.size-1 { font-size: 0.8rem; }
+        .tag-cloud-item.size-2 { font-size: 0.9rem; }
+        .tag-cloud-item.size-3 { font-size: 1rem; }
+        .tag-cloud-item.size-4 { font-size: 1.1rem; }
+        .tag-cloud-item.size-5 { font-size: 1.2rem; }
+
+        /* 页脚 */
+        .site-footer {
+            width: 100%;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 2rem;
+            color: #666;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem 0;
+            }
+            
+            .header-title {
+                position: static;
+                transform: none;
+                order: -1;
+            }
+            
+            .header-spacer {
+                display: none;
+            }
+            
+            .back-btn {
+                align-self: flex-start;
+            }
+            
+            .article-header {
+                padding: 1.5rem;
+            }
+            
+            .article-content {
+                padding: 1.5rem;
+            }
+            
+            .author-card {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .comment {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .article-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github.min.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-container">
+            <div class="header-content">
+                <a href="articles.html" class="back-btn">
+                    <i class="fas fa-arrow-left"></i> 返回文章列表
+                </a>
+                <h1 class="header-title">文章详情</h1>
+                <div class="header-spacer"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="article-container">
+            <div class="article-header">
+                <h1 class="article-title">如何高效使用文件下载中心的API接口</h1>
+                <div class="article-meta">
+                    <span class="article-meta-item"><i class="fas fa-user"></i> 张三</span>
+                    <span class="article-meta-item"><i class="fas fa-calendar-alt"></i> 2023-06-15</span>
+                    <span class="article-meta-item"><i class="fas fa-eye"></i> 1,245浏览</span>
+                    <span class="article-meta-item"><i class="fas fa-comments"></i> 28评论</span>
+                </div>
+                <div class="article-tags">
+                    <a href="#" class="article-tag">API</a>
+                    <a href="#" class="article-tag">开发指南</a>
+                    <a href="#" class="article-tag">RESTful</a>
+                </div>
+                <img src="https://via.placeholder.com/800x400?text=文章封面" alt="文章封面" class="article-thumbnail">
+            </div>
+
+            <div class="article-content">
+                <div class="markdown-body">
+                    <p>本文将详细介绍文件下载中心API的使用方法，包括认证、文件上传下载、权限管理等核心功能，帮助开发者快速集成到自己的应用中。</p>
+
+                    <h2>API概述</h2>
+                    <p>文件下载中心提供了一套完整的RESTful API，支持以下主要功能：</p>
+                    <ul>
+                        <li>文件上传与下载</li>
+                        <li>文件元数据管理</li>
+                        <li>用户权限控制</li>
+                        <li>批量操作支持</li>
+                        <li>Webhook通知</li>
+                    </ul>
+
+                    <h2>认证方式</h2>
+                    <p>所有API请求都需要进行认证，我们支持以下两种认证方式：</p>
+
+                    <h3>1. API密钥认证</h3>
+                    <pre><code class="language-http">GET /api/v1/files
+Authorization: Bearer your_api_key</code></pre>
+
+                    <h3>2. OAuth 2.0</h3>
+                    <p>对于需要用户授权的操作，可以使用OAuth 2.0流程：</p>
+                    <pre><code class="language-http">POST /oauth/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=authorization_code
+&code=AUTHORIZATION_CODE
+&redirect_uri=REDIRECT_URI
+&client_id=CLIENT_ID
+&client_secret=CLIENT_SECRET</code></pre>
+
+                    <h2>文件上传</h2>
+                    <p>上传文件可以使用简单的POST请求：</p>
+                    <pre><code class="language-http">POST /api/v1/files
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="example.txt"
+Content-Type: text/plain
+
+(文件二进制数据)
+------WebKitFormBoundary7MA4YWxkTrZu0gW--</code></pre>
+
+                    <h2>分块上传</h2>
+                    <p>对于大文件，我们推荐使用分块上传：</p>
+                    <ol>
+                        <li>初始化上传会话</li>
+                        <li>上传分块（可并行）</li>
+                        <li>完成上传</li>
+                    </ol>
+
+                    <h2>最佳实践</h2>
+                    <p>以下是一些API使用的最佳实践：</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>场景</th>
+                                <th>建议</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>批量操作</td>
+                                <td>使用批量API减少请求次数</td>
+                            </tr>
+                            <tr>
+                                <td>错误处理</td>
+                                <td>检查HTTP状态码和错误响应体</td>
+                            </tr>
+                            <tr>
+                                <td>速率限制</td>
+                                <td>遵守X-RateLimit头信息</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <blockquote>
+                        <p>注意：生产环境请始终使用HTTPS协议，并妥善保管您的API密钥。</p>
+                    </blockquote>
+                </div>
+            </div>
+
+            <div class="author-card">
+                <img src="https://via.placeholder.com/150?text=作者头像" alt="作者头像" class="author-avatar">
+                <div class="author-info">
+                    <h3 class="author-name">张三</h3>
+                    <p class="author-bio">高级开发工程师，专注于API设计和云存储技术，拥有5年文件存储系统开发经验。</p>
+                    <div class="author-social">
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="related-articles">
+                <h3 class="section-title"><i class="fas fa-book-open"></i> 相关文章</h3>
+                <div class="related-article-list">
+                    <div class="related-article">
+                        <img src="https://via.placeholder.com/100x100?text=相关1" alt="相关文章缩略图" class="related-article-thumbnail">
+                        <div>
+                            <h4 class="related-article-title"><a href="#">文件下载中心v2.0 API变更说明</a></h4>
+                            <div class="related-article-meta">2023-05-20 · 856浏览</div>
+                        </div>
+                    </div>
+                    <div class="related-article">
+                        <img src="https://via.placeholder.com/100x100?text=相关2" alt="相关文章缩略图" class="related-article-thumbnail">
+                        <div>
+                            <h4 class="related-article-title"><a href="#">RESTful API设计最佳实践</a></h4>
+                            <div class="related-article-meta">2023-04-15 · 1,245浏览</div>
+                        </div>
+                    </div>
+                    <div class="related-article">
+                        <img src="https://via.placeholder.com/100x100?text=相关3" alt="相关文章缩略图" class="related-article-thumbnail">
+                        <div>
+                            <h4 class="related-article-title"><a href="#">如何实现高效的文件分块上传</a></h4>
+                            <div class="related-article-meta">2023-03-10 · 932浏览</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="comments-section">
+                <h3 class="section-title"><i class="fas fa-comments"></i> 评论 (28)</h3>
+                
+                <form class="comment-form">
+                    <textarea placeholder="写下你的评论..."></textarea>
+                    <button type="submit">提交评论</button>
+                </form>
+                
+                <div class="comment-list">
+                    <div class="comment">
+                        <img src="https://via.placeholder.com/50?text=用户1" alt="用户头像" class="comment-avatar">
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-author">李四</span>
+                                <span class="comment-date">2023-06-16 14:30</span>
+                            </div>
+                            <div class="comment-text">
+                                非常详细的API文档，特别是分块上传的部分解决了我一直以来的困惑，感谢分享！
+                            </div>
+                            <div class="comment-actions">
+                                <a href="#" class="comment-action">回复</a>
+                                <a href="#" class="comment-action">点赞 (12)</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="comment">
+                        <img src="https://via.placeholder.com/50?text=用户2" alt="用户头像" class="comment-avatar">
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-author">王五</span>
+                                <span class="comment-date">2023-06-15 09:15</span>
+                            </div>
+                            <div class="comment-text">
+                                请问OAuth 2.0的refresh token有效期是多长时间？
+                            </div>
+                            <div class="comment-actions">
+                                <a href="#" class="comment-action">回复</a>
+                                <a href="#" class="comment-action">点赞 (5)</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <div class="sidebar-card">
+                <h3 class="section-title"><i class="fas fa-fire"></i> 热门文章</h3>
+                <div class="popular-article-list">
+                    <div class="popular-article">
+                        <img src="https://via.placeholder.com/100x100?text=热门1" alt="热门文章缩略图" class="popular-article-thumbnail">
+                        <div>
+                            <h4 class="popular-article-title"><a href="#">如何提升文件下载速度的10个技巧</a></h4>
+                            <div class="popular-article-views"><i class="fas fa-eye"></i> 2,345浏览</div>
+                        </div>
+                    </div>
+                    <div class="popular-article">
+                        <img src="https://via.placeholder.com/100x100?text=热门2" alt="热门文章缩略图" class="popular-article-thumbnail">
+                        <div>
+                            <h4 class="popular-article-title"><a href="#">企业级文件管理的最佳实践</a></h4>
+                            <div class="popular-article-views"><i class="fas fa-eye"></i> 1,567浏览</div>
+                        </div>
+                    </div>
+                    <div class="popular-article">
+                        <img src="https://via.placeholder.com/100x100?text=热门3" alt="热门文章缩略图" class="popular-article-thumbnail">
+                        <div>
+                            <h4 class="popular-article-title"><a href="#">2023年文件存储与共享趋势分析</a></h4>
+                            <div class="popular-article-views"><i class="fas fa-eye"></i> 1,789浏览</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-card">
+                <h3 class="section-title"><i class="fas fa-tags"></i> 标签云</h3>
+                <div class="tag-cloud">
+                    <a href="#" class="tag-cloud-item size-3">API</a>
+                    <a href="#" class="tag-cloud-item size-2">开发指南</a>
+                    <a href="#" class="tag-cloud-item size-4">RESTful</a>
+                    <a href="#" class="tag-cloud-item size-3">文件上传</a>
+                    <a href="#" class="tag-cloud-item size-1">认证</a>
+                    <a href="#" class="tag-cloud-item size-5">最佳实践</a>
+                    <a href="#" class="tag-cloud-item size-2">OAuth</a>
+                    <a href="#" class="tag-cloud-item size-3">分块上传</a>
+                </div>
+            </div>
+
+            <div class="sidebar-card">
+                <h3 class="section-title"><i class="fas fa-envelope"></i> 订阅更新</h3>
+                <p>订阅我们的新闻通讯，获取最新技术文章和产品更新</p>
+                <form class="subscribe-form">
+                    <input type="email" placeholder="您的邮箱地址" style="width: 100%; padding: 0.5rem; margin-bottom: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px;">
+                    <button type="submit" style="width: 100%; padding: 0.7rem; background-color: var(--primary-color); color: white; border: none; border-radius: 4px; cursor: pointer;">订阅</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            <p>© 2023 文件下载中心 | 技术与知识分享</p>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script>
+        // 初始化代码高亮
+        document.addEventListener('DOMContentLoaded', function() {
+            hljs.highlightAll();
+        });
+
+        // 评论表单提交
+        document.querySelector('.comment-form')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const commentText = this.querySelector('textarea').value.trim();
+            if (commentText) {
+                alert('评论已提交！(这是模拟演示)');
+                this.querySelector('textarea').value = '';
+            }
+        });
+
+        // 订阅表单提交
+        document.querySelector('.subscribe-form')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = this.querySelector('input[type="email"]').value.trim();
+            if (email) {
+                alert('感谢订阅！(这是模拟演示)');
+                this.querySelector('input[type="email"]').value = '';
+            }
+        });
+    </script>
+</body>
+</html>
