@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github.min.css">
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <script src="js/robot.js"></script>
 </head>
 <body>
     <header>
@@ -98,6 +100,13 @@
                     </div>
                     <div id="progressText" class="progress-text">准备上传...</div>
                 </div>
+
+                <!--人机验证模块-->
+                <!--这次使用了测试站点密钥，合并分支前请更换为正式站点密钥-->
+                <div style="display: flex; justify-content: center; margin: 20px 0;">
+                    <div class="cf-turnstile" data-sitekey="1x00000000000000000000AA"></div>
+                </div>
+
 
                 <div class="form-group">
                     <button type="submit" id="uploadBtn" class="btn btn-block btn-disabled" disabled>
