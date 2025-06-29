@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户主页</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .profile-header {
+            display: flex;
+            align-items: center;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 30px;
+            border: 3px solid #f0f0f0;
+        }
+        
+        .user-info h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .user-info p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .stats {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+        
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+        
+        .tab {
+            padding: 12px 25px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #7f8c8d;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab.active {
+            color: #3498db;
+            border-bottom: 3px solid #3498db;
+        }
+        
+        .tab:hover:not(.active) {
+            color: #555;
+            background-color: #f9f9f9;
+        }
+        
+        .tab-content {
+            display: none;
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .section-title {
+            font-size: 22px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            color: #2c3e50;
+        }
+        
+        /* 文章列表样式 */
+        .article-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .article-card {
+            border: 1px solid #eee;
+            border-radius: 6px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .article-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+        
+        .article-content {
+            padding: 15px;
+        }
+        
+        .article-title {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .article-excerpt {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .article-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #95a5a6;
+        }
+        
+        /* 文件列表样式 */
+        .file-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        
+        .file-card {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+        
+        .file-card:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .file-icon {
+            width: 40px;
+            height: 40px;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #e1f0fa;
+            border-radius: 4px;
+            color: #3498db;
+            font-size: 20px;
+        }
+        
+        .file-info {
+            flex: 1;
+        }
+        
+        .file-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+        
+        .file-meta {
+            font-size: 12px;
+            color: #95a5a6;
+        }
+        
+        .file-actions {
+            margin-left: 10px;
+        }
+        
+        .download-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background-color 0.3s;
+        }
+        
+        .download-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        /* 空状态提示 */
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+            color: #95a5a6;
+        }
+        
+        .empty-state i {
+            font-size: 50px;
+            margin-bottom: 20px;
+            color: #bdc3c7;
+        }
+        
+        .empty-state p {
+            font-size: 16px;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .avatar {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+            
+            .stats {
+                justify-content: center;
+            }
+            
+            .tabs {
+                justify-content: center;
+            }
+            
+            .article-list, .file-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 用户信息头部 -->
+        <div class="profile-header">
+            <img src="" alt="用户头像" class="avatar">
+            <div class="user-info">
+                <h1>正在加载</h1>
+                <!--用户GitHub名称-->
+                <p>正在加载</p>
+                <!--用户GitHub介绍-->
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="stat-number">正在加载</div>
+                        <div class="stat-label">文章</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">正在加载</div>
+                        <div class="stat-label">控件</div>
+                    </div>
+                    <!--
+                    <div class="stat-item">
+                        <div class="stat-number">5.2k</div>
+                        <div class="stat-label">粉丝</div>
+                    </div>
+                    -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- 标签导航 -->
+        <div class="tabs">
+            <div class="tab active" data-tab="files">控件</div>
+            <div class="tab" data-tab="articles">文章</div>
+        </div>
+        
+        <!-- 文件板块 -->
+        <div class="tab-content active" id="files">
+            <h2 class="section-title">TA的控件</h2>
+            
+            <div class="file-list">
+                <!-- 文件卡片示例 - 实际应用中这里应该是动态生成的 -->
+                <div class="file-card">
+                    <div class="file-icon">
+                        <i class="far fa-file-pdf"></i>
+                    </div>
+                    <div class="file-info">
+                        <div class="file-name">JavaScript高级程序设计.pdf</div>
+                        <div class="file-meta">2.4 MB · 2023-05-10</div>
+                    </div>
+                    <div class="file-actions">
+                        <button class="download-btn">下载</button>
+                    </div>
+                </div>
+                
+                <div class="file-card">
+                    <div class="file-icon">
+                        <i class="far fa-file-word"></i>
+                    </div>
+                    <div class="file-info">
+                        <div class="file-name">项目需求文档.docx</div>
+                        <div class="file-meta">1.2 MB · 2023-04-25</div>
+                    </div>
+                    <div class="file-actions">
+                        <button class="download-btn">下载</button>
+                    </div>
+                </div>
+                
+                <div class="file-card">
+                    <div class="file-icon">
+                        <i class="far fa-file-excel"></i>
+                    </div>
+                    <div class="file-info">
+                        <div class="file-name">用户数据统计.xlsx</div>
+                        <div class="file-meta">3.5 MB · 2023-04-18</div>
+                    </div>
+                    <div class="file-actions">
+                        <button class="download-btn">下载</button>
+                    </div>
+                </div>
+                
+                <div class="file-card">
+                    <div class="file-icon">
+                        <i class="far fa-file-image"></i>
+                    </div>
+                    <div class="file-info">
+                        <div class="file-name">产品原型图集.zip</div>
+                        <div class="file-meta">15.8 MB · 2023-03-30</div>
+                    </div>
+                    <div class="file-actions">
+                        <button class="download-btn">下载</button>
+                    </div>
+                </div>
+                
+                <div class="file-card">
+                    <div class="file-icon">
+                        <i class="far fa-file-code"></i>
+                    </div>
+                    <div class="file-info">
+                        <div class="file-name">项目源代码.zip</div>
+                        <div class="file-meta">8.7 MB · 2023-03-15</div>
+                    </div>
+                    <div class="file-actions">
+                        <button class="download-btn">下载</button>
+                    </div>
+                </div>
+                
+                <div class="file-card">
+                    <div class="file-icon">
+                        <i class="far fa-file-video"></i>
+                    </div>
+                    <div class="file-info">
+                        <div class="file-name">教学视频.mp4</div>
+                        <div class="file-meta">45.2 MB · 2023-02-28</div>
+                    </div>
+                    <div class="file-actions">
+                        <button class="download-btn">下载</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 加载更多按钮 -->
+            <div style="text-align: center; margin-top: 30px;">
+                <button style="padding: 10px 20px; background-color: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer;">加载更多</button>
+            </div>
+        </div>
+        
+        <!-- 文章板块 -->
+        <div class="tab-content" id="articles">
+            <h2 class="section-title">我的文章</h2>
+            
+            <div class="article-list">
+                <!-- 文章卡片示例 - 实际应用中这里应该是动态生成的 -->
+                <div class="article-card">
+                    <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="文章封面" class="article-image">
+                    <div class="article-content">
+                        <h3 class="article-title">深入理解JavaScript闭包</h3>
+                        <p class="article-excerpt">闭包是JavaScript中一个非常重要的概念，本文将从原理到应用全面解析闭包，帮助你彻底理解这一概念...</p>
+                        <div class="article-meta">
+                            <span>2023-05-15</span>
+                            <span>1.2k 阅读</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="article-card">
+                    <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="文章封面" class="article-image">
+                    <div class="article-content">
+                        <h3 class="article-title">Vue3组合式API最佳实践</h3>
+                        <p class="article-excerpt">Vue3带来了全新的组合式API，本文将分享在实际项目中使用组合式API的一些最佳实践和技巧...</p>
+                        <div class="article-meta">
+                            <span>2023-04-28</span>
+                            <span>856 阅读</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="article-card">
+                    <img src="https://images.unsplash.com/photo-1581094794329-c811329a7274?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="文章封面" class="article-image">
+                    <div class="article-content">
+                        <h3 class="article-title">CSS Grid布局完全指南</h3>
+                        <p class="article-excerpt">CSS Grid是现代网页布局的强大工具，本指南将带你从基础到高级全面掌握Grid布局...</p>
+                        <div class="article-meta">
+                            <span>2023-03-10</span>
+                            <span>1.5k 阅读</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="article-card">
+                    <img src="https://images.unsplash.com/photo-1627398242454-45a1465c2479?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="文章封面" class="article-image">
+                    <div class="article-content">
+                        <h3 class="article-title">TypeScript类型系统深入解析</h3>
+                        <p class="article-excerpt">TypeScript的类型系统是其核心特性，本文将深入解析类型系统的各种高级用法和技巧...</p>
+                        <div class="article-meta">
+                            <span>2023-02-22</span>
+                            <span>723 阅读</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 加载更多按钮 -->
+            <div style="text-align: center; margin-top: 30px;">
+                <button style="padding: 10px 20px; background-color: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer;">加载更多</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 标签切换功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // 移除所有active类
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    // 添加active类到当前标签和对应内容
+                    tab.classList.add('active');
+                    const tabId = tab.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+            
+            // 模拟加载更多功能
+            const loadMoreButtons = document.querySelectorAll('button');
+            loadMoreButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    alert('加载更多功能将在实际应用中通过AJAX请求实现');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
