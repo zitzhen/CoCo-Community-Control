@@ -9,6 +9,7 @@ const Loading = document.getElementById("Loading");
 const user_introduction = document.getElementById("user_introduction");
 const number_of_controls = document.getElementById("number_of_controls");
 const display_controls = document.getElementById("display_controls");
+const control_processing = document.getElementById("control_processing");
 
 function get_username(usernameParam = 'username', url = window.location.href) {
   const urlObj = new URL(url);
@@ -125,6 +126,13 @@ async function main() {
         user_name.textContent = user_information.name;
         user_introduction.textContent = user_information.bio;
         number_of_controls.textContent = user_json.list_of_controls.length;
+
+        control_processing.style.display = 'none';
+        for (let i = 0; i < user_json.list_of_controls.length; i++) {
+            console.log(user_json.list_of_controls[i]);
+            let name = user_json.list_of_controls[i]
+            add_control(name);
+        }
     } catch (e) {
         new_error("发生异常", e.message);
     }
