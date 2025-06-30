@@ -32,6 +32,7 @@ function new_error(error1 = "未知错误",error2 = "未知错误"){
     Loading.style.display = 'none';
     Something_went_wrong_text.innerHTML = error1;
     error_prompt_text_one.innerHTML = error2;
+    document.title = user_information.name+"400|发生错误|ZIT-CoCo-Community";
 }
 
 function add_control(name){
@@ -126,6 +127,8 @@ async function main() {
         user_name.textContent = user_information.name;
         user_introduction.textContent = user_information.bio;
         number_of_controls.textContent = user_json.list_of_controls.length;
+
+        document.title = user_information.name+"|用户首页|ZIT-CoCo-Community";
 
         control_processing.style.display = 'none';
         for (let i = 0; i < user_json.list_of_controls.length; i++) {
