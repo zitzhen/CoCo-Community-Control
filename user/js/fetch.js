@@ -34,7 +34,7 @@ function new_error(error1 = "未知错误",error2 = "未知错误"){
 
 async function fetch_user_json(username) {
     try{
-        const response = await fetch(`../information/${username}`)
+        const response = await fetch(`../information/${username}.json`)
 
         if (!response.ok){
             throw new Error(`获取用户JSON文件失败：${response.status}`);
