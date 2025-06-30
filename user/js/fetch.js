@@ -45,7 +45,9 @@ function add_control(name){
                         <div class="file-name">${name}</div>
                     </div>
                     <div class="file-actions">
-                        <button class="download-btn">去详情</button>
+                        <a href="https://cc.zitzhen.cn/control/${name}">
+                            <button class="download-btn">去详情</button>
+                        </a>
                     </div>
                 </div>
     `
