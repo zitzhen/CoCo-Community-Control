@@ -133,6 +133,8 @@ async function main() {
             let name = user_json.list_of_controls[i]
             add_control(name);
         }
+
+        Loading.style.display = 'none';
     } catch (e) {
         new_error("发生异常", e.message);
     }
