@@ -6,6 +6,7 @@ const Something_went_wrong_text = document.getElementById("Something_went_wrong_
 const error_prompt_text_one = document.getElementById("error_prompt_text_one");
 const avatar = document.getElementById("avatar");
 const Loading = document.getElementById("Loading");
+const user_introduction = document.getElementById("user_introduction");
 
 function get_username(usernameParam = 'username', url = window.location.href) {
   const urlObj = new URL(url);
@@ -64,17 +65,26 @@ async function fetch_github(username){
 
 
 
-function main(){
+async function main() {
     const username = get_username();
-    if (!username){
-        new_error("未检测到参数","请检查路径或URL中的参数")
+    if (!username) {
+        new_error("未检测到参数", "请检查路径或URL中的参数");
+        return;
     }
 
-    try{
-        const user_information = await fetch_github()
-    }
-    {
+    try {
+        const user_information = await fetch_github(username);
+        if (user_information.error) {
+            new_error("获取用户信息失败", user_information.error);
+            return;
+        }
 
+        // 用户信息
+        avatar_img.src = user_information.avatarUrl;
+        user_name.textContent = user_information.name;
+        user_introduction.textContent = user_information.bio;
+    } catch (e) {
+        new_error("发生异常", e.message);
     }
 }
 
