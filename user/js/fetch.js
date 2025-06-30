@@ -8,6 +8,7 @@ const avatar = document.getElementById("avatar");
 const Loading = document.getElementById("Loading");
 const user_introduction = document.getElementById("user_introduction");
 const number_of_controls = document.getElementById("number_of_controls");
+const display_controls = document.getElementById("display_controls");
 
 function get_username(usernameParam = 'username', url = window.location.href) {
   const urlObj = new URL(url);
@@ -31,6 +32,23 @@ function new_error(error1 = "未知错误",error2 = "未知错误"){
     Something_went_wrong_text.innerHTML = error1;
     error_prompt_text_one.innerHTML = error2;
 }
+
+function add_control(name){
+    display_controls.innerHTML +=`
+                    <div class="file-card">
+                    <div class="file-icon">
+                        <i class="far fa-file-code"></i>
+                    </div>
+                    <div class="file-info">
+                        <div class="file-name">${name}</div>
+                    </div>
+                    <div class="file-actions">
+                        <button class="download-btn">去详情</button>
+                    </div>
+                </div>
+    `
+}
+
 
 
 async function fetch_user_json(username) {
