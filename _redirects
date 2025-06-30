@@ -8,3 +8,8 @@ https://coco-community.pages.dev/* https://cc.zitzhen.cn/:splat 301
 # 让404.html的页面返回 HTTP 404 而不是 200
 /404.html /404.html 404
 /* /404.html 404
+
+## 用户页面
+/user/?username=:username    /user/:username   301
+/user/:username    /user/?username=:username   200
+/user/:username/   /user/:username   301
