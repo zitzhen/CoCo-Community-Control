@@ -31,6 +31,27 @@ function new_error(error1 = "未知错误",error2 = "未知错误"){
     error_prompt_text_one.innerHTML = error2;
 }
 
+
+async function fetch_user_json(username) {
+    try{
+        const response = await fetch(`../information/${username}`)
+
+        if (!response.ok){
+            throw new Error(`获取用户JSON文件失败：${response.status}`);
+        }
+
+        const userjson = await response.text();
+
+        return userjson;
+    }catch(error){
+        console.error("无法获取到用户JSON");
+        return null;
+    }
+
+}
+
+
+
 async function fetch_github(username){
         try {
         // 调用 GitHub API
