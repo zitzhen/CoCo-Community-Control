@@ -7,6 +7,7 @@ const error_prompt_text_one = document.getElementById("error_prompt_text_one");
 const avatar = document.getElementById("avatar");
 const Loading = document.getElementById("Loading");
 const user_introduction = document.getElementById("user_introduction");
+const number_of_controls = document.getElementById("number_of_controls");
 
 function get_username(usernameParam = 'username', url = window.location.href) {
   const urlObj = new URL(url);
@@ -40,7 +41,7 @@ async function fetch_user_json(username) {
             throw new Error(`获取用户JSON文件失败：${response.status}`);
         }
 
-        const userjson = await response.text();
+        const userjson = await response.json();
 
         return userjson;
     }catch(error){
@@ -95,6 +96,7 @@ async function main() {
 
     try {
         const user_information = await fetch_github(username);
+        const user_json = await fetch_user_json(username);
         if (user_information.error) {
             new_error("获取用户信息失败", user_information.error);
             return;
@@ -104,6 +106,7 @@ async function main() {
         avatar_img.src = user_information.avatarUrl;
         user_name.textContent = user_information.name;
         user_introduction.textContent = user_information.bio;
+        number_of_controls.textContent = user_json.list_of_controls.length;
     } catch (e) {
         new_error("发生异常", e.message);
     }
