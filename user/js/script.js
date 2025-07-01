@@ -15,12 +15,4 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById(tabId).classList.add('active');
         });
     });
-    
-    // 模拟加载更多功能
-    const loadMoreButtons = document.querySelectorAll('button');
-    loadMoreButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            alert('加载更多功能将在实际应用中通过AJAX请求实现');
-        });
-    });
 });
