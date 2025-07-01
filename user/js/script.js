@@ -1,3 +1,7 @@
+function off_error_button(){
+    error_prompt_small_windows.style.display = 'none';
+}
+
 // 标签切换功能
 document.addEventListener('DOMContentLoaded', function() {
     const tabs = document.querySelectorAll('.tab');
