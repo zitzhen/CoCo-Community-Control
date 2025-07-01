@@ -18,7 +18,8 @@ jobs:
         uses: cicirello/generate-sitemap@v1
         with:
           base-url-path: "https://cc.zitzhen.cn"
-          exclude-paths: "404.html,google46eebdeb664df7df.html,baidu_verify_codeva-Nc3ckBEoE0.html,control/css,control/js"
+          exclude-paths: "404.html,google46eebdeb664df7df.html,baidu_verify_codeva-Nc3ckBEoE0.html,control/css,control/js,user"
+          disable-indexes: true
 
       - name: Add control subdirectories
         run: |
@@ -51,8 +52,9 @@ jobs:
           grep -oP '<loc>\Khttps://cc.zitzhen.cn/control/[^<]+' sitemap.xml
           echo "=== User Paths Added ==="
           grep -oP '<loc>\Khttps://cc.zitzhen.cn/user/[^<]+' sitemap.xml
-          echo "=== Example.json Excluded? ==="
+          echo "=== Excluded URLs Check ==="
           ! grep -q 'https://cc.zitzhen.cn/user/example' sitemap.xml && echo "✅ example.json excluded" || echo "❌ example.json found in sitemap"
+          ! grep -q 'https://cc.zitzhen.cn/user/' sitemap.xml && echo "✅ /user/ directory excluded" || echo "❌ /user/ directory found in sitemap"
 
       - name: Set git user
         run: |
