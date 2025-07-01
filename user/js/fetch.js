@@ -16,7 +16,7 @@ function get_username(usernameParam = 'username', url = window.location.href) {
   const pathParts = urlObj.pathname.split('/').filter(Boolean);
   
   // 1. 优先返回路径最后部分（如 /user/johndoe → "johndoe"）
-  if (pathParts.length > 0 && pathParts[pathParts.length - 1] !== "index.html") {
+  if (pathParts.length > 0 && pathParts[pathParts.length - 1] !== "index.html" && pathParts[pathParts.length - 1] !== "username" && pathParts[pathParts.length - 1] !== ":username") {
     return pathParts[pathParts.length - 1];
   }
   
