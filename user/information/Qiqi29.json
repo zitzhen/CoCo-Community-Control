@@ -1,10 +1,11 @@
 {
-    "number_of_controls":"5",
+    "number_of_controls":"6",
     "list_of_controls":[
         "按钮-Qii",
         "文本-Qii",
         "输入框-Qii",
         "图片-Qii",
-        "开关-Qii"
+        "开关-Qii",
+        "标签栏-Qii"
     ]
 }
