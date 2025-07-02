@@ -5,7 +5,7 @@
 </div>
 
 
-![样式1](images/1.png)
+![样式1](http://cc.zitzhen.cn/control/%E6%A0%87%E7%AD%BE%E6%A0%8F-Qii/images/images/1.png)
 
 <div style="border-left: 5px solid rgb(0, 225, 255); padding-left: 10px;">
 <h2>样式</h2>
@@ -13,13 +13,13 @@
 
 标签栏提供了很多自定义选项，你可以设计出独一无二的标签栏。
 
-![样式2](images/2.png)
+![样式2](http://cc.zitzhen.cn/control/%E6%A0%87%E7%AD%BE%E6%A0%8F-Qii/images/images/2.png)
 
 <div style="border-left: 5px solid rgb(0, 225, 255); padding-left: 10px;">
 <h2>自定义选项</h2>
 </div>
 
-![自定义选项设置](images/3.png)
+![自定义选项设置](http://cc.zitzhen.cn/control/%E6%A0%87%E7%AD%BE%E6%A0%8F-Qii/images/images/3.png)
 
 ***添加：*** 点击底部的 `+` 按钮添加新选项。
 ***键：*** 选项的文本。
@@ -37,8 +37,8 @@
 如果需要在标签栏中添加一个按钮或其他东西，可以开启`添加空选项`开关。
 开启后，标签栏就会空出一个位置留给你自由发挥。
 
-![空选项配置](images/4.png)  
-![样式3](images/5.png)  
+![空选项配置](http://cc.zitzhen.cn/control/%E6%A0%87%E7%AD%BE%E6%A0%8F-Qii/images/images/4.png)  
+![样式3](http://cc.zitzhen.cn/control/%E6%A0%87%E7%AD%BE%E6%A0%8F-Qii/images/images/5.png)  
 
 <div style="border-left: 5px solid rgb(0, 225, 255); padding-left: 10px;">
 <h2>红点提示</h2>
@@ -47,8 +47,8 @@
 调用 ***红点提示*** 积木，给指定名称的选项设置提示。
 如果只需要小红点，可在提示文本中输入英文句号`.`。
 
-![样式4](images/6.png)  
-![积木](images/7.png)  
+![样式4](http://cc.zitzhen.cn/control/%E6%A0%87%E7%AD%BE%E6%A0%8F-Qii/images/images/6.png)  
+![积木](http://cc.zitzhen.cn/control/%E6%A0%87%E7%AD%BE%E6%A0%8F-Qii/images/images/7.png)  
 
 <div style="border-left: 5px solid rgb(0, 225, 255); padding-left: 10px;">
 <h2> 下载</h2>
