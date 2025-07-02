@@ -3,7 +3,7 @@
   你可以用它显示任何东西。
 </div>
 
-![演示图片](images/1.png)
+![演示图片](https://cc.zitzhen.cn/control/%E5%9B%BE%E7%89%87%E6%A1%86-Qii/images/1.png)
 
 <div style="border-left: 5px solid rgb(0, 225, 255); padding-left: 10px;">
 <h2>图片滤镜</h2>
