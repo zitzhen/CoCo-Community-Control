@@ -1,7 +1,8 @@
 {
-    "number_of_controls":"2",
+    "number_of_controls":"3",
     "list_of_controls":[
         "按钮-Qii",
-        "文本-Qii"
+        "文本-Qii",
+        "输入框-Qii"
     ]
 }
