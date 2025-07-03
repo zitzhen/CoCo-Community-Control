@@ -34,6 +34,8 @@ CoCo-Community，全称为ZIT-CoCo-Community
 >重定向
 >
 >自从2025年06月08日 15:40 起，通过GitHub Pages链接和Cloudflare Pages链接访问的，将重定向至ZIT-CoCo-Comunity官方链接
+>
+>从2025年7月3日 21:45起，关闭GitHub Pages。
 
 ZIT-CoCo-Community官方链接（推荐）：https://cc.zitzhen.cn/
 
