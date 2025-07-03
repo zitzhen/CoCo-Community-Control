@@ -2,19 +2,19 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>https://cc.zitzhen.cn/</loc>
-<lastmod>2025-07-03T21:50:03+08:00</lastmod>
+<lastmod>2025-07-03T22:31:48+08:00</lastmod>
 </url>
 <url>
 <loc>https://cc.zitzhen.cn/control/</loc>
-<lastmod>2025-07-03T21:50:03+08:00</lastmod>
+<lastmod>2025-07-03T22:31:48+08:00</lastmod>
 </url>
 <url>
 <loc>https://cc.zitzhen.cn/safe/</loc>
-<lastmod>2025-07-03T21:50:03+08:00</lastmod>
+<lastmod>2025-07-03T22:31:48+08:00</lastmod>
 </url>
 <url>
 <loc>https://cc.zitzhen.cn/tipping/</loc>
-<lastmod>2025-07-03T21:50:03+08:00</lastmod>
+<lastmod>2025-07-03T22:31:48+08:00</lastmod>
 </url>
   <url>
     <loc>https://cc.zitzhen.cn/control/剪切板/</loc>
@@ -47,6 +47,9 @@
     <loc>https://cc.zitzhen.cn/control/小宏播放器/</loc>
   </url>
   <url>
+    <loc>https://cc.zitzhen.cn/control/CCQI-快速导入/</loc>
+  </url>
+  <url>
     <loc>https://cc.zitzhen.cn/control/小圳邮件/</loc>
   </url>
   <url>
@@ -69,6 +72,9 @@
   </url>
   <url>
     <loc>https://cc.zitzhen.cn/user/Qiqi29</loc>
+  </url>
+  <url>
+    <loc>https://cc.zitzhen.cn/user/Inventocode</loc>
   </url>
   <url>
     <loc>https://cc.zitzhen.cn/user/iamliuxiaozhen</loc>
