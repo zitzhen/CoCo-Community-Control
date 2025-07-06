@@ -3,7 +3,7 @@
   给你的控件添加狂拽酷炫的动画。
 </div>
 
-![动画效果](images/1.gif)
+![动画效果](https://cc.zitzhen.cn/control/%E5%8A%A8%E7%94%BB%E5%BA%93-Qii/images/1.gif)
 
 <div style="border-left: 5px solid rgb(0, 225, 255); padding-left: 10px;">
 <h2>快速上手</h2>
@@ -12,7 +12,7 @@
 ### 1.基础动画
 >  点击按钮后，把图片框在`0.5`秒内把大小从`0`变成`1`。
 
-![设置动画积木](images/2.png)
+![设置动画积木](https://cc.zitzhen.cn/control/%E5%8A%A8%E7%94%BB%E5%BA%93-Qii//images/2.png)
 
 |名称|功能|
 |---|---|
@@ -27,27 +27,27 @@
  支持同时给多个控件设置相同的动画，你可以把控件 ID 拼在一起，中间用英文逗号分开。
 </div>
 
-![积木3](images/3.png)
+![积木3](https://cc.zitzhen.cn/control/%E5%8A%A8%E7%94%BB%E5%BA%93-Qii/images/3.png)
 
 ### 2.自由分配
 
 >  可以自由设置需要的动画，这些动画都会同时设置给指定 ID 的控件。
 
-![积木4](images/4.png)
+![积木4](https://cc.zitzhen.cn/control/%E5%8A%A8%E7%94%BB%E5%BA%93-Qii/images/4.png)
 
 ### 3.进阶参数
 #### 3.1动画原点
 
-![积木5](images/5.png)
+![积木5](https://cc.zitzhen.cn/control/%E5%8A%A8%E7%94%BB%E5%BA%93-Qii/images/5.png)
 
 **原点：** 动画的锚点，`0%` `0%`为左上角，`50` `%50%`为中心，`100%` `100%`就是右下角。
 单位可以使用百分比%也可以使用像素`px`，取决于你的动画。
 
-![积木6](images/6.png)
+![积木6](https://cc.zitzhen.cn/control/%E5%8A%A8%E7%94%BB%E5%BA%93-Qii/images/6.png)
 
 #### 3.2动画位置
 
-![积木7](images/7.png)
+![积木7](https://cc.zitzhen.cn/control/%E5%8A%A8%E7%94%BB%E5%BA%93-Qii/images/7.png)
 
 设置控件的位移，从`XY`移动到`XY`。
 积木最后一个参数用来设置是相对于控件当前位置进行移动，还是相对于屏幕进行移动。
@@ -60,7 +60,7 @@
 
 动画库支持 **保存** 创建的动画，你可以在一个屏幕中创建动画，**给动画设置名称并保存**，然后就可以在播放动画时直接输入动画名来播放指定的动画，这个动画可以在 **任意屏幕** 中使用。
 
-![积木8](images/8.png)
+![积木8](https://cc.zitzhen.cn/control/%E5%8A%A8%E7%94%BB%E5%BA%93-Qii/images/8.png)
 
 <div style="border-left: 5px solid rgb(0, 225, 255); padding-left: 10px;">
 <h2> 下载</h2>
