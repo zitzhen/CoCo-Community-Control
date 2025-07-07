@@ -11,7 +11,7 @@
 
 ### 1. 自动适配
 
-![积木：调用(屏幕工具)让控件自动视频屏幕](https://cc.zitzhen.cn/control/%E5%B1%8F%E5%B9%95%E5%B7%A5%E5%85%B7-Qii/images/images/1.png)
+![积木：调用(屏幕工具)让控件自动视频屏幕](https://cc.zitzhen.cn/control/%E5%B1%8F%E5%B9%95%E5%B7%A5%E5%85%B7-Qii/images/1.png)
 <span>
 在 <span style="color: rgb(77, 77, 251);">启动屏幕</span> 中调用一次该积木，即可让所有控件自动适配屏幕。
 </span>
@@ -65,13 +65,13 @@ widget.prop('屏幕适配', 'screenAlign', 'top').dropdown({ 顶部对齐: 'top'
 ### 1. 快速使用
 <span>只需要在切换屏幕之前调用一次 <span style="color: rgb(77, 77, 251);">屏幕切换</span> 积木，就可以添加切换动画。</span>
 
-![积木：当(按钮)被(点击)时](https://cc.zitzhen.cn/control/%E5%B1%8F%E5%B9%95%E5%B7%A5%E5%85%B7-Qii/images/images/4.png)
+![积木：当(按钮)被(点击)时](https://cc.zitzhen.cn/control/%E5%B1%8F%E5%B9%95%E5%B7%A5%E5%85%B7-Qii/images/4.png)
 控件内置了多个常用的动画，在积木的下拉菜单中选择。
 返回上一页时，可以把`打开`切换为`返回`。
 ### 2. 自定义动画
 <span>支持使用 <span style="color: rgb(77, 77, 251);">动画库</span> 创建的动画当作屏幕切换动画。</span>
 
-![积木：当(按钮)被(点击)时](https://cc.zitzhen.cn/control/%E5%B1%8F%E5%B9%95%E5%B7%A5%E5%85%B7-Qii/images/images/5.png)
+![积木：当(按钮)被(点击)时](https://cc.zitzhen.cn/control/%E5%B1%8F%E5%B9%95%E5%B7%A5%E5%85%B7-Qii/images/5.png)
 
 <div style="border-left: 5px solid rgb(0, 225, 255); padding-left: 10px;">
 <h2> 下载</h2>
