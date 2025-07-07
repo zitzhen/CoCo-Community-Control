@@ -17,7 +17,7 @@
 </span>
 
 
-![初始化图片](images/1.png)
+![初始化图片](https://cc.zitzhen.cn/control/%E8%BF%94%E5%9B%9E%E9%94%AE-Qii/images/1.png)
 
 初始化完成后，控件将会接管返回事件：如用户按下手机的返回按钮，或者全面屏手势的侧滑返回功能。
 
@@ -30,7 +30,7 @@
 </span>
 
 输入框中填入的是 当前屏幕 的名称。
-![积木2](images/2.png)
+![积木2](https://cc.zitzhen.cn/control/%E8%BF%94%E5%9B%9E%E9%94%AE-Qii/images/2.png)
 
 >注意：第一次调用 <span style="color: rgb(255, 116, 255);">**保存当前屏幕**</span> 积木的屏幕会标记为 **首页**，进行返回时，最终都会返回到该屏幕。
 
@@ -43,8 +43,8 @@
 </span>
 
 <div style="display: flex; align-items: center;">
-  <img src="images/4.png" alt="积木3" >
-  <img src="images/4.png" alt="积木4" >
+  <img src="https://cc.zitzhen.cn/control/%E8%BF%94%E5%9B%9E%E9%94%AE-Qii/images/4.png" alt="积木3" >
+  <img src="https://cc.zitzhen.cn/control/%E8%BF%94%E5%9B%9E%E9%94%AE-Qii/images/4.png" alt="积木4" >
 </div>
 
 >可以在切换屏幕时进行一些判断，比如用户编辑的内容未保存，返回时可以显示提示信息，而不是直接返回。
@@ -53,7 +53,7 @@
 
 可以主动调用该积木来退出 **APP**，或者在 **首页** 等屏幕中，按下返回键时直接退出。
 
-![积木5](images/5.png)
+![积木5](https://cc.zitzhen.cn/control/%E8%BF%94%E5%9B%9E%E9%94%AE-Qii/images/5.png)
 
 <div style="border-left: 5px solid rgb(0, 225, 255); padding-left: 10px;">
 <h2>其他功能</h2>
@@ -64,7 +64,7 @@
 方便软件的开发调试。如果没有关闭，打包后也会判断设备自动关闭该功能。
 </span>
 
-![开关](images/6.png)
+![开关](https://cc.zitzhen.cn/control/%E8%BF%94%E5%9B%9E%E9%94%AE-Qii/images/6.png)
 
 <div style="border-left: 5px solid rgb(0, 225, 255); padding-left: 10px;">
 <h2> 下载</h2>
