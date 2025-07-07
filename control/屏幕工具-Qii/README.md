@@ -28,7 +28,7 @@ Qii 控件库 2.0 内的所有可见控件都已内置 <span style="color: rgb(7
 ### 2. 手动适配
 如果你正在使用的控件没有该功能，可以通过积木来手动适配控件。
 
-![积木：当（全局广播）收到广播时(消息)（数据）](https://cc.zitzhen.cn/control/%E5%B1%8F%E5%B9%95%E5%B7%A5%E5%85%B7-Qii/images/images/3.png)
+![积木：当（全局广播）收到广播时(消息)（数据）](https://cc.zitzhen.cn/control/%E5%B1%8F%E5%B9%95%E5%B7%A5%E5%85%B7-Qii/images/3.png)
 
 <span>
 推荐搭配 <span style="color: rgb(77, 77, 251);">全局广播</span> 使用，防止控件被多次设置导致错位。
