@@ -1,5 +1,5 @@
 {
-    "number_of_controls":"10",
+    "number_of_controls":"11",
     "list_of_controls":[
         "按钮-Qii",
         "文本-Qii",
@@ -10,6 +10,7 @@
         "HTML框-Qii",
         "动画库-Qii",
         "返回键-Qii",
-        "屏幕工具-Qii"
+        "屏幕工具-Qii",
+        "全局广播-Qii"
     ]
 }
