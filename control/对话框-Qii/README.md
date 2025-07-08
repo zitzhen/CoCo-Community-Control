@@ -3,7 +3,7 @@
     简单好用又好看的对话框控件。
 </div>
 
-![效果：对话框](images/1.png)
+![效果：对话框](http://cc.zitzhen.cn/control/%E5%AF%B9%E8%AF%9D%E6%A1%86-Qii/images/1.png)
 
 <div style="border-left: 5px solid rgb(0, 225, 255); padding-left: 10px;">
 <h2>使用方法</h2>
@@ -11,7 +11,7 @@
 
 ### 1. 弹出消息
 
-![示范积木1](images/2.png)
+![示范积木1](http://cc.zitzhen.cn/control/%E5%AF%B9%E8%AF%9D%E6%A1%86-Qii/images/2.png)
 >对话框控件全局控件，只需要导入一次，就可以在所有屏幕中使用。
 
 |功能名|描述|
@@ -26,7 +26,7 @@
 
 ### 2. 进行输入
 
-![示范积木2](images/3.png)
+![示范积木2](http://cc.zitzhen.cn/control/%E5%AF%B9%E8%AF%9D%E6%A1%86-Qii/images/3.png)
 
 <span>
 使用方法与上面一样，但是会多一个输入框，可以让用户输入一段文字。
