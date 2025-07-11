@@ -15,9 +15,11 @@ CoCo-Community，全称为ZIT-CoCo-Community
 ## 项目所在的所有仓库：
 此项目在GitHub为主仓库，目前在以下几个社区发布：
 
-[Github](https://github.com/zitzhen/CoCo-Community)  
-[Gitee](https://gitee.com/hello-oliver/CoCo-Community)  
-[Gitlab（极狐）](https://jihulab.com/zitzhen/CoCo-Community)  
+|图标|名称|
+|---|---|
+|<img src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png" width="50" height="50" alt="Github的图片"> | [Github](https://Github.com/zitzhen/CoCo-Community) |
+|<img src="icon/Gitee-logo.png" width="50" height="50" alt="Gitee的图片">| [Gitee](https://Github.com/zitzhen/CoCo-Community) | 
+|<img src="icon/gitlab.png" width="50" height="50" alt="Gitee的图片">| [GitLab](https://jihulab.com/zitzhen/CoCo-Community/) |
 
 >请您首选Github访问CoCo-Community
 >
