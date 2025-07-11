@@ -1,3 +1,7 @@
+function new_no_fetch(){
+    no_fetch.style.display = 'block';
+}
+
 function not_github(){
     github_error.style.display = 'block';
 }
@@ -6,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const Loading_text = document.getElementById('Loading_text');
     const Loading =document.getElementById('Loading');
     const github_error = document.getElementById("github_error");
+    const no_fetch = document.getElementById("no_fetch");
     if (window.location.origin.includes("github.io")){
         not_github();
     }
@@ -89,6 +94,7 @@ async function getSubDirs(owner, repo, path = 'control') {
     return dirs;
   } catch (error) {
     console.error("Error fetching directories:", error.response?.status || error.message);
+    new_no_fetch();
     return [];
   }
 }
