@@ -1,6 +1,7 @@
 name: Update control folder list
 
 on:
+  workflow_dispatch:   # 允许手动触发  
   push:
     paths:
       - 'control/**' # 只有当control文件夹内容变化时触发
