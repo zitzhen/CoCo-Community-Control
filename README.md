@@ -21,6 +21,7 @@ CoCo-Community，全称为ZIT-CoCo-Community
 |<img src="icon/Gitee-logo.png" width="50" height="50" alt="Gitee的图片">| [Gitee](https://Github.com/zitzhen/CoCo-Community) | 
 |<img src="icon/gitlab.png" width="50" height="50" alt="Gitee的图片">| [GitLab](https://jihulab.com/zitzhen/CoCo-Community/) |
 
+>[!tip]
 >请您首选Github访问CoCo-Community
 >
 >自2025年06月13日以来，Gitlab的访问已恢复，但是，请您尽量不要通过Gitlab访问CoCo-Community，因为Gitlab的镜像仓库频繁发生错误
@@ -31,7 +32,7 @@ CoCo-Community，全称为ZIT-CoCo-Community
 
 ---
 ## 快速体验：
->[!note]
+>[!tip]
 >
 >重定向
 >
