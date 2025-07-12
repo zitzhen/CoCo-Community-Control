@@ -1,0 +1,46 @@
+name: Update control folder list
+
+on:
+  push:
+    paths:
+      - 'control/**' # 只有当control文件夹内容变化时触发
+
+jobs:
+  generate-list:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0 # 获取完整历史记录以便创建分支
+    
+    - name: Generate list.json
+      id: generate
+      run: |
+        # 进入control目录并获取所有子文件夹（排除js和css）
+        cd control || exit 1
+        # 使用find命令获取所有目录，排除js和css，然后转换为相对路径
+        dirs=$(find . -mindepth 1 -maxdepth 1 -type d ! -name "js" ! -name "css" -printf '%P\n' | jq -R -s -c 'split("\n")[:-1]')
+        cd ..
+        
+        # 创建指定的JSON结构
+        echo "{\"list\": $dirs}" > list.json
+        
+        # 打印生成的JSON内容
+        cat list.json
+        
+        # 检查文件是否有变化
+        echo "has_changes=$(git diff --exit-code --quiet list.json || echo 'true')" >> $GITHUB_OUTPUT
+    
+    - name: Create Pull Request
+      if: steps.generate.outputs.has_changes == 'true'
+      uses: peter-evans/create-pull-request@v5
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        commit-message: "Update list.json with latest control folders"
+        title: "Update control folder list"
+        body: "Automatically updated list of folders in control directory (excluding js and css)"
+        branch: "update-control-list-$(date +%s)" # 使用时间戳确保分支唯一
+        delete-branch: true
+        labels: "automated"
