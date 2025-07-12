@@ -1,37 +1,34 @@
 name: Update control folder list
 
 on:
-  workflow_dispatch:  # 允许手动触发
+  workflow_dispatch:
   pull_request:
-    branches: [main]  # 仅针对 main 分支的 PR
-    types: [closed]   # 仅在 PR 合并时触发（不是创建或更新时）
+    branches: [main]
+    types: [closed]
     paths:
-      - 'control/**'  # 仅当 PR 中包含 control/ 目录的变更
+      - 'control/**'
 
 jobs:
   generate-list:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository (with full history)
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # 获取完整 Git 历史记录
-          ref: ${{ github.event.pull_request.merge_commit_sha }}  # 关键！检出合并后的代码
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.merge_commit_sha }}  # 检出合并后的代码
 
       - name: Generate list.json
         id: generate
         run: |
-          # 进入 control 目录并获取子文件夹列表
           cd control || exit 1
           dirs=$(find . -mindepth 1 -maxdepth 1 -type d ! -name "js" ! -name "css" -printf '%P\n' | jq -R -s -c 'split("\n")[:-1]')
           cd ..
-
-          # 生成新的 JSON 内容
           new_json="{\"list\": $dirs}"
           echo "$new_json" > list.json
 
-          # 检查是否与当前 main 分支的 list.json 不同
+          # 检查与 main 分支的差异
           git show origin/main:list.json > old_list.json 2>/dev/null || echo "{}" > old_list.json
           if diff -q old_list.json list.json; then
             echo "No changes detected in list.json"
@@ -50,6 +47,7 @@ jobs:
           commit-message: "Update list.json with latest control folders"
           title: "Update control folder list"
           body: "Automatically updated list of folders in control directory (excluding js and css)"
-          branch: "update-control-list-$(date +%s)"
-          base: main  # 确保 PR 指向 main 分支
+          branch: "update-control-list-$(date +%Y%m%d%H%M%S)"  # 改用合法的时间格式
+          base: main  # 目标分支
+          delete-branch: true
           labels: "automated"
