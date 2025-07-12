@@ -10,6 +10,8 @@ on:
 
 jobs:
   generate-list:
+    # 确保只在PR成功合并时运行
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.merged }}
     runs-on: ubuntu-latest
 
     steps:
@@ -17,25 +19,42 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          ref: ${{ github.event.pull_request.merge_commit_sha }}  # 检出合并后的代码
+          # 安全处理不同触发场景
+          ref: ${{ github.event.pull_request.merge_commit_sha || github.ref }}
 
       - name: Generate list.json
         id: generate
         run: |
-          cd control || exit 1
-          dirs=$(find . -mindepth 1 -maxdepth 1 -type d ! -name "js" ! -name "css" -printf '%P\n' | jq -R -s -c 'split("\n")[:-1]')
-          cd ..
-          new_json="{\"list\": $dirs}"
-          echo "$new_json" > list.json
+          # 确保control目录存在
+          if [ ! -d "control" ]; then
+            echo "Error: control directory not found!"
+            exit 1
+          fi
 
-          # 检查与 main 分支的差异
-          git show origin/main:list.json > old_list.json 2>/dev/null || echo "{}" > old_list.json
-          if diff -q old_list.json list.json; then
+          # 生成文件夹列表
+          cd control
+          dirs=$(find . -mindepth 1 -maxdepth 1 -type d \
+            ! -name "js" ! -name "css" -printf '%P\n' | jq -R -s -c 'split("\n") | map(select(. != ""))')
+          
+          # 创建JSON文件
+          echo "{\"list\": $dirs}" > ../list.json
+          cd ..
+          
+          # 获取基础分支的list.json
+          git fetch origin main:refs/remotes/origin/main
+          if git show origin/main:list.json > old_list.json 2>/dev/null; then
+            echo "Found existing list.json on main"
+          else
+            echo "{}" > old_list.json
+            echo "Created empty old_list.json"
+          fi
+          
+          # 检查差异
+          if diff -q old_list.json list.json >/dev/null; then
             echo "No changes detected in list.json"
             echo "has_changes=false" >> $GITHUB_OUTPUT
           else
             echo "Changes detected in list.json"
-            git add list.json
             echo "has_changes=true" >> $GITHUB_OUTPUT
           fi
 
@@ -47,7 +66,7 @@ jobs:
           commit-message: "Update list.json with latest control folders"
           title: "Update control folder list"
           body: "Automatically updated list of folders in control directory (excluding js and css)"
-          branch: "update-control-list-$(date +%Y%m%d%H%M%S)"  # 改用合法的时间格式
-          base: main  # 目标分支
+          branch: "update/control-list-$(date +%s)"  # 使用时间戳确保唯一性
+          base: main
           delete-branch: true
           labels: "automated"
