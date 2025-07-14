@@ -9,7 +9,7 @@ CoCo-Community（以下简称“本社区”）是由小圳工作室开发的编
 
 ### 第一章 用户身份验证与使用
 1.  **登录方式**  
-    本社区**不提供独立账号注册系统**，您必须使用 **GitHub账户** 登录。此操作代表您：  
+    本社区**不提供独立账号注册系统**，您必须使用 **GitHub账户** 登录，否则您不能使用除发表和评论的功能。此操作代表您：  
     - 同意遵守 [GitHub服务条款](https://docs.github.com/zh/site-policy/github-terms/github-terms-of-service) 及 [GitHub隐私声明](https://docs.github.com/zh/site-policy/privacy-policies/github-privacy-statement)；  
     - 确认具备使用GitHub的法定资格（通常需年满13周岁）。
 
@@ -102,7 +102,7 @@ CoCo-Community（以下简称“本社区”）是由小圳工作室开发的编
 3. 同意未声明许可证的代码默认遵循AGPL-3.0+商业禁令；  
 4. **未成年人已获监护人同意**。  
 
-> **⚠️ 如您不同意以上任何条款，请勿使用GitHub账户登录本社区。**
+> **⚠️ 如您不同意以上任何条款，请勿使用GitHub账户登录或浏览本社区。**
 
 ---
 **小圳工作室 保留最终解释权**  
