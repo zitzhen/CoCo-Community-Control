@@ -4,7 +4,7 @@
   你可以自由搭配出适合你的样式。
 </div>
 
-![样式：导航栏样式](images/1.png)
+![样式：导航栏样式](https://cc.zitzhen.cn/control/导航栏-Qii/images/1.png)
 
 <div style="border-left: 5px solid rgb(0, 225, 255); padding-left: 10px;">
 <h2>事件</h2>
