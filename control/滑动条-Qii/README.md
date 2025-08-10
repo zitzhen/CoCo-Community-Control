@@ -3,7 +3,7 @@
   基于原生 input 元素修改的滑动条。
 </div>
 
-![示例：滑动条样式](images/1.png)
+![示例：滑动条样式](https://cc.zitzhen.cn/control/滑动条-Qii/images/1.png)
 <div style="border-left: 5px solid rgb(0, 225, 255); padding-left: 10px;">
 <h2>使用</h2>
 </div>
