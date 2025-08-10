@@ -3,7 +3,7 @@
   常用来当作背景。
 </div>
 
-![效果展示图](images/1.png)
+![效果展示图](https://cc.zitzhen.cn/control/圆角卡片-Qii/images/1.png)
 
 <div style="border-left: 5px solid rgb(0, 225, 255); padding-left: 10px;">
 <h2>自定义</h2>
