@@ -1,5 +1,5 @@
 {
-    "number_of_controls":"16",
+    "number_of_controls":"17",
     "list_of_controls":[
         "按钮-Qii",
         "文本-Qii",
@@ -16,6 +16,7 @@
         "对话框-Qii",
         "网易云API-Qii",
         "滑动条-Qii",
-        "聊天框-Qii"
+        "聊天框-Qii",
+        "导航栏-Qii"
     ]
 }
