@@ -1,5 +1,5 @@
 {
-    "number_of_controls":"13",
+    "number_of_controls":"14",
     "list_of_controls":[
         "按钮-Qii",
         "文本-Qii",
@@ -13,6 +13,7 @@
         "屏幕工具-Qii",
         "全局广播-Qii",
         "音乐播放器-Qii",
-        "对话框-Qii"
+        "对话框-Qii",
+        "网易云API-QII"
     ]
 }
