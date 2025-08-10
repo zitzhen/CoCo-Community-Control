@@ -4,7 +4,7 @@
   使用 React 节点渲染，内置支持多种类型的消息。
 </div>
 
-![示例：聊天框效果](images/1.png)
+![示例：聊天框效果](https://cc.zitzhen.cn/control/聊天框-Qii/images/1.png)
 
 <div style="border-left: 5px solid rgb(0, 225, 255); padding-left: 10px;">
 <h2>使用方法</h2>
@@ -13,8 +13,8 @@
 ### 1. 发生一条文本消息
 使用聊天框的`创建消息`积木创建一条消息，然后放在`添加消息`积木里面，执行后就可以看到聊天框中多了一条消息。
 
-![积木：添加消息](images/2.png)
-![效果：这是CoCo](images/3.png)
+![积木：添加消息](https://cc.zitzhen.cn/control/聊天框-Qii/images/2.png)
+![效果：这是CoCo](https://cc.zitzhen.cn/control/聊天框-Qii/images/3.png)
 >可以选择消息的类型，比如`富文本` `图片` `视频`等，控件会自动生成对应的消息。
 通过`位置`参数，可以设置消息显示在左侧（其他人的消息）或显示在右侧（自己发送的消息）。
 
@@ -23,16 +23,16 @@
 
 ### 3. 发送一个提示消息
 你可以在需要的时候添加一个提示消息。
-![积木：创建提示](images/4.png)
-![效果：这是一个提示](images/5.png)
+![积木：创建提示](https://cc.zitzhen.cn/control/聊天框-Qii/images/4.png)
+![效果：这是一个提示](https://cc.zitzhen.cn/control/聊天框-Qii/images/5.png)
 
 ### 4. 渲染聊天数据
-![积木：渲染聊天数据](images/6.png)
+![积木：渲染聊天数据](https://cc.zitzhen.cn/control/聊天框-Qii/images/6.png)
 当你保存聊天数据后，可以直接把保存的数据渲染出来。
 需要确保数据格式为数组类型，否则控件会报错。
 
 ### 5. 滚动聊天框
-![积木：滚动聊天框](images/7.png)
+![积木：滚动聊天框](https://cc.zitzhen.cn/control/聊天框-Qii/images/7.png)
 发送消息时，可以调用积木滚动到底部，也可以滚动到指定消息的位置。
 
 <div style="border-left: 5px solid rgb(0, 225, 255); padding-left: 10px;">
