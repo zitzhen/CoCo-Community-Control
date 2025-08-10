@@ -1,5 +1,5 @@
 {
-    "number_of_controls":"18",
+    "number_of_controls":"19",
     "list_of_controls":[
         "按钮-Qii",
         "文本-Qii",
@@ -18,6 +18,7 @@
         "滑动条-Qii",
         "聊天框-Qii",
         "导航栏-Qii",
-        "圆角卡片-Qii"
+        "圆角卡片-Qii",
+        "列表框美化-Qii"
     ]
 }
