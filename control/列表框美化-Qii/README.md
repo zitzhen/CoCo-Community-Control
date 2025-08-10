@@ -3,7 +3,7 @@
   自定义官方的列表框样式。
 </div>
 
-![样式：列表框](images/1.png)
+![样式：列表框](https://cc.zitzhen.cn/control/列表框美化-Qii/images/1.png)
 
 <div style="border-left: 5px solid rgb(0, 225, 255); padding-left: 10px;">
 <h2>使用</h2>
@@ -17,7 +17,7 @@
 <h2>使获取控件ID</h2>
 </div>
 
-![获取控件ID的图例](images/2.png)
+![获取控件ID的图例](https://cc.zitzhen.cn/control/列表框美化-Qii/images/2.png)
 
 首先按 F12 打开浏览器的开发者选项。
 1. 点击视图检查按钮。
@@ -29,7 +29,7 @@
 <h2>触底加载</h2>
 </div>
 
-![积木](images/3.png)
+![积木](https://cc.zitzhen.cn/control/列表框美化-Qii/images/3.png)
 
 通过控件的事件，可以做到滑动到底部时请求数据，实现无限滚动。
 1. 打开屏幕时调用 `添加滑动监听器`。
