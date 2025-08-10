@@ -61,7 +61,7 @@ ZIT-CoCo-Community官方链接（推荐）：https://cc.zitzhen.cn/
 | ------ |---| ----------- |
 | 刘小圳 |<a href="https://github.com/iamliuxiaozhen"><img src="https://avatars.githubusercontent.com/u/149680880?v=4" width="50" height="50" alt="刘小圳的图片"></a> | 1           |
 | 小宏 |<a href="https://github.com/xiaohong2022"><img src="https://avatars.githubusercontent.com/u/97574185?v=4" width="50" height="50" alt="小宏的图片"></a> |9 |
-| QiQi |<a href="https://github.com/Qiqi29"><img src="https://avatars.githubusercontent.com/u/112358908?v=4" width="50" height="50" alt="QiQi的图片"></a> | 13|
+| QiQi |<a href="https://github.com/Qiqi29"><img src="https://avatars.githubusercontent.com/u/112358908?v=4" width="50" height="50" alt="QiQi的图片"></a> | 14|
 | Inventocode |<a href="https://github.com/Inventocode"><img src="https://avatars.githubusercontent.com/u/138981212?v=4" width="50" height="50" alt="Inventocode的图片"></a> | 1|
 
 
