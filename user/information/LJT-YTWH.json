@@ -1,6 +1,7 @@
 {
-    "number_of_controls":"1",
+    "number_of_controls":"2",
     "list_of_controls":[
-        "文件处理工具-LJT"
+        "文件处理工具-LJT",
+        "触摸板-LJT"
     ]
 }
