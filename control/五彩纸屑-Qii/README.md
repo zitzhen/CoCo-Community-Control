@@ -18,6 +18,17 @@ X轴上`0`表示屏幕左侧，`1`表示屏幕右侧。
 Y轴上`0`表示屏幕顶部，`1`表示屏幕底部。
 
 <div style="border-left: 5px solid rgb(0, 225, 255); padding-left: 10px;">
+<h2>更新说明</h2>
+</div>
+
+**版本1.1.0**
+- 优化导入包方式。
+
+**版本：1.0.0**
+- 无
+
+
+<div style="border-left: 5px solid rgb(0, 225, 255); padding-left: 10px;">
 <h2> 下载</h2>
 </div>
 请点击ZIT-CoCo-Community上方的下载按钮
