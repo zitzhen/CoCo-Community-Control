@@ -36,8 +36,8 @@
           </a>
           </div>
             <p>请优先使用GitHub查看ZIT-CoCo-Community的开源项目</p>
-            <a href="agreement/useragreement/">用户协议</a>
-            <a href="agreement/privacypolicy/">隐私协议</a>
+            <a href="agreement/useragreement/"><button class="button-book">用户协议</button></a>
+            <a href="agreement/privacypolicy/"><button class="button-book">隐私协议</button></a>
                 </div>
             </footer>
 </template>
@@ -151,5 +151,25 @@
         .search-bar input {
             width: 70%;
         }
+    }
+
+    /*协议/**/ 
+        .button-book {
+        font-size: 17px;
+        padding: 0.5em 2em;
+        border: transparent;
+        box-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+        background: dodgerblue;
+        color: white;
+        border-radius: 4px;
+    }
+
+    .button-book:hover {
+        background: rgb(2,0,36);
+        background: linear-gradient(90deg, rgba(30,144,255,1) 0%, rgba(0,212,255,1) 100%);
+    }
+
+    .button-book:active {
+        transform: translate(0em, 0.2em);
     }
 </style>
