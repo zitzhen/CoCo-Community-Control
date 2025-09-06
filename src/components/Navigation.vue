@@ -8,7 +8,7 @@
     </header>
 </template>
 
-<style>
+<style scoped>
 
 header {
     background-color: #3498db;
@@ -17,9 +17,5 @@ header {
     text-align: center;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
-.container {
-    max-width: 1200px;
-    margin: 2rem auto;
-    padding: 0 1rem;
-}
+
 </style>
