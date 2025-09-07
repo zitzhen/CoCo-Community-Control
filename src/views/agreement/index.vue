@@ -1,6 +1,10 @@
 <script setup>
-import Navigation from './components/Navigation.vue'
+import Navigation from '@/components/agreement/Navigation.vue'
+import card from '@/components/agreement/card.vue';
 </script>
 <template>
-        <h1>Hello,world</h1>
+    <Navigation />
+    <br />
+    <card></card>
+    <hr>&copy;小圳创科工作室-Zit-CoCo-Community</hr>
 </template>
