@@ -1,16 +1,30 @@
 <template>
     <div class="file-list">
-        <div class="file-card doc">
+        <a href="/agreement/useragreement" class="file-card doc">
+            <div class="file-icon">
+                <i>📄</i>
+            </div>
             <div class="file-content">
                 <div class="file-name">CoCo-Community用户协议</div>
-                </div>
+                <div class="file-author"><i>👤</i> 小圳创科工作室</div>
             </div>
-        <div class="file-card doc">
+            <button class="download-btn">
+                <i>👁️</i> 查看
+            </button>
+        </a>
+        <a href="/agreement/privacypolicy" class="file-card doc">
+            <div class="file-icon">
+                <i>🔒</i>
+            </div>
             <div class="file-content">
                 <div class="file-name">CoCo-Community隐私协议</div>
-                </div>
+                <div class="file-author"><i>👤</i> 小圳创科工作室</div>
             </div>
-        </div>
+            <button class="download-btn">
+                <i>👁️</i> 查看
+            </button>
+        </a>
+    </div>
 </template>
 
 <style scoped>
@@ -70,6 +84,8 @@ h1 {
     align-items: center;
     position: relative;
     overflow: hidden;
+    text-decoration: none;
+    color: inherit;
 }
 
 .file-card:hover {

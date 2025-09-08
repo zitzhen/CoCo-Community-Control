@@ -5,12 +5,6 @@
             <p>适用于CoCo-Community的协议均子此处</p>
         </div>
     </header>
-    <nav>
-        <ul>
-            <li><a href="/agreement/useragreement">用户协议</a></li>
-            <li><a href="/agreement/privacypolicy">隐私政策</a></li>
-        </ul>
-    </nav>
 </template>
 
 <style scoped>
