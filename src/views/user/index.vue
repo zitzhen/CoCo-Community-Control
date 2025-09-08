@@ -15,7 +15,7 @@ function getLastPath() {
 }
 
 async function getuserinformation(username){
-fetch('@/information/user/'+username)  
+fetch('@/information/user/'+username+"json")  
   .then(response => {
     if (!response.ok) {
       throw new Error(response.status);
