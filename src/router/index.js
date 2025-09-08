@@ -8,6 +8,14 @@ const routes = [
   {
     path: '/agreement',
     component: () => import('@/views/agreement/index.vue')
+  },
+  {
+    path: '/agreement/useragreement',
+    component: () => import('@/views/agreement/useragreement/index.vue')
+  },
+  {
+    path: '/agreement/privacypolicy',
+    component: () => import('@/views/agreement/privacypolicy/index.vue')
   }
 ]
 
