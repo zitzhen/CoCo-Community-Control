@@ -6,6 +6,14 @@ const routes = [
     component: () => import('@/views/home/index.vue')
   },
   {
+    path: '/user/:id',
+    component: () => import('@/views/user/index.vue')
+  },
+  {
+    path: '/user',
+    component: () => import('@/views/error/No-parameters.vue')
+  },
+  {
     path: '/agreement',
     component: () => import('@/views/agreement/index.vue')
   },
