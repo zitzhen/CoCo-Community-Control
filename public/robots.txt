@@ -1,0 +1,13 @@
+User-agent: Googlebot
+Disallow:
+
+User-agent: Bingbot
+Disallow:
+
+User-agent: Baiduspider
+Disallow:
+
+User-agent: *
+Disallow:
+
+Sitemap: https://cc.zitzhen.cn/sitemap.xml
