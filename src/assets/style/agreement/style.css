@@ -1,4 +1,4 @@
-.card{
+.card-agreement-agreement{
     width: 95%;
     max-width: 1200px;
     margin: 0 auto;
@@ -10,55 +10,55 @@
     box-sizing: border-box;
 }
 
-.card h1, .card h2, .card h3 {
+.card-agreement h1, .card-agreement h2, .card-agreement h3 {
     text-align: center;
 }
 
-.card h1 {
+.card-agreement h1 {
     font-size: 2.2rem;
     margin: 0;
 }
 
-.card h2 {
+.card-agreement h2 {
     font-size: 1.8rem;
     margin-top: 1.5rem;
 }
 
-.card h3 {
+.card-agreement h3 {
     font-size: 1.4rem;
     margin-top: 1.2rem;
 }
 
-.card p {
+.card-agreement p {
     line-height: 1.6;
     margin: 0.8rem 0;
 }
 
-.card ul, .card ol {
+.card-agreement ul, .card-agreement ol {
     margin: 0.8rem 0;
     padding-left: 1.5rem;
 }
 
-.card li {
+.card-agreement li {
     margin-bottom: 0.5rem;
 }
 
-.card table {
+.card-agreement table {
     width: 100%;
     border-collapse: collapse;
     margin: 1rem 0;
 }
 
-.card table, .card th, .card td {
+.card-agreement table, .card-agreement th, .card-agreement td {
     border: 1px solid #ddd;
 }
 
-.card th, .card td {
+.card-agreement th, .card-agreement td {
     padding: 0.5rem;
     text-align: left;
 }
 
-.card blockquote {
+.card-agreement blockquote {
     border-left: 4px solid #3498db;
     padding: 0.5rem 1rem;
     margin: 1rem 0;
