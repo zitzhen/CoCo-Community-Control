@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/Home.vue'
-import UserAgreement from '../views/UserAgreement.vue'
-import PrivacyPolicy from '../views/PrivacyPolicy.vue'
+import Home from '../views/index.vue'
+import UserAgreement from '../views/agreement/useragreement/index.vue'
+import PrivacyPolicy from '../views/agreement/privacypolicy/index.vue'
 
 const routes = [
   {
