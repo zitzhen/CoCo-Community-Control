@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/index.vue'
 import UserAgreement from '../views/agreement/useragreement/index.vue'
 import PrivacyPolicy from '../views/agreement/privacypolicy/index.vue'
+import Agreement from '../views/agreement/index.vue'
 
 const routes = [
   {
@@ -18,6 +19,11 @@ const routes = [
     path: '/agreement/privacypolicy',
     name: 'PrivacyPolicy',
     component: PrivacyPolicy
+  },
+  {
+    path:'/agreement',
+    name:'agreement',
+    component:Agreement
   }
 ]
 
