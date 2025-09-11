@@ -8,7 +8,7 @@
     </header>
 
     <br />
-    <div class="card" id="content">
+    <div class="card-agreement" id="content">
       <div class="progress-container" v-if="loading">
         <div class="progress-bar"></div>
       </div>
