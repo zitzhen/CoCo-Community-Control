@@ -46,6 +46,6 @@ export default {
 </script>
 
 <style scoped>
-@import '../../src/assets/style/agreement/style.css';
-@import '../../src/assets/style/home/Loading.css';
+@import '../../../assets/style/agreement/style.css';
+@import '../../../assets/style/home/Loading.css';
 </style>
