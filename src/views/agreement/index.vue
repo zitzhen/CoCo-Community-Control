@@ -6,16 +6,23 @@
       </div>
     </header>
 
-    <div class="file-list">
-        <div class="file-card doc">
-            <div class="file-content">
-                <div class="file-name">CoCo-Community用户协议</div>
-                </div>
-            </div>
-        <div class="file-card doc">
-            <div class="file-content">
-                <div class="file-name">CoCo-Community隐私协议</div>
-                </div>
-            </div>
-        </div>
+<router-link :to="{ name: 'UserAgreement'}" class="file-link">
+    <span class="file-list">
+        <span class="file-card doc">
+            <span class="file-content">
+                <span class="file-name">CoCo-Community用户协议</span>
+            </span>
+        </span>
+    </span>
+</router-link>
+
+<router-link :to="{ name: 'PrivacyPolicy'}" class="file-link">
+     <span class="file-list">
+    <span class="file-card doc">
+        <span class="file-content">
+            <span class="file-name">CoCo-Community隐私协议</span>
+        </span>
+    </span>
+    </span>
+</router-link>
 </template>
