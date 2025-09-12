@@ -5,6 +5,7 @@ import PrivacyPolicy from '../views/agreement/privacypolicy/index.vue'
 import Agreement from '../views/agreement/index.vue'
 import Tipping from '../views/tipping/index.vue' 
 import Erroruser from '../views/user/No-parameters.vue'
+import User from '../views/user/index.vue'
 
 const routes = [
   {
@@ -31,6 +32,11 @@ const routes = [
     path: '/tipping',
     name: 'tipping',
     component :Tipping
+  },
+  {
+    path :'/user/:id',
+    name:'user',
+    component:User
   },
   {
     path: '/user',
