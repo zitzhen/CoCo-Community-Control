@@ -49,9 +49,7 @@
 
         <div class="file-list" id="display_controls">
           <p id="control_processing" v-if="loading">请稍后，我们正在处理数据……</p>
-          <div v-else>
-            <!-- 控件列表将在这里显示 -->
-          </div>
+            <div v-else v-html="htmlControl"></div>
         </div>
       </div>
 
@@ -136,8 +134,8 @@ export default {
     },
 
     render_information(information) {
-      this.Nickname = information.name || '';
-      this.bio = information.bio || '';
+      this.Nickname = information.name || information.login;
+      this.bio = information.bio || '此人很懒，什么都没有';
       this.avatar = information.avatar_url || '';
     },
 
@@ -156,6 +154,30 @@ export default {
       // 内部信息渲染
       this.Control_number = user_introduction ? user_introduction.number_of_controls : 'Error';
 
+
+      const Controljson = user_introduction.list_of_controls;
+
+      let Control ="";
+
+      for (let i = 0; i < Controljson.length; i++){
+        let name = Controljson[i];
+        Control += `
+            <div class="file-card">
+              <div class="file-icon">
+                <i class="far fa-file-code">${name}</i>
+              </div>
+              <div class="file-info">
+                  <div class="file-name"></div>
+              </div>
+              <div class="file-actions">
+                  <a href="https://cc.zitzhen.cn/control/${name}">
+                      <button class="download-btn">去详情</button>
+                  </a>
+            </div>
+        </div>
+        `
+        this.htmlControl = Control;
+      }
       this.loading = false;
     }
   }
