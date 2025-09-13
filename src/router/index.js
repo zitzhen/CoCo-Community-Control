@@ -40,7 +40,7 @@ const routes = [
   },
   {
     path: '/user',
-    name: 'user',
+    name: 'Path-error',
     component:Erroruser
   }
 ]
