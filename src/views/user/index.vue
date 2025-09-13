@@ -1,4 +1,3 @@
-<!--正在重构-->
 <template>
     <header>
         <div>
@@ -25,20 +24,34 @@
     
     <!-- 标签导航 -->
     <div class="tabs">
-        <div class="tab active" data-tab="files">控件</div>
-        <div class="tab" data-tab="articles">文章</div>
+        <div class="tab active" data-tab="files" @click="switchTab('files')">控件</div>
+        <div class="tab" data-tab="articles" @click="switchTab('articles')">文章</div>
     </div>
     
     <!-- 文件板块 -->
-    <div class="tab-content active" id="files">
+    <div class="tab-content active" id="files" v-show="activeTab === 'files'">
         <h2 class="section-title">TA的控件</h2>
         <div class="file-list" id="display_controls">
-            <p id="control_processing">请稍后，我们正在处理数据……</p>
+            <div class="file-card" v-for="(control, index) in controlList" :key="index">
+                <div class="file-icon">
+                    <i class="far fa-file-code"></i>
+                </div>
+                <div class="file-info">
+                    <div class="file-name">{{ control }}</div>
+                </div>
+                <div class="file-actions">
+                    <a :href="`https://cc.zitzhen.cn/control/${control}`">
+                        <button class="download-btn">去详情</button>
+                    </a>
+                </div>
+            </div>
+            <p v-if="controlList.length === 0 && !loading">暂无控件</p>
+            <p v-if="loading">请稍后，我们正在处理数据……</p>
         </div>
     </div>
     
     <!-- 文章板块 -->
-    <div class="tab-content" id="articles">
+    <div class="tab-content" id="articles" v-show="activeTab === 'articles'">
         <h2 class="section-title">TA的文章</h2>
         <div class="article-list">
             <!-- 文章卡片 -->
@@ -65,13 +78,28 @@ export default {
       bio: '',
       avatar: '',
       Control_number: '',
-      loading: true
+      controlList: [],
+      loading: true,
+      activeTab: 'files' // 默认显示控件标签
     };
   },
   mounted() {
     this.main();
   },
   methods: {
+    switchTab(tabName) {
+      this.activeTab = tabName;
+      // 更新标签的active状态
+      const tabs = document.querySelectorAll('.tab');
+      tabs.forEach(tab => {
+        if (tab.getAttribute('data-tab') === tabName) {
+          tab.classList.add('active');
+        } else {
+          tab.classList.remove('active');
+        }
+      });
+    },
+
     getCurrentUrlLastSegment() {
       // 获取当前页面的完整URL
       const currentUrl = window.location.href;
@@ -139,30 +167,11 @@ export default {
       // 内部信息渲染
       this.Control_number = user_introduction ? user_introduction.number_of_controls : 'Error';
 
-
-      const Controljson = user_introduction.list_of_controls;
-
-      let Control ="";
-
-      for (let i = 0; i < Controljson.length; i++){
-        let name = Controljson[i];
-        Control += `
-            <div class="file-card">
-              <div class="file-icon">
-                <i class="far fa-file-code">${name}</i>
-              </div>
-              <div class="file-info">
-                  <div class="file-name"></div>
-              </div>
-              <div class="file-actions">
-                  <a href="https://cc.zitzhen.cn/control/${name}">
-                      <button class="download-btn">去详情</button>
-                  </a>
-            </div>
-        </div>
-        `
-        this.htmlControl = Control;
+      // 处理控件列表
+      if (user_introduction && user_introduction.list_of_controls) {
+        this.controlList = user_introduction.list_of_controls;
       }
+
       this.loading = false;
     }
   }
