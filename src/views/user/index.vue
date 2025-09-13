@@ -24,12 +24,12 @@
     
     <!-- 标签导航 -->
     <div class="tabs">
-        <div class="tab active" data-tab="files" @click="switchTab('files')">控件</div>
-        <div class="tab" data-tab="articles" @click="switchTab('articles')">文章</div>
+        <div :class="['tab', { active: activeTab === 'files' }]" data-tab="files" @click="switchTab('files')">控件</div>
+        <div :class="['tab', { active: activeTab === 'articles' }]" data-tab="articles" @click="switchTab('articles')">文章</div>
     </div>
     
     <!-- 文件板块 -->
-    <div class="tab-content active" id="files" v-show="activeTab === 'files'">
+    <div :class="['tab-content', { active: activeTab === 'files' }]" id="files">
         <h2 class="section-title">TA的控件</h2>
         <div class="file-list" id="display_controls">
             <div class="file-card" v-for="(control, index) in controlList" :key="index">
@@ -51,7 +51,7 @@
     </div>
     
     <!-- 文章板块 -->
-    <div class="tab-content" id="articles" v-show="activeTab === 'articles'">
+    <div :class="['tab-content', { active: activeTab === 'articles' }]" id="articles">
         <h2 class="section-title">TA的文章</h2>
         <div class="article-list">
             <!-- 文章卡片 -->
@@ -89,15 +89,6 @@ export default {
   methods: {
     switchTab(tabName) {
       this.activeTab = tabName;
-      // 更新标签的active状态
-      const tabs = document.querySelectorAll('.tab');
-      tabs.forEach(tab => {
-        if (tab.getAttribute('data-tab') === tabName) {
-          tab.classList.add('active');
-        } else {
-          tab.classList.remove('active');
-        }
-      });
     },
 
     getCurrentUrlLastSegment() {
