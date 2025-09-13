@@ -191,7 +191,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 @import '../../src/assets/style/home/style.css';
 @import '../../src/assets/style/home/Custom_button.css';
 @import '../../src/assets/style/home/Loading.css';
