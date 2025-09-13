@@ -51,17 +51,15 @@
           <p id="control_processing" v-if="loading">请稍后，我们正在处理数据……</p>
           <div v-else>
             <!-- 控件列表将在这里显示 -->
-            <p>控件功能正在开发中</p>
           </div>
         </div>
       </div>
 
       <!-- 文章板块 -->
-      <div class="tab-content" id="articles" v-show="activeTab === 'articles'">
+      <div class="tab-content" id="articles">
         <h2 class="section-title">TA的文章</h2>
-
         <div class="article-list">
-          <!-- 文章卡片示例 - 实际应用中这里应该是动态生成的 -->
+          <!-- 文章卡片 -->
           <p>文章功能正在开发中</p>
         </div>
       </div>
@@ -82,7 +80,7 @@ export default {
       Nickname: '',
       bio: '',
       avatar: '',
-      Control_number: 0,
+      Control_number: '',
       activeTab: 'files',
       loading: true
     };
@@ -154,11 +152,10 @@ export default {
         this.render_information(user_introduction);
       }
       
+      // 内部信息渲染
+      this.Control_number = user_introduction ? user_introduction.number_of_controls : 'Error';
+
       this.loading = false;
-    },
-    
-    switchTab(tabName) {
-      this.activeTab = tabName;
     }
   }
 };
