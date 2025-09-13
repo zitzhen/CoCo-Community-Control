@@ -122,7 +122,8 @@ export default {
 
     async fetch_user_information(username) {
       try {
-        const url = `../information/user/${username}.json`;
+       const url = `https://${window.location.host}/information/user/${username}.json`;
+        console.log(url);
         const response = await fetch(url);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
