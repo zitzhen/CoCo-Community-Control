@@ -6,6 +6,7 @@ import Agreement from '../views/agreement/index.vue'
 import Tipping from '../views/tipping/index.vue' 
 import Erroruser from '../views/user/No-parameters.vue'
 import User from '../views/user/index.vue'
+import Control from '../views/control/index.vue'
 
 const routes = [
   {
@@ -42,6 +43,11 @@ const routes = [
     path: '/user',
     name: 'Path-error',
     component:Erroruser
+  },
+  {
+    path :'/control',
+    name:'control',
+    component:Control
   }
 ]
 
