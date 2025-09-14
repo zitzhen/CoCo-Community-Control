@@ -114,10 +114,18 @@ export default{
             name:"",
             bio:"",
             size:"",
-            README:""
+            README:"",
+            READMEHTML: "",
+            avatarUrl: "",
+            downloadurl: "",
+            code: ""
         };
     },
     mounted(){
+        // 确保marked库已加载
+        if (typeof marked !== 'undefined') {
+            window.marked = marked;
+        }
         this.main();
     },
     methods:{
@@ -140,7 +148,8 @@ export default{
 
     async fetch_control_information(name){
         try{
-            const url = `https://${windows.location.host}/information/control/${name}/information.json`
+            // 修复错误：windows.location 应该是 window.location
+            const url = `https://${window.location.host}/information/control/${name}/information.json`
             const response =await fetch(url);
             if (!response.ok){
                 throw new Error(`HTTP error! status: ${response.status}`)
@@ -148,7 +157,8 @@ export default{
             const data =await response.json();
             return data;
         } catch(error){
-            console.log(error);
+            console.error("获取控件信息失败:", error);
+            return null;
         }
     },
 
@@ -162,16 +172,73 @@ export default{
             const data =await response.json();
             return data;
         } catch (error){
-            console.log(error);
+            console.error("获取用户GitHub信息失败:", error);
+            return null;
+        }
+    },
+    
+    async fetch_readme_content(name) {
+        try {
+            const url = `https://${window.location.host}/information/control/${name}/README.md`;
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const text = await response.text();
+            return text;
+        } catch (error) {
+            console.error("无法获取README内容:", error);
+            return "暂无介绍";
         }
     },
 
     async main(){
-        const control_name = this.getCurrentUrlLastSegment();
-        const control_information = await this.fetch_control_information(control_name);
-        const user_github = await this.fetch_user_github(control_information.author);
-        
-        
+        try {
+            const control_name = this.getCurrentUrlLastSegment();
+            const control_information = await this.fetch_control_information(control_name);
+            
+            // 如果无法获取控件信息，则返回
+            if (!control_information) {
+                this.name = "控件未找到";
+                this.README = "无法获取控件信息";
+                return;
+            }
+            
+            // 设置控件基本信息
+            this.name = control_name;
+            this.size = control_information.Current_version || "未知";
+            
+            // 获取README内容
+            const readmeText = await this.fetch_readme_content(control_name);
+            // 使用marked库将markdown转换为HTML
+            if (window.marked) {
+                this.READMEHTML = window.marked.parse(readmeText);
+            } else {
+                this.READMEHTML = `<p>${readmeText}</p>`;
+            }
+            
+            // 获取用户GitHub信息
+            const user_github = await this.fetch_user_github(control_information.author);
+            
+            // 设置用户信息
+            if (user_github) {
+                this.README = user_github.name || control_information.author;
+                this.bio = user_github.bio || "暂无简介";
+                this.avatarUrl = user_github.avatar_url || "";
+            } else {
+                this.README = control_information.author;
+                this.bio = "暂无简介";
+                this.avatarUrl = "";
+            }
+            
+            // 设置下载和源代码链接
+            this.downloadurl = `https://${window.location.host}/src/control/${control_name}/${control_information.Current_version}`;
+            this.code = `https://${window.location.host}/src/control/${control_name}/${control_information.Current_version}`;
+        } catch (error) {
+            console.error("加载控件详情时发生错误:", error);
+            this.name = "加载失败";
+            this.README = "加载控件详情时发生错误";
+        }
     }
     }
 }
