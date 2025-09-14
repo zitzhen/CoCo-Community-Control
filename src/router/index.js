@@ -4,7 +4,7 @@ import UserAgreement from '../views/agreement/useragreement/index.vue'
 import PrivacyPolicy from '../views/agreement/privacypolicy/index.vue'
 import Agreement from '../views/agreement/index.vue'
 import Tipping from '../views/tipping/index.vue' 
-import Erroruser from '../views/user/No-parameters.vue'
+import Errorpages from '../views/user/No-parameters.vue'
 import User from '../views/user/index.vue'
 import Control from '../views/control/index.vue'
 
@@ -42,12 +42,17 @@ const routes = [
   {
     path: '/user',
     name: 'Path-error',
-    component:Erroruser
+    component:Errorpages
+  },
+  {
+    path :'/control/:id',
+    name:'control-Error',
+    component:Control
   },
   {
     path :'/control',
-    name:'control',
-    component:Control
+    name:'control-Error',
+    component:Errorpages
   }
 ]
 
