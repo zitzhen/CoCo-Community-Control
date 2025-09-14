@@ -116,6 +116,63 @@ export default{
             size:"",
             README:""
         };
+    },
+    mounted(){
+        this.main();
+    },
+    methods:{
+    getCurrentUrlLastSegment() {
+      // 获取当前页面的完整URL
+      const currentUrl = window.location.href;
+
+      // 移除末尾的斜杠（如果存在）
+      const cleanedUrl = currentUrl.endsWith('/') ? currentUrl.slice(0, -1) : currentUrl;
+
+      // 创建URL对象
+      const url = new URL(cleanedUrl);
+
+      // 获取路径名并分割成段
+      const pathSegments = url.pathname.split('/').filter(segment => segment !== '');
+
+      // 返回最后一个路径段（如果存在）
+      return pathSegments.length > 0 ? pathSegments[pathSegments.length - 1] : '';
+    },
+
+    async fetch_control_information(name){
+        try{
+            const url = `https://${windows.location.host}/information/control/${name}/information.json`
+            const response =await fetch(url);
+            if (!response.ok){
+                throw new Error(`HTTP error! status: ${response.status}`)
+            }
+            const data =await response.json();
+            return data;
+        } catch(error){
+            console.log(error);
+        }
+    },
+
+    async fetch_user_github(username){
+        try{
+            const url = `https://api.github.com/users/${username}`;
+            const response = await fetch(url);
+            if (!response.ok){
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data =await response.json();
+            return data;
+        } catch (error){
+            console.log(error);
+        }
+    },
+
+    async main(){
+        const control_name = this.getCurrentUrlLastSegment();
+        const control_information = await this.fetch_control_information(control_name);
+        const user_github = await this.fetch_user_github(control_information.author);
+        
+        
+    }
     }
 }
 </script>
