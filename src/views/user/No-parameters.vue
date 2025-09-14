@@ -4,6 +4,7 @@
         <h1>ZIT-CoCo-Community</h1>
       </div>
     </header>
+    <br></br>
     <div class="container">
         <div class="error-content">
             <div class="error-icon">
