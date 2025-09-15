@@ -146,20 +146,50 @@ export default {
 
         this.filename = filename;
 
-        const introduce = await fetch(`${filename}/README.md`).then(r=>r.ok?r.text():Promise.reject(r));
+        // 获取介绍
+        let introduce;
+        try {
+          const res = await fetch(`${filename}/README.md`);
+          if (!res.ok) throw new Error("README.md 加载失败");
+          introduce = await res.text();
+        } catch (err) {
+          introduce = "暂无介绍";
+        }
         this.introduceHtml = marked.parse(introduce);
 
-        const jsonData = await fetch(`${filename}/information.json`).then(r=>r.json());
+        // 获取信息
+        let jsonData;
+        try {
+          const res = await fetch(`${filename}/information.json`);
+          jsonData = await res.json();
+        } catch (err) {
+          this.throwError("information.json 加载失败");
+          return;
+        }
         const version = jsonData.Version_number_list.at(-1);
 
-        const controlRes = await fetch(`${filename}/${version}/control.jsx`);
-        const size = (Number(controlRes.headers.get("Content-Length"))/1024).toFixed(2);
+        // 获取文件大小
+        let size = "未知";
+        try {
+          const controlRes = await fetch(`${filename}/${version}/control.jsx`);
+          const len = controlRes.headers.get("Content-Length");
+          size = len ? (Number(len)/1024).toFixed(2) : "未知";
+        } catch (err) {
+          size = "未知";
+        }
         this.fileSize = size;
 
-        const creator = await fetch(`https://api.github.com/users/${jsonData.author}`).then(r=>r.json());
-        this.avatar = creator.avatar_url;
-        this.authorName = creator.name;
-        this.authorBio = creator.bio;
+        // 获取作者信息
+        let creator = {};
+        try {
+          const res = await fetch(`https://api.github.com/users/${jsonData.author}`);
+          creator = await res.json();
+        } catch (err) {
+          creator = {};
+        }
+        this.avatar = creator.avatar_url || "";
+        this.authorName = creator.name || jsonData.author || "未知";
+        this.authorBio = creator.bio || "暂无简介";
 
         this.downloadUrl = `https://cc.zitzhen.cn/control/${filename}/${version}/control.jsx`;
         this.sourceUrl = this.downloadUrl;
