@@ -1,12 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/index.vue'
-import UserAgreement from '../views/agreement/useragreement/index.vue'
-import PrivacyPolicy from '../views/agreement/privacypolicy/index.vue'
-import Agreement from '../views/agreement/index.vue'
-import Tipping from '../views/tipping/index.vue' 
-import Errorpages from '../views/user/No-parameters.vue'
-import User from '../views/user/index.vue'
-import Control from '../views/control/index.vue'
+import Home from '@/views/index.vue'
+import UserAgreement from '@/views/agreement/useragreement/index.vue'
+import PrivacyPolicy from '@/views/agreement/privacypolicy/index.vue'
+import Agreement from '@/views/agreement/index.vue'
+import Tipping from '@/views/tipping/index.vue' 
+import Errorpages from '@/views/user/No-parameters.vue'
+import User from '@/views/user/index.vue'
+import Control from '@/views/control/index.vue'
 
 const routes = [
   {
