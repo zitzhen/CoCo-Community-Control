@@ -174,55 +174,32 @@ export default {
         this.filename = id;
 
         // 1) README.md
-        const readmeUrl = `/readme/control/${id}/README.md`;
+        const readmeUrl = `/information/control/${id}/README.md`;
         const readmeRes = await fetch(readmeUrl);
         if (!readmeRes.ok) {
-          // 把 response body 打印到控制台以便调试
-          const body = await readmeRes.text().catch(() => "");
-          console.warn(`[ControlDetail] README.md 请求失败：`, readmeUrl, readmeRes.status, body);
-          throw new Error(`未找到 README.md：${readmeUrl} （HTTP ${readmeRes.status}）`);
+          throw new Error(`未找到 README.md：${readmeUrl}`);
         }
         const readmeText = await readmeRes.text();
-        const readmeCT = (readmeRes.headers.get("content-type") || "").toLowerCase();
-
-        // 如果服务端返回的是 HTML（例如 SPA index.html 被返回）——提示并不直接渲染头部标签
-        if (
-          readmeCT.includes("text/html") ||
-          /<!doctype|<html|<meta\s+charset|<head/i.test(readmeText)
-        ) {
-          console.warn("[ControlDetail] README.md 返回看起来是 HTML（可能是 index.html），内容已被记录到控制台。");
-          console.debug(readmeText);
-          this.introduceHtml =
-            `<p style="color:#b33">未能正确加载 README.md（服务器返回 HTML）。</p>` +
-            `<p>请检查：<code>public/readme/control/${id}/README.md</code> 是否存在，或路径/大小写是否匹配。</p>`;
-        } else {
-          this.introduceHtml = marked.parse(readmeText || "");
-        }
+        this.introduceHtml = marked.parse(readmeText || "");
 
         // 2) information.json
         const infoUrl = `/information/control/${id}/information.json`;
         const infoRes = await fetch(infoUrl);
         if (!infoRes.ok) {
-          const body = await infoRes.text().catch(() => "");
-          console.warn(`[ControlDetail] information.json 请求失败：`, infoUrl, infoRes.status, body);
-          throw new Error(`未找到 information.json：${infoUrl} （HTTP ${infoRes.status}）`);
+          throw new Error(`未找到 information.json：${infoUrl}`);
         }
         const jsonData = await infoRes.json();
 
-        // 3) 计算控件体积（使用 blob.size 更可靠）
+        // 3) 计算控件体积
         const controlUrl = `/control/${id}/control.jsx`;
         const controlRes = await fetch(controlUrl);
         if (!controlRes.ok) {
-          const body = await controlRes.text().catch(() => "");
-          console.warn(`[ControlDetail] control.jsx 请求失败：`, controlUrl, controlRes.status, body);
-          throw new Error(`未找到控件文件：${controlUrl} （HTTP ${controlRes.status}）`);
+          throw new Error(`未找到控件文件：${controlUrl}`);
         }
-        // 使用 blob 获取真实字节长度（兼容 dev server / 静态托管）
         const controlBlob = await controlRes.blob();
-        const sizeKB = (controlBlob.size / 1024).toFixed(2);
-        this.fileSize = sizeKB;
+        this.fileSize = (controlBlob.size / 1024).toFixed(2);
 
-        // 4) Github 创作者信息（如果 author 字段存在）
+        // 4) Github 创作者信息
         if (jsonData && jsonData.author) {
           try {
             const creatorRes = await fetch(`https://api.github.com/users/${jsonData.author}`);
@@ -232,11 +209,9 @@ export default {
               this.authorName = creator.name || jsonData.author;
               this.authorBio = creator.bio;
             } else {
-              console.warn("[ControlDetail] 无法获取 Github 用户信息：", creatorRes.status);
               this.authorName = jsonData.author;
             }
-          } catch (err) {
-            console.warn("[ControlDetail] 获取 Github 信息失败：", err);
+          } catch {
             this.authorName = jsonData.author;
           }
         }
