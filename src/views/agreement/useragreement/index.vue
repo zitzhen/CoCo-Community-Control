@@ -49,3 +49,14 @@ export default {
 @import '../../../assets/style/agreement/style.css';
 @import '../../../assets/style/home/Loading.css';
 </style>
+
+<script setup>
+import { useHead } from '@vueuse/head'
+
+useHead({
+  title: '用户协议|CoCo-Community|适用于CoCo-Community的用户协议条款',
+  meta: [
+    {content: '这是适用于ZIT-CoCo-Community的用户协议及条款。' }
+  ]
+})
+</script>
