@@ -3,19 +3,23 @@ import vue from '@vitejs/plugin-vue'
 import fs from 'fs'
 import { resolve } from 'path'
 
+const useHttps = process.env.NODE_ENV !== 'production'
+
 export default defineConfig({
   plugins: [vue()],
   resolve: {
     alias: {
-      '@': resolve(__dirname, 'src')
-    }
-  },
-  server: {
-    https: {
-      key: fs.readFileSync('./localhost-key.pem'),
-      cert: fs.readFileSync('./localhost.pem')
+      '@': resolve(__dirname, 'src'),
     },
-    host: 'localhost',
-    port: 5173
-  }
+  },
+  server: useHttps
+    ? {
+        https: {
+          key: fs.readFileSync('./localhost-key.pem'),
+          cert: fs.readFileSync('./localhost.pem'),
+        },
+        host: 'localhost',
+        port: 5173,
+      }
+    : undefined,
 })
