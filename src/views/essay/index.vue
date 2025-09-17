@@ -1,125 +1,179 @@
 <template>
-   <header>
-        <div class="header-container">
-            <h1>ZIT-CoCo-community</h1>
-        </div>
+  <div>
+    <!-- Loading -->
+    <div class="progress-container" v-if="loading" id="Loading">
+      <div class="progress-bar"></div>
+    </div>
+
+    <!-- Header -->
+    <header>
+      <div class="header-container">
+        <h1>ZIT-CoCo-community</h1>
+      </div>
     </header>
 
+    <!-- Main Content -->
     <main class="main-container">
-        <div class="content-container">
-            <div class="page-header">
-                <div class="icon">
-                    <i class="fas fa-newspaper"></i>
-                </div>
-                <h2>ZIT-CoCo-Community论坛</h2>
-                <p class="page-description">
-                    探索精选文章，获取最新技术资讯、使用教程和最佳实践
-                </p>
-                <p style="color: red;">此页面搭建中，非开发者请返回上级菜单</p>
-            </div>
-        
-
-            <div class="main-content">
-                <div class="category-filter">
-                    <button class="category-btn active">全部</button>
-                    <button class="category-btn">技术教程</button>
-                    <button class="category-btn">近期更新</button>
-                </div>
-
-                <div class="article-list" id="essay">
-                    <!-- 文章1 -->
-                    <div class="article-card" id="q1essay">
-                        <img src="" alt="文章缩略图" class="article-thumbnail">
-                        <div class="article-content">
-                            <h3 class="article-title"><a href="">正在加载</a></h3>
-                            <div class="article-meta">
-                                <span class="article-meta-item"><i class="fas fa-user"></i> 正在加载</span>
-                                <span class="article-meta-item"><i class="fas fa-calendar-alt"></i> 正在加载</span>
-                                <span class="article-meta-item"><i class="fas fa-eye"></i> 正在加载</span>
-                                <span class="article-meta-item"><i class="fas fa-comments"></i> 正在加载</span>
-                            </div>
-                            <p class="article-excerpt">
-                                正在加载
-                            </p>
-                            <div class="article-tags">
-                                <a href="#" class="article-tag">API</a>
-                                <a href="#" class="article-tag">开发指南</a>
-                                <a href="#" class="article-tag">RESTful</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!--
-                <div class="pagination">
-                    <a href="#" class="pagination-link"><i class="fas fa-angle-left"></i></a>
-                    <a href="#" class="pagination-link active">1</a>
-                    <a href="#" class="pagination-link">2</a>
-                    <a href="#" class="pagination-link">3</a>
-                    <a href="#" class="pagination-link">4</a>
-                    <a href="#" class="pagination-link">5</a>
-                    <a href="#" class="pagination-link"><i class="fas fa-angle-right"></i></a>
-                </div>
-                -->
-            </div>
-            
-            <!--后期设定：一次最多5个精选文章，超出使用标签-->
-
-            <div class="sidebar">
-                <!--
-                <div class="card">
-                    <h3 class="section-title">
-                        <i class="fas fa-fire"></i> 热门文章
-                    </h3>
-                    <div class="popular-article-list">
-                        <div class="popular-article">
-                            <img src="" alt="热门文章缩略图" class="popular-article-thumbnail">
-                            <div>
-                                <h4 class="popular-article-title"><a href="#">正在加载</a></h4>
-                                <div class="popular-article-views"><i class="fas fa-eye"></i> 正在加载</div>
-                            </div>
-                        </div>
-
-                        </div>
-                    </div>
-                    -->
-                </div>
-
-                <div class="card">
-                    <h3 class="section-title">
-                        <i class="fas fa-tags"></i> 标签云
-                    </h3>
-                    <div class="tag-cloud">
-                        <a href="#" class="tag-cloud-item size-3">API</a>
-                        <a href="#" class="tag-cloud-item size-2">开发指南</a>
-                        <a href="#" class="tag-cloud-item size-4">近期更新</a>
-                        <a href="#" class="tag-cloud-item size-2">教程</a>
-                    </div>
-                </div>
-
-                <!--
-                <div class="card">
-                    <h3 class="section-title">
-                        <i class="fas fa-envelope"></i> 订阅更新
-                    </h3>
-                    <p>订阅我们的新闻通讯，获取最新文章和近期更新</p>
-                    <form class="subscribe-form">
-                        <input type="email" placeholder="您的邮箱地址" class="form-control" style="margin-bottom: 0.5rem;">
-                        <button type="submit" class="btn btn-block">订阅</button>
-                    </form>
-                </div>
-            </div>
-            -->
+      <div class="content-container">
+        <!-- Page Header -->
+        <div class="page-header">
+          <div class="icon">
+            <i class="fas fa-newspaper"></i>
+          </div>
+          <h2>ZIT-CoCo-Community论坛</h2>
+          <p class="page-description">
+            探索精选文章，获取最新技术资讯、使用教程和最佳实践
+          </p>
+          <p style="color: red;">此页面搭建中，非开发者请返回上级菜单</p>
         </div>
+
+        <!-- Main Article Section -->
+        <div class="main-content">
+          <!-- Category Filter -->
+          <div class="category-filter">
+            <button
+              v-for="(cat, index) in categories"
+              :key="index"
+              :class="['category-btn', { active: activeCategory === cat }]"
+              @click="setCategory(cat)"
+            >
+              {{ cat }}
+            </button>
+          </div>
+
+          <!-- Article List -->
+          <div class="article-list" id="essay">
+            <div
+              v-for="(article, index) in filteredArticles"
+              :key="index"
+              class="article-card"
+            >
+              <img
+                :src="article.url || ''"
+                :alt="article.name"
+                class="article-thumbnail"
+              />
+              <div class="article-content">
+                <h3 class="article-title">
+                  <a :href="`all/${article.name}`">{{ article.name }}</a>
+                </h3>
+                <div class="article-meta">
+                  <span class="article-meta-item">
+                    <i class="fas fa-user"></i> {{ article.author || '正在加载' }}
+                  </span>
+                  <span class="article-meta-item">
+                    <i class="fas fa-calendar-alt"></i> {{ article.release_date || '正在加载' }}
+                  </span>
+                  <span class="article-meta-item">
+                    <i class="fas fa-eye"></i> 正在加载
+                  </span>
+                  <span class="article-meta-item">
+                    <i class="fas fa-comments"></i> 正在加载
+                  </span>
+                </div>
+                <p class="article-excerpt">正在加载</p>
+                <div class="article-tags">
+                  <a href="#" class="article-tag">API</a>
+                  <a href="#" class="article-tag">开发指南</a>
+                  <a href="#" class="article-tag">RESTful</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+          <div class="card">
+            <h3 class="section-title">
+              <i class="fas fa-tags"></i> 标签云
+            </h3>
+            <div class="tag-cloud">
+              <a href="#" class="tag-cloud-item size-3">API</a>
+              <a href="#" class="tag-cloud-item size-2">开发指南</a>
+              <a href="#" class="tag-cloud-item size-4">近期更新</a>
+              <a href="#" class="tag-cloud-item size-2">教程</a>
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
 
+    <!-- Footer -->
     <footer>
-        <div class="footer-container">
-            <p>© 2025 ZIT-CoCo-community | 技术与知识分享</p>
-        </div>
+      <div class="footer-container">
+        <p>© 2025 ZIT-CoCo-community | 技术与知识分享</p>
+      </div>
     </footer>
-
+  </div>
 </template>
+
+<script setup>
+import { ref, onMounted, computed } from "vue";
+
+const loading = ref(true);
+const articles = ref([]);
+const categories = ["全部", "技术教程", "近期更新"];
+const activeCategory = ref("全部");
+
+// 设置分类
+function setCategory(cat) {
+  activeCategory.value = cat;
+}
+
+// 根据分类筛选文章
+const filteredArticles = computed(() => {
+  if (activeCategory.value === "全部") return articles.value;
+  return articles.value.filter((a) => a.category === activeCategory.value);
+});
+
+// 获取文章信息
+async function fetchInformation(name) {
+  try {
+    const response = await fetch(`all/${name}/information.json`);
+    if (!response.ok) throw new Error("请求失败");
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("错误:", error);
+    return null;
+  }
+}
+
+// 主函数
+async function main() {
+  try {
+    const response = await fetch(
+      "https://api.github.com/repos/zitzhen/CoCo-Community/contents/essay/all"
+    );
+    if (!response.ok) throw new Error("Network response was not ok");
+
+    const data = await response.json();
+
+    for (let i = 0; i < data.length; i++) {
+      const name = data[i].name;
+      if (name !== "example") {
+        const info = await fetchInformation(name);
+        articles.value.push({
+          name,
+          url: info?.thumbnail || "",
+          author: info?.author || "",
+          release_date: info?.release_date || "",
+          category: info?.category || "全部",
+        });
+      }
+    }
+  } catch (error) {
+    console.error("Error:", error);
+  } finally {
+    loading.value = false;
+  }
+}
+
+onMounted(() => {
+  main();
+});
+</script>
 
 <style scoped>
 * {
