@@ -70,101 +70,63 @@
 @import url(../../assets/style/user/style.css);
 </style>
 
-<script>
-export default {
-  data() {
-    return {
-      Nickname: '',
-      bio: '',
-      avatar: '',
-      Control_number: '',
-      controlList: [],
-      loading: true,
-      activeTab: 'files' // 默认显示控件标签
-    };
-  },
-  mounted() {
-    this.main();
-  },
-  methods: {
-    switchTab(tabName) {
-      this.activeTab = tabName;
-    },
+<script setup>
+import { ref, onMounted } from 'vue'
+import { useHead } from '@vueuse/head'
 
-    getCurrentUrlLastSegment() {
-      // 获取当前页面的完整URL
-      const currentUrl = window.location.href;
+const Nickname = ref('')
+const bio = ref('加载中...')
+const avatar = ref('')
+const Control_number = ref('')
+const controlList = ref([])
+const loading = ref(true)
+const activeTab = ref('files')
 
-      // 移除末尾的斜杠（如果存在）
-      const cleanedUrl = currentUrl.endsWith('/') ? currentUrl.slice(0, -1) : currentUrl;
+// 更新 head（响应式）
+useHead({
+  title: () => `${Nickname.value} 的主页|ZIT-CoCo-Community`,
+  meta: [
+    { name: 'description', content: () => bio.value }
+  ]
+})
 
-      // 创建URL对象
-      const url = new URL(cleanedUrl);
+function getCurrentUrlLastSegment() {
+  const currentUrl = window.location.href
+  const cleanedUrl = currentUrl.endsWith('/') ? currentUrl.slice(0, -1) : currentUrl
+  const url = new URL(cleanedUrl)
+  const pathSegments = url.pathname.split('/').filter(segment => segment !== '')
+  return pathSegments.length > 0 ? pathSegments[pathSegments.length - 1] : ''
+}
 
-      // 获取路径名并分割成段
-      const pathSegments = url.pathname.split('/').filter(segment => segment !== '');
+async function fetch_github_information(username) {
+  const url = `https://api.github.com/users/${username}`
+  const res = await fetch(url)
+  return res.ok ? res.json() : null
+}
 
-      // 返回最后一个路径段（如果存在）
-      return pathSegments.length > 0 ? pathSegments[pathSegments.length - 1] : '';
-    },
+async function fetch_user_information(username) {
+  const url = `https://${window.location.host}/information/user/${username}.json`
+  const res = await fetch(url)
+  return res.ok ? res.json() : null
+}
 
-    async fetch_github_information(username) {
-      try {
-        const url = `https://api.github.com/users/${username}`;
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        return data;
-      } catch (error) {
-        console.log(error);
-      }
-    },
+function render_information(information) {
+  Nickname.value = information.name || information.login
+  bio.value = information.bio || '此人很懒，什么都没有'
+  avatar.value = information.avatar_url || ''
+}
 
-    async fetch_user_information(username) {
-      try {
-       const url = `https://${window.location.host}/information/user/${username}.json`;
-        console.log(url);
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json(); 
-        return data;
-      } catch (error) {
-        console.log(error);
-      }
-    },
+onMounted(async () => {
+  const username = getCurrentUrlLastSegment()
+  const user_github_information = await fetch_github_information(username)
+  const user_introduction = await fetch_user_information(username)
 
-    render_information(information) {
-      this.Nickname = information.name || information.login;
-      this.bio = information.bio || '此人很懒，什么都没有';
-      this.avatar = information.avatar_url || '';
-    },
+  if (user_github_information) render_information(user_github_information)
+  else if (user_introduction) render_information(user_introduction)
 
-    async main() {
-      const username = this.getCurrentUrlLastSegment();
-      const user_github_information = await this.fetch_github_information(username);
-      const user_introduction = await this.fetch_user_information(username);
-      
-      // 使用GitHub信息或用户信息来渲染
-      if (user_github_information) {
-        this.render_information(user_github_information);
-      } else if (user_introduction) {
-        this.render_information(user_introduction);
-      }
-      
-      // 内部信息渲染
-      this.Control_number = user_introduction ? user_introduction.number_of_controls : 'Error';
+  Control_number.value = user_introduction ? user_introduction.number_of_controls : 'Error'
+  if (user_introduction?.list_of_controls) controlList.value = user_introduction.list_of_controls
 
-      // 处理控件列表
-      if (user_introduction && user_introduction.list_of_controls) {
-        this.controlList = user_introduction.list_of_controls;
-      }
-
-      this.loading = false;
-    }
-  }
-};
+  loading.value = false
+})
 </script>
