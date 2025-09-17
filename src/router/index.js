@@ -7,6 +7,7 @@ import Tipping from '@/views/tipping/index.vue'
 import Errorpages from '@/views/user/No-parameters.vue'
 import User from '@/views/user/index.vue'
 import Control from '@/views/control/index.vue'
+import Essay from '@/views/essay/index.vue'
 
 const routes = [
   { path: '/', name: 'Home', component: Home },
@@ -18,6 +19,7 @@ const routes = [
   { path: '/user', name: 'UserError', component: Errorpages },
   { path: '/control/:id', name: 'Control', component: Control },
   { path: '/control', name: 'ControlError', component: Errorpages },
+  { path: '/essay' ,name: 'Essay' ,component: Essay},
 ]
 
 const router = createRouter({
