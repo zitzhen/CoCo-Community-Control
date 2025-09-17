@@ -1,40 +1,40 @@
 <template>
   <div>
     <!-- Loading -->
-    <div class="progress-container" v-if="loading" id="Loading">
-      <div class="progress-bar"></div>
+    <div class="progress-container-essay" v-if="loading" id="Loading">
+      <div class="progress-bar-essay"></div>
     </div>
 
     <!-- Header -->
     <header>
-      <div class="header-container">
+      <div class="header-container-essay">
         <h1>ZIT-CoCo-community</h1>
       </div>
     </header>
 
     <!-- Main Content -->
-    <main class="main-container">
-      <div class="content-container">
+    <main class="main-container-essay">
+      <div class="content-container-essay">
         <!-- Page Header -->
-        <div class="page-header">
-          <div class="icon">
+        <div class="page-header-essay">
+          <div class="icon-essay">
             <i class="fas fa-newspaper"></i>
           </div>
           <h2>ZIT-CoCo-Community论坛</h2>
-          <p class="page-description">
+          <p class="page-description-essay">
             探索精选文章，获取最新技术资讯、使用教程和最佳实践
           </p>
           <p style="color: red;">此页面搭建中，非开发者请返回上级菜单</p>
         </div>
 
         <!-- Main Article Section -->
-        <div class="main-content">
+        <div class="main-content-essay">
           <!-- Category Filter -->
-          <div class="category-filter">
+          <div class="category-filter-essay">
             <button
               v-for="(cat, index) in categories"
               :key="index"
-              :class="['category-btn', { active: activeCategory === cat }]"
+              :class="['category-btn-essay', { active: activeCategory === cat }]"
               @click="setCategory(cat)"
             >
               {{ cat }}
@@ -42,40 +42,40 @@
           </div>
 
           <!-- Article List -->
-          <div class="article-list" id="essay">
+          <div class="article-list-essay" id="essay">
             <div
               v-for="(article, index) in filteredArticles"
               :key="index"
-              class="article-card"
+              class="article-card-essay"
             >
               <img
                 :src="article.url || ''"
                 :alt="article.name"
-                class="article-thumbnail"
+                class="article-thumbnail-essay"
               />
-              <div class="article-content">
-                <h3 class="article-title">
+              <div class="article-content-essay">
+                <h3 class="article-title-essay">
                   <a :href="`all/${article.name}`">{{ article.name }}</a>
                 </h3>
-                <div class="article-meta">
-                  <span class="article-meta-item">
+                <div class="article-meta-essay">
+                  <span class="article-meta-item-essay">
                     <i class="fas fa-user"></i> {{ article.author || '正在加载' }}
                   </span>
-                  <span class="article-meta-item">
+                  <span class="article-meta-item-essay">
                     <i class="fas fa-calendar-alt"></i> {{ article.release_date || '正在加载' }}
                   </span>
-                  <span class="article-meta-item">
+                  <span class="article-meta-item-essay">
                     <i class="fas fa-eye"></i> 正在加载
                   </span>
-                  <span class="article-meta-item">
+                  <span class="article-meta-item-essay">
                     <i class="fas fa-comments"></i> 正在加载
                   </span>
                 </div>
-                <p class="article-excerpt">正在加载</p>
-                <div class="article-tags">
-                  <a href="#" class="article-tag">API</a>
-                  <a href="#" class="article-tag">开发指南</a>
-                  <a href="#" class="article-tag">RESTful</a>
+                <p class="article-excerpt-essay">正在加载</p>
+                <div class="article-tags-essay">
+                  <a href="#" class="article-tag-essay">API</a>
+                  <a href="#" class="article-tag-essay">开发指南</a>
+                  <a href="#" class="article-tag-essay">RESTful</a>
                 </div>
               </div>
             </div>
@@ -83,16 +83,16 @@
         </div>
 
         <!-- Sidebar -->
-        <div class="sidebar">
-          <div class="card">
-            <h3 class="section-title">
+        <div class="sidebar-essay">
+          <div class="card-essay">
+            <h3 class="section-title-essay">
               <i class="fas fa-tags"></i> 标签云
             </h3>
-            <div class="tag-cloud">
-              <a href="#" class="tag-cloud-item size-3">API</a>
-              <a href="#" class="tag-cloud-item size-2">开发指南</a>
-              <a href="#" class="tag-cloud-item size-4">近期更新</a>
-              <a href="#" class="tag-cloud-item size-2">教程</a>
+            <div class="tag-cloud-essay">
+              <a href="#" class="tag-cloud-item-essay size-3-essay">API</a>
+              <a href="#" class="tag-cloud-item-essay size-2-essay">开发指南</a>
+              <a href="#" class="tag-cloud-item-essay size-4-essay">近期更新</a>
+              <a href="#" class="tag-cloud-item-essay size-2-essay">教程</a>
             </div>
           </div>
         </div>
@@ -101,7 +101,7 @@
 
     <!-- Footer -->
     <footer>
-      <div class="footer-container">
+      <div class="footer-container-essay">
         <p>© 2025 ZIT-CoCo-community | 技术与知识分享</p>
       </div>
     </footer>
@@ -201,7 +201,7 @@ body {
     flex-direction: column;
 }
 
-.header-container, .footer-container {
+.header-container-essay, .footer-container-essay {
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
@@ -217,12 +217,12 @@ header {
     width: 100%;
 }
 
-.main-container {
+.main-container-essay {
     flex: 1;
     width: 100%;
 }
 
-.content-container {
+.content-container-essay {
     max-width: 1200px;
     width: 100%;
     margin: 0 auto;
@@ -233,7 +233,7 @@ header {
 }
 
 @media (max-width: 768px) {
-    .content-container {
+    .content-container-essay {
         grid-template-columns: 1fr;
     }
 }
@@ -243,47 +243,47 @@ h1 {
     font-size: 2.2rem;
 }
 
-.page-header {
+.page-header-essay {
     grid-column: 1 / -1;
     text-align: center;
     margin-bottom: 1rem;
     padding-top: 2rem;
 }
 
-.page-header .icon {
+.icon-essay {
     font-size: 3rem;
     color: var(--primary-color);
     margin-bottom: 1rem;
 }
 
-.page-description {
+.page-description-essay {
     max-width: 800px;
     margin: 0 auto 2rem;
     line-height: 1.7;
     color: #666;
 }
 
-.main-content {
+.main-content-essay {
     background-color: var(--card-color);
     border-radius: 8px;
     padding: 1.5rem;
     box-shadow: var(--shadow);
 }
 
-.sidebar {
+.sidebar-essay {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
 }
 
-.card {
+.card-essay {
     background-color: var(--card-color);
     border-radius: 8px;
     padding: 1.5rem;
     box-shadow: var(--shadow);
 }
 
-.section-title {
+.section-title-essay {
     font-size: 1.3rem;
     margin-bottom: 1.5rem;
     padding-bottom: 0.5rem;
@@ -292,18 +292,18 @@ h1 {
     align-items: center;
 }
 
-.section-title i {
+.section-title-essay i {
     margin-right: 10px;
     color: var(--primary-color);
 }
 
 /* 文章列表样式 */
-.article-list {
+.article-list-essay {
     display: grid;
     gap: 1.5rem;
 }
 
-.article-card {
+.article-card-essay {
     display: grid;
     grid-template-columns: 120px 1fr;
     gap: 1.5rem;
@@ -311,46 +311,46 @@ h1 {
     border-bottom: 1px solid var(--border-color);
 }
 
-.article-card:last-child {
+.article-card-essay:last-child {
     border-bottom: none;
     padding-bottom: 0;
 }
 
 @media (max-width: 576px) {
-    .article-card {
+    .article-card-essay {
         grid-template-columns: 1fr;
     }
 }
 
-.article-thumbnail {
+.article-thumbnail-essay {
     width: 100%;
     height: 120px;
     object-fit: cover;
     border-radius: 4px;
 }
 
-.article-content {
+.article-content-essay {
     display: flex;
     flex-direction: column;
 }
 
-.article-title {
+.article-title-essay {
     font-size: 1.3rem;
     margin: 0 0 0.5rem 0;
     line-height: 1.3;
 }
 
-.article-title a {
+.article-title-essay a {
     color: var(--text-color);
     text-decoration: none;
     transition: color 0.3s;
 }
 
-.article-title a:hover {
+.article-title-essay a:hover {
     color: var(--primary-color);
 }
 
-.article-meta {
+.article-meta-essay {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
@@ -359,29 +359,29 @@ h1 {
     margin-bottom: 0.8rem;
 }
 
-.article-meta-item {
+.article-meta-item-essay {
     display: flex;
     align-items: center;
 }
 
-.article-meta-item i {
+.article-meta-item-essay i {
     margin-right: 5px;
 }
 
-.article-excerpt {
+.article-excerpt-essay {
     margin-bottom: 0.8rem;
     line-height: 1.6;
     color: #555;
 }
 
-.article-tags {
+.article-tags-essay {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
     margin-top: auto;
 }
 
-.article-tag {
+.article-tag-essay {
     display: inline-block;
     padding: 0.3rem 0.6rem;
     background-color: #f0f7ff;
@@ -392,20 +392,20 @@ h1 {
     transition: all 0.3s;
 }
 
-.article-tag:hover {
+.article-tag-essay:hover {
     background-color: var(--primary-color);
     color: white;
 }
 
 /* 分类筛选 */
-.category-filter {
+.category-filter-essay {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
     margin-bottom: 1.5rem;
 }
 
-.category-btn {
+.category-btn-essay {
     padding: 0.5rem 1rem;
     background-color: white;
     border: 1px solid var(--border-color);
@@ -415,61 +415,61 @@ h1 {
     transition: all 0.3s;
 }
 
-.category-btn:hover, .category-btn.active {
+.category-btn-essay:hover, .category-btn-essay.active {
     background-color: var(--primary-color);
     border-color: var(--primary-color);
     color: white;
 }
 
 /* 热门文章 */
-.popular-article {
+.popular-article-essay {
     display: flex;
     gap: 1rem;
     padding: 0.8rem 0;
     border-bottom: 1px solid var(--border-color);
 }
 
-.popular-article:last-child {
+.popular-article-essay:last-child {
     border-bottom: none;
 }
 
-.popular-article-thumbnail {
+.popular-article-thumbnail-essay {
     width: 60px;
     height: 60px;
     object-fit: cover;
     border-radius: 4px;
 }
 
-.popular-article-title {
+.popular-article-title-essay {
     font-size: 0.95rem;
     margin: 0;
     line-height: 1.3;
 }
 
-.popular-article-title a {
+.popular-article-title-essay a {
     color: var(--text-color);
     text-decoration: none;
     transition: color 0.3s;
 }
 
-.popular-article-title a:hover {
+.popular-article-title-essay a:hover {
     color: var(--primary-color);
 }
 
-.popular-article-views {
+.popular-article-views-essay {
     font-size: 0.8rem;
     color: #666;
     margin-top: 0.3rem;
 }
 
 /* 标签云 */
-.tag-cloud {
+.tag-cloud-essay {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
 }
 
-.tag-cloud-item {
+.tag-cloud-item-essay {
     display: inline-block;
     padding: 0.4rem 0.8rem;
     background-color: #f0f7ff;
@@ -480,26 +480,26 @@ h1 {
     transition: all 0.3s;
 }
 
-.tag-cloud-item:hover {
+.tag-cloud-item-essay:hover {
     background-color: var(--primary-color);
     color: white;
 }
 
-.tag-cloud-item.size-1 { font-size: 0.8rem; }
-.tag-cloud-item.size-2 { font-size: 0.9rem; }
-.tag-cloud-item.size-3 { font-size: 1rem; }
-.tag-cloud-item.size-4 { font-size: 1.1rem; }
-.tag-cloud-item.size-5 { font-size: 1.2rem; }
+.size-1-essay { font-size: 0.8rem; }
+.size-2-essay { font-size: 0.9rem; }
+.size-3-essay { font-size: 1rem; }
+.size-4-essay { font-size: 1.1rem; }
+.size-5-essay { font-size: 1.2rem; }
 
 /* 分页 */
-.pagination {
+.pagination-essay {
     display: flex;
     justify-content: center;
     gap: 0.5rem;
     margin-top: 2rem;
 }
 
-.pagination-link {
+.pagination-link-essay {
     display: inline-block;
     padding: 0.5rem 1rem;
     background-color: white;
@@ -510,7 +510,7 @@ h1 {
     transition: all 0.3s;
 }
 
-.pagination-link:hover, .pagination-link.active {
+.pagination-link-essay:hover, .pagination-link-essay.active {
     background-color: var(--primary-color);
     border-color: var(--primary-color);
     color: white;
@@ -524,5 +524,26 @@ footer {
     color: #666;
     border-top: 1px solid var(--border-color);
     width: 100%;
+}
+
+/* Loading */
+.progress-container-essay {
+    width: 100%;
+    height: 4px;
+    background: #e1e4e8;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+}
+.progress-bar-essay {
+    width: 100%;
+    height: 100%;
+    background: var(--primary-color);
+    animation: loadingEssay 1.5s infinite linear;
+}
+@keyframes loadingEssay {
+    0% { width: 0; }
+    100% { width: 100%; }
 }
 </style>
