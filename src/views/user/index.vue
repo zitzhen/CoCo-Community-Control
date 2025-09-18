@@ -4,44 +4,44 @@
             <h1>ZIT-CoCo-Community</h1>
         </div>
     </header>
-    <div class="container" id="avatar">
+    <div class="container-user" id="avatar">
     <!-- 用户信息头部 -->
-    <div class="profile-header">
-         <img :src="avatar" alt="用户头像" class="avatar" id="avatar_img">
-        <div class="user-info">
+    <div class="profile-header-user">
+         <img :src="avatar" alt="用户头像" class="avatar-user" id="avatar_img">
+        <div class="user-info-user">
             <h1 id="user_name">{{ Nickname }}</h1>
             <!--用户GitHub名称-->
             <p id="user_introduction">{{ bio }}</p>
             <!--用户GitHub介绍-->
-            <div class="stats">
-                <div class="stat-item">
-                    <div class="stat-number" id="number_of_controls">{{ Control_number }}</div>
-                    <div class="stat-label">控件</div>
+            <div class="stats-user">
+                <div class="stat-item-user">
+                    <div class="stat-number-user" id="number_of_controls">{{ Control_number }}</div>
+                    <div class="stat-label-user">控件</div>
                 </div>
             </div>
         </div>
     </div>
     
     <!-- 标签导航 -->
-    <div class="tabs">
-        <div :class="['tab', { active: activeTab === 'files' }]" data-tab="files" @click="switchTab('files')">控件</div>
-        <div :class="['tab', { active: activeTab === 'articles' }]" data-tab="articles" @click="switchTab('articles')">文章</div>
+    <div class="tabs-user">
+        <div :class="['tab-user', { 'active-user': activeTab === 'files' }]" data-tab="files" @click="switchTab('files')">控件</div>
+        <div :class="['tab-user', { 'active-user': activeTab === 'articles' }]" data-tab="articles" @click="switchTab('articles')">文章</div>
     </div>
     
     <!-- 文件板块 -->
-    <div :class="['tab-content', { active: activeTab === 'files' }]" id="files">
-        <h2 class="section-title">TA的控件</h2>
-        <div class="file-list" id="display_controls">
-            <div class="file-card" v-for="(control, index) in controlList" :key="index">
-                <div class="file-icon">
+    <div :class="['tab-content-user', { 'active-user': activeTab === 'files' }]" id="files">
+        <h2 class="section-title-user">TA的控件</h2>
+        <div class="file-list-user" id="display_controls">
+            <div class="file-card-user" v-for="(control, index) in controlList" :key="index">
+                <div class="file-icon-user">
                     <i class="far fa-file-code"></i>
                 </div>
-                <div class="file-info">
-                    <div class="file-name">{{ control }}</div>
+                <div class="file-info-user">
+                    <div class="file-name-user">{{ control }}</div>
                 </div>
-                <div class="file-actions">
+                <div class="file-actions-user">
                     <a :href="`https://cc.zitzhen.cn/control/${control}`">
-                        <button class="download-btn">去详情</button>
+                        <button class="download-btn-user">去详情</button>
                     </a>
                 </div>
             </div>
@@ -51,23 +51,166 @@
     </div>
     
     <!-- 文章板块 -->
-    <div :class="['tab-content', { active: activeTab === 'articles' }]" id="articles">
-        <h2 class="section-title">TA的文章</h2>
-        <div class="article-list">
+    <div :class="['tab-content-user', { 'active-user': activeTab === 'articles' }]" id="articles">
+        <h2 class="section-title-user">TA的文章</h2>
+        <div class="article-list-user">
             <!-- 文章卡片 -->
             <p>文章功能正在开发中</p>
         </div>
     </div>
 </div>
     <footer>
-      <div class="container">
+      <div class="container-user">
           <p>© 2025 小圳社区 - CoCo自定义控件下载中心 | 所有文件仅供学习交流使用</p>
       </div>
   </footer>
 </template>
 
 <style>
-@import url(../../assets/style/user/style.css);
+.container-user {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 16px;
+}
+.profile-header-user {
+    display: flex;
+    align-items: center;
+    padding: 32px 0 24px 0;
+    border-bottom: 1px solid #eee;
+}
+.avatar-user {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    margin-right: 32px;
+    object-fit: cover;
+    border: 2px solid #3498db;
+}
+.user-info-user {
+    flex: 1;
+}
+.stats-user {
+    display: flex;
+    gap: 32px;
+    margin-top: 16px;
+}
+.stat-item-user {
+    text-align: center;
+}
+.stat-number-user {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #3498db;
+}
+.stat-label-user {
+    font-size: 0.95rem;
+    color: #666;
+}
+.tabs-user {
+    display: flex;
+    gap: 16px;
+    margin: 32px 0 0 0;
+    border-bottom: 1px solid #eee;
+}
+.tab-user {
+    padding: 12px 32px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    color: #666;
+    border-radius: 8px 8px 0 0;
+    background: #f7f7f7;
+    transition: background 0.2s, color 0.2s;
+}
+.tab-user.active-user {
+    background: #3498db;
+    color: #fff;
+    font-weight: bold;
+}
+.tab-content-user {
+    display: none;
+    padding: 24px 0;
+}
+.tab-content-user.active-user {
+    display: block;
+}
+.section-title-user {
+    font-size: 1.3rem;
+    margin-bottom: 16px;
+    color: #3498db;
+}
+.file-list-user {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+}
+.file-card-user {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.08);
+    padding: 16px;
+    width: 220px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.file-icon-user {
+    font-size: 2rem;
+    color: #3498db;
+    margin-bottom: 8px;
+}
+.file-info-user {
+    flex: 1;
+    margin-bottom: 8px;
+}
+.file-name-user {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #333;
+}
+.file-actions-user {
+    margin-top: auto;
+}
+.download-btn-user {
+    background: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 16px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: background 0.2s;
+}
+.download-btn-user:hover {
+    background: #217dbb;
+}
+.article-list-user {
+    min-height: 80px;
+    padding: 16px 0;
+}
+footer {
+    margin-top: 48px;
+    background: #f7f7f7;
+    padding: 24px 0;
+    text-align: center;
+    color: #888;
+}
+@media (max-width: 600px) {
+    .profile-header-user {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .avatar-user {
+        margin-bottom: 16px;
+        margin-right: 0;
+    }
+    .file-list-user {
+        flex-direction: column;
+        gap: 16px;
+    }
+    .file-card-user {
+        width: 100%;
+    }
+}
 </style>
 
 <script setup>
@@ -81,6 +224,10 @@ const Control_number = ref('')
 const controlList = ref([])
 const loading = ref(true)
 const activeTab = ref('files')
+
+function switchTab(tab) {
+  activeTab.value = tab
+}
 
 // 更新 head（响应式）
 useHead({
