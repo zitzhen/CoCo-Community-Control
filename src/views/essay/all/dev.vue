@@ -10,7 +10,7 @@
             <div class="error-icon">
                 <i class="fas fa-exclamation-triangle"></i>
             </div>
-            <h2 class="error-title">此页面打击中</h2>
+            <h2 class="error-title">此页面搭建中</h2>
             <p class="error-message">
                 抱歉，您此页面搭建中，敬请期待。
                 <br />

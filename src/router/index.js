@@ -14,6 +14,7 @@ const routes = [
   { path: '/essay/all', name:'ErrorEssay',component: () => import('@/views/user/No-parameters.vue')},
   { path: '/essay' ,name: 'Essay' ,component: () => import('@/views/essay/index.vue')},
   { path: '/safe', name:'Safe',component:() => import('@/views/safe/index.vue')},
+  { path: '/new-control', name:'new-control',component:() => import('@/views/essay/all/dev.vue') }
 ]
 
 const router = createRouter({
