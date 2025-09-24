@@ -332,5 +332,16 @@ export default {
 </script>
 
 <style scoped>
-@import '@/assets/style/safe/style.css'
+@import '@/assets/style/safe/style.css';
 </style>
+
+<script setup>
+import { useHead } from '@vueuse/head'
+
+useHead({
+  title: '紧急安全报告中心|ZIT-CoCo-Community',
+  meta: [
+    {content: '这是CoCo-Community的紧急报告中心，如果有任何紧急事故，请向我们报告。' }
+  ]
+})
+</script>
