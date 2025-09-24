@@ -20,9 +20,9 @@ const routes = [
   { path: '/user', name: 'UserError', component: Errorpages },
   { path: '/control/:id', name: 'Control', component: Control },
   { path: '/control', name: 'ControlError', component: Errorpages },
-  { path: '/essay' ,name: 'Essay' ,component: Essay},
-  { path: '/essay/all:id',name:'DevEssay',component:Dev},
+  { path: '/essay/all/:id',name:'DevEssay',component:Dev},
   { path: '/essay/all', name:'ErrorEssay',component:Errorpages},
+  { path: '/essay' ,name: 'Essay' ,component: Essay},
 ]
 
 const router = createRouter({
