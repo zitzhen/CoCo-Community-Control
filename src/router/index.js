@@ -1,30 +1,19 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '@/views/index.vue'
-import UserAgreement from '@/views/agreement/useragreement/index.vue'
-import PrivacyPolicy from '@/views/agreement/privacypolicy/index.vue'
-import Agreement from '@/views/agreement/index.vue'
-import Tipping from '@/views/tipping/index.vue' 
-import Errorpages from '@/views/user/No-parameters.vue'
-import User from '@/views/user/index.vue'
-import Control from '@/views/control/index.vue'
-import Essay from '@/views/essay/index.vue'
-import Dev from '@/views/essay/all/dev.vue'
-import Safe from '@/views/safe/index.vue'
 
 const routes = [
-  { path: '/', name: 'Home', component:() => import(Home) },
-  { path: '/agreement/useragreement', name: 'UserAgreement', component: () => import(UserAgreement) },
-  { path: '/agreement/privacypolicy', name: 'PrivacyPolicy', component: () => import(PrivacyPolicy) },
-  { path: '/agreement', name: 'Agreement', component: () => import(Agreement) },
-  { path: '/tipping', name: 'Tipping', component: () => import(Tipping) },
-  { path: '/user/:id', name: 'User', component: () => import(User) },
-  { path: '/user', name: 'UserError', component: () => import(Errorpages) },
-  { path: '/control/:id', name: 'Control', component: () => import(Control) },
-  { path: '/control', name: 'ControlError', component: () => import(Errorpages) },
-  { path: '/essay/all/:id',name:'DevEssay',component: () => import(Dev)},
-  { path: '/essay/all', name:'ErrorEssay',component: () => import(Errorpages)},
-  { path: '/essay' ,name: 'Essay' ,component: () => import(Essay)},
-  { path: '/safe', name:'Safe',component:() => import(Safe)},
+  { path: '/', name: 'Home', component:() => import('@/views/index.vue') },
+  { path: '/agreement/useragreement', name: 'UserAgreement', component: () => import('@/views/agreement/useragreement/index.vue') },
+  { path: '/agreement/privacypolicy', name: 'PrivacyPolicy', component: () => import('@/views/agreement/privacypolicy/index.vue') },
+  { path: '/agreement', name: 'Agreement', component: () => import('@/views/agreement/index.vue') },
+  { path: '/tipping', name: 'Tipping', component: () => import('@/views/tipping/index.vue') },
+  { path: '/user/:id', name: 'User', component: () => import('@/views/user/index.vue') },
+  { path: '/user', name: 'UserError', component: () => import('@/views/user/No-parameters.vue') },
+  { path: '/control/:id', name: 'Control', component: () => import('@/views/control/index.vue') },
+  { path: '/control', name: 'ControlError', component: () => import('@/views/user/No-parameters.vue') },
+  { path: '/essay/all/:id',name:'DevEssay',component: () => import('@/views/essay/all/dev.vue')},
+  { path: '/essay/all', name:'ErrorEssay',component: () => import('@/views/user/No-parameters.vue')},
+  { path: '/essay' ,name: 'Essay' ,component: () => import('@/views/essay/index.vue')},
+  { path: '/safe', name:'Safe',component:() => import('@/views/safe/index.vue')},
 ]
 
 const router = createRouter({
