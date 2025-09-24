@@ -12,19 +12,19 @@ import Dev from '@/views/essay/all/dev.vue'
 import Safe from '@/views/safe/index.vue'
 
 const routes = [
-  { path: '/', name: 'Home', component: Home },
-  { path: '/agreement/useragreement', name: 'UserAgreement', component: UserAgreement },
-  { path: '/agreement/privacypolicy', name: 'PrivacyPolicy', component: PrivacyPolicy },
-  { path: '/agreement', name: 'Agreement', component: Agreement },
-  { path: '/tipping', name: 'Tipping', component: Tipping },
-  { path: '/user/:id', name: 'User', component: User },
-  { path: '/user', name: 'UserError', component: Errorpages },
-  { path: '/control/:id', name: 'Control', component: Control },
-  { path: '/control', name: 'ControlError', component: Errorpages },
-  { path: '/essay/all/:id',name:'DevEssay',component:Dev},
-  { path: '/essay/all', name:'ErrorEssay',component:Errorpages},
-  { path: '/essay' ,name: 'Essay' ,component: Essay},
-  { path: '/safe', name:'Safe',component:Safe},
+  { path: '/', name: 'Home', component:() => import(Home) },
+  { path: '/agreement/useragreement', name: 'UserAgreement', component: () => import(UserAgreement) },
+  { path: '/agreement/privacypolicy', name: 'PrivacyPolicy', component: () => import(PrivacyPolicy) },
+  { path: '/agreement', name: 'Agreement', component: () => import(Agreement) },
+  { path: '/tipping', name: 'Tipping', component: () => import(Tipping) },
+  { path: '/user/:id', name: 'User', component: () => import(User) },
+  { path: '/user', name: 'UserError', component: () => import(Errorpages) },
+  { path: '/control/:id', name: 'Control', component: () => import(Control) },
+  { path: '/control', name: 'ControlError', component: () => import(Errorpages) },
+  { path: '/essay/all/:id',name:'DevEssay',component: () => import(Dev)},
+  { path: '/essay/all', name:'ErrorEssay',component: () => import(Errorpages)},
+  { path: '/essay' ,name: 'Essay' ,component: () => import(Essay)},
+  { path: '/safe', name:'Safe',component:() => import(Safe)},
 ]
 
 const router = createRouter({
