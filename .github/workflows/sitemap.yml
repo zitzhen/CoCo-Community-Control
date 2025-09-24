@@ -18,7 +18,8 @@ jobs:
         uses: cicirello/generate-sitemap@v1
         with:
           base-url-path: "https://cc.zitzhen.cn"
-          exclude-paths: "404.html,google46eebdeb664df7df.html,control/css,control/js"
+          exclude-paths: "404.html,google46eebdeb664df7df.html,baidu_verify_codeva-Nc3ckBEoE0.html,control/css,control/js,user"
+          disable-indexes: true
 
       - name: Add control subdirectories
         run: |
@@ -31,12 +32,29 @@ jobs:
             sed -i "/<\/urlset>/i \ \ <url>\n\ \ \ \ <loc>${url_path//\//\\/}<\/loc>\n\ \ <\/url>" sitemap.xml
           done
 
+      - name: Add user information pages
+        run: |
+          # 扫描user/information目录下的JSON文件（排除example.json）
+          find user/information -type f -name "*.json" ! -name "example.json" | while read file; do
+            # 提取纯文件名（不含路径和扩展名）
+            filename=$(basename "$file" .json)
+            # 构建URL并插入sitemap
+            url="https://cc.zitzhen.cn/user/$filename"
+            # 使用特殊分隔符避免路径转义问题
+            sed -i "\|</urlset>|i \ \ <url>\n\ \ \ \ <loc>$url</loc>\n\ \ </url>" sitemap.xml
+          done
+
       - name: Validate sitemap
         run: |
           echo "=== Sitemap Content ==="
           cat sitemap.xml
           echo "=== Control Paths Added ==="
           grep -oP '<loc>\Khttps://cc.zitzhen.cn/control/[^<]+' sitemap.xml
+          echo "=== User Paths Added ==="
+          grep -oP '<loc>\Khttps://cc.zitzhen.cn/user/[^<]+' sitemap.xml
+          echo "=== Excluded URLs Check ==="
+          ! grep -q 'https://cc.zitzhen.cn/user/example' sitemap.xml && echo "✅ example.json excluded" || echo "❌ example.json found in sitemap"
+          ! grep -q 'https://cc.zitzhen.cn/user/' sitemap.xml && echo "✅ /user/ directory excluded" || echo "❌ /user/ directory found in sitemap"
 
       - name: Set git user
         run: |
