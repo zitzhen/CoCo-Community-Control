@@ -10,7 +10,7 @@
 --success-color: #2ecc71;
 }
 
-body_safe {
+body {
 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 line-height: 1.6;
 color: var(--text-color);
@@ -19,7 +19,7 @@ margin: 0;
 padding: 0;
 }
 
-header_safe {
+header {
 background-color: var(--primary-color);
 color: white;
 padding: 1.5rem 0;
@@ -33,7 +33,7 @@ margin: 2rem auto;
 padding: 0 1rem;
 }
 
-h1_safe {
+h1{
 margin: 0;
 font-size: 2.2rem;
 }

@@ -1,8 +1,8 @@
 <template>
   <div class="vulnerability-report-page">
-    <header class="header_safe">
-      <div class="container_safe">
-        <h1 class="h1_safe">ZIT-CoCo-Community 安全中心</h1>
+    <header>
+      <div>
+        <h1 class="h1">ZIT-CoCo-Community 安全中心</h1>
       </div>
     </header>
 
@@ -175,8 +175,8 @@
       </div>
     </div>
 
-    <footer class="footer_safe">
-      <div class="container_safe">
+    <footer>
+      <div>
         <p>&copy; 2025 ZIT-CoCo-Community | 安全部门</p>
       </div>
     </footer>
@@ -331,7 +331,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 @import '@/assets/style/safe/style.css';
 </style>
 
