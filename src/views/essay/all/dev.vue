@@ -13,6 +13,7 @@
             <h2 class="error-title">此页面打击中</h2>
             <p class="error-message">
                 抱歉，您此页面搭建中，敬请期待。
+                <br />
                 CoCo-Community是开源项目，如果您是开发人员，您可以参与此<a href="https://github.com/zitzhen/CoCo-Community">项目</a>
             </p>
         </div>
