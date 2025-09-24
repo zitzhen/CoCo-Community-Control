@@ -107,171 +107,176 @@
   </div>
 </template>
 
-<script>
-import { marked } from "marked";
+<script setup>
+import { ref, onMounted } from "vue"
+import { useRoute } from "vue-router"
+import { marked } from "marked"
+import { useHead } from "@vueuse/head"
 
-export default {
-  name: "ControlDetail",
-  data() {
-    return {
-      loading: true,
-      errorVisible: false,
-      errorVisibleSmall: false,
-      errorMessage: "",
-      filename: "",
-      fileSize: "正在加载",
-      versions: [],
-      introduceHtml: "<p>正在处理</p>",
-      avatar: "",
-      authorName: "正在加载",
-      authorBio: "正在加载",
-      downloadUrl: "",
-      sourceUrl: "",
-    };
-  },
-  methods: {
-    offError() {
-      this.errorVisibleSmall = false;
-    },
+// -------- 响应式数据 --------
+const loading = ref(true)
+const errorVisible = ref(false)
+const errorVisibleSmall = ref(false)
+const errorMessage = ref("")
+const filename = ref("")
+const fileSize = ref("正在加载")
+const versions = ref([])
+const introduceHtml = ref("<p>正在处理</p>")
+const avatar = ref("")
+const authorName = ref("正在加载")
+const authorBio = ref("正在加载")
+const downloadUrl = ref("")
+const sourceUrl = ref("")
 
-    // README 候选（包含用户提供的正确路径 /information/readme/...）
-    async fetchReadmeCandidate(id) {
-      const candidates = [
-        `/information/readme/control/${id}/README.md`,
-        `/information/readme/control/${id}/readme.md`,
-        `/information/readme/control/${id}/Readme.md`,
-        `/information/readme/control/${id}/README.MD`,
-        `/information/readme/control/${id}/README.markdown`,
-        // 继续尝试其它常见位置（兼容旧结构）
-        `/information/control/${id}/README.md`,
-        `/information/control/${id}/readme.md`,
-        `/readme/control/${id}/README.md`,
-        `/readme/control/${id}/readme.md`,
-      ];
+const route = useRoute()
 
-      let firstHtml = null;
+// -------- 方法 --------
+function offError() {
+  errorVisibleSmall.value = false
+}
 
-      for (const url of candidates) {
-        try {
-          const res = await fetch(url);
-          const text = await res.text().catch(() => "");
-          const ct = (res.headers.get("content-type") || "").toLowerCase();
+// README 候选路径
+async function fetchReadmeCandidate(id) {
+  const candidates = [
+    `/information/readme/control/${id}/README.md`,
+    `/information/readme/control/${id}/readme.md`,
+    `/information/readme/control/${id}/Readme.md`,
+    `/information/readme/control/${id}/README.MD`,
+    `/information/readme/control/${id}/README.markdown`,
+    `/information/control/${id}/README.md`,
+    `/information/control/${id}/readme.md`,
+    `/readme/control/${id}/README.md`,
+    `/readme/control/${id}/readme.md`,
+  ]
 
-          if (!res.ok) {
-            console.debug("[ControlDetail] README 候选未命中：", url, res.status);
-            continue;
-          }
+  let firstHtml = null
 
-          // 如果返回的是 HTML（例如被 SPA fallback 成 index.html），跳过
-          if (
-            ct.includes("text/html") ||
-            /<!doctype|<html|<meta\s+charset|<head|<body/i.test(text)
-          ) {
-            if (!firstHtml) firstHtml = { url, status: res.status, snippet: text.slice(0, 1024) };
-            console.warn("[ControlDetail] README 返回 HTML（可能是 index.html）: ", url);
-            continue;
-          }
+  for (const url of candidates) {
+    try {
+      const res = await fetch(url)
+      const text = await res.text().catch(() => "")
+      const ct = (res.headers.get("content-type") || "").toLowerCase()
 
-          // 命中 Markdown / 文本
-          return { url, text };
-        } catch (err) {
-          console.warn("[ControlDetail] 请求 README 异常：", url, err);
-          continue;
-        }
+      if (!res.ok) {
+        console.debug("[ControlDetail] README 候选未命中：", url, res.status)
+        continue
       }
 
-      return { error: true, firstHtml };
-    },
+      if (ct.includes("text/html") || /<!doctype|<html/i.test(text)) {
+        if (!firstHtml) firstHtml = { url, status: res.status, snippet: text.slice(0, 1024) }
+        console.warn("[ControlDetail] README 返回 HTML（可能是 index.html）: ", url)
+        continue
+      }
 
-    async fetchData() {
+      return { url, text }
+    } catch (err) {
+      console.warn("[ControlDetail] 请求 README 异常：", url, err)
+      continue
+    }
+  }
+
+  return { error: true, firstHtml }
+}
+
+async function fetchData() {
+  try {
+    const { id } = route.params
+    if (!id) {
+      throwError("未检测到参数")
+      return
+    }
+    filename.value = id
+
+    // 1) information.json
+    const infoUrl = `/information/control/${id}/information.json`
+    const infoRes = await fetch(infoUrl)
+    if (!infoRes.ok) {
+      const body = await infoRes.text().catch(() => "")
+      console.warn("[ControlDetail] information.json 错误响应：", infoUrl, infoRes.status, body.slice?.(0, 500))
+      throw new Error(`未找到 information.json：${infoUrl} （HTTP ${infoRes.status}）`)
+    }
+    const jsonData = await infoRes.json()
+
+    // 2) 控件文件（计算大小）
+    const controlUrl = `/control/${id}/control.jsx`
+    const controlRes = await fetch(controlUrl)
+    if (!controlRes.ok) {
+      const body = await controlRes.text().catch(() => "")
+      console.warn("[ControlDetail] control.jsx 错误响应：", controlUrl, controlRes.status, body.slice?.(0, 500))
+      throw new Error(`未找到控件文件：${controlUrl} （HTTP ${controlRes.status}）`)
+    }
+    const controlBlob = await controlRes.blob()
+    fileSize.value = (controlBlob.size / 1024).toFixed(2)
+
+    // 3) README
+    const readmeResult = await fetchReadmeCandidate(id)
+    if (readmeResult.error) {
+      if (readmeResult.firstHtml) {
+        introduceHtml.value =
+          `<p style="color:#b33">未能正确加载 README.md（服务器返回 HTML 或 路径不匹配）。</p>` +
+          `<p>请确认文件存在于 <code>public/information/readme/control/${id}/README.md</code>，并且文件名大小写完全匹配。</p>`
+      } else {
+        introduceHtml.value =
+          `<p style="color:#b33">未能找到 README.md（尝试了常见大小写与目录）。</p>` +
+          `<p>请确认文件存在于 <code>public/information/readme/control/${id}/README.md</code>。</p>`
+      }
+    } else {
+      introduceHtml.value = marked.parse(readmeResult.text || "")
+    }
+
+    // 4) Github 作者信息
+    if (jsonData && jsonData.author) {
       try {
-        const { id } = this.$route.params;
-        if (!id) {
-          this.throwError("未检测到参数");
-          return;
-        }
-        this.filename = id;
-
-        // 1) information.json（先拿到版本与 author）
-        const infoUrl = `/information/control/${id}/information.json`;
-        const infoRes = await fetch(infoUrl);
-        if (!infoRes.ok) {
-          const body = await infoRes.text().catch(() => "");
-          console.warn("[ControlDetail] information.json 错误响应：", infoUrl, infoRes.status, body.slice?.(0,500));
-          throw new Error(`未找到 information.json：${infoUrl} （HTTP ${infoRes.status}）`);
-        }
-        const jsonData = await infoRes.json();
-
-        // 2) 控件文件（计算大小）
-        const controlUrl = `/control/${id}/control.jsx`;
-        const controlRes = await fetch(controlUrl);
-        if (!controlRes.ok) {
-          const body = await controlRes.text().catch(() => "");
-          console.warn("[ControlDetail] control.jsx 错误响应：", controlUrl, controlRes.status, body.slice?.(0,500));
-          throw new Error(`未找到控件文件：${controlUrl} （HTTP ${controlRes.status}）`);
-        }
-        const controlBlob = await controlRes.blob();
-        this.fileSize = (controlBlob.size / 1024).toFixed(2);
-
-        // 3) README（尝试多个候选，包括 /information/readme/...）
-        const readmeResult = await this.fetchReadmeCandidate(id);
-        if (readmeResult.error) {
-          if (readmeResult.firstHtml) {
-            console.debug("[ControlDetail] README 首次被识别为 HTML，snippet：", readmeResult.firstHtml);
-            this.introduceHtml =
-              `<p style="color:#b33">未能正确加载 README.md（服务器返回 HTML 或 路径不匹配）。</p>` +
-              `<p>请确认文件存在于 <code>public/information/readme/control/${id}/README.md</code>，并且文件名大小写完全匹配。</p>`;
-          } else {
-            this.introduceHtml =
-              `<p style="color:#b33">未能找到 README.md（尝试了常见大小写与目录）。</p>` +
-              `<p>请确认文件存在于 <code>public/information/readme/control/${id}/README.md</code>。</p>`;
-          }
+        const creatorRes = await fetch(`https://api.github.com/users/${jsonData.author}`)
+        if (creatorRes.ok) {
+          const creator = await creatorRes.json()
+          avatar.value = creator.avatar_url
+          authorName.value = creator.name || jsonData.author
+          authorBio.value = creator.bio
         } else {
-          this.introduceHtml = marked.parse(readmeResult.text || "");
+          authorName.value = jsonData.author
         }
-
-        // 4) Github 作者信息（可选）
-        if (jsonData && jsonData.author) {
-          try {
-            const creatorRes = await fetch(`https://api.github.com/users/${jsonData.author}`);
-            if (creatorRes.ok) {
-              const creator = await creatorRes.json();
-              this.avatar = creator.avatar_url;
-              this.authorName = creator.name || jsonData.author;
-              this.authorBio = creator.bio;
-            } else {
-              this.authorName = jsonData.author;
-            }
-          } catch (err) {
-            console.warn("[ControlDetail] 获取 Github 信息失败：", err);
-            this.authorName = jsonData.author;
-          }
-        }
-
-        this.downloadUrl = `/control/${id}/control.jsx`;
-        this.sourceUrl = this.downloadUrl;
-        this.versions = Array.isArray(jsonData.Version_number_list) ? jsonData.Version_number_list : [];
-      } catch (e) {
-        console.error("加载内容出错:", e);
-        this.throwError(e.message || "未知错误");
-      } finally {
-        this.loading = false;
+      } catch (err) {
+        console.warn("[ControlDetail] 获取 Github 信息失败：", err)
+        authorName.value = jsonData.author
       }
-    },
+    }
 
-    throwError(msg) {
-      this.errorMessage = msg;
-      this.errorVisible = true;
-      this.errorVisibleSmall = true;
-      this.loading = false;
-    },
-  },
+    downloadUrl.value = `/control/${id}/control.jsx`
+    sourceUrl.value = downloadUrl.value
+    versions.value = Array.isArray(jsonData.Version_number_list) ? jsonData.Version_number_list : []
 
-  mounted() {
-    this.fetchData();
-  },
-};
+    // ✅ 动态更新 SEO 信息
+    useHead({
+      title: `${filename.value} 控件 - ${authorName.value}|ZIT-CoCo-Community`,
+      meta: [
+        { name: "description", content: authorBio.value || "一个自定义控件" },
+        { property: "og:title", content: `${filename.value} 控件` },
+        { property: "og:description", content: authorBio.value || "一个自定义控件" },
+        { property: "og:image", content: avatar.value || "" }
+      ]
+    })
+  } catch (e) {
+    console.error("加载内容出错:", e)
+    throwError(e.message || "未知错误")
+  } finally {
+    loading.value = false
+  }
+}
+
+function throwError(msg) {
+  errorMessage.value = msg
+  errorVisible.value = true
+  errorVisibleSmall.value = true
+  loading.value = false
+}
+
+
+onMounted(() => {
+  fetchData()
+})
 </script>
+
 
 <style>
 @import "@/assets/css/style.css";

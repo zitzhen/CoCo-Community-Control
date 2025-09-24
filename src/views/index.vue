@@ -110,8 +110,8 @@
           </a>
         </div>
         <p>请优先使用GitHub查看ZIT-CoCo-Community的开源项目</p>
-        <router-link to="/agreement/useragreement">用户协议</router-link>
-        <router-link to="/agreement/privacypolicy">隐私协议</router-link>
+        <router-link to="/agreement/useragreement"><button class="button-book">用户协议</button></router-link>
+        <router-link to="/agreement/privacypolicy"><button class="button-book">隐私协议</button></router-link>
       </div>
     </footer>
   </div>
@@ -197,4 +197,37 @@ export default {
 @import '../../src/assets/style/home/Loading.css';
 @import '../../src/assets/style/control/error.css';
 @import '../../src/assets/style/home/pay_button.css';
+</style>
+
+<script setup>
+import { useHead } from '@vueuse/head'
+
+useHead({
+  title: 'ZIT-CoCo-Community|CoCo编辑器的小圳社区|自定义控件下载中心',
+  meta: [
+    {content: 'CoCo-Community，全称为ZIT-CoCo-Community。这是由于ZIT小圳创科工作室的创造的编程猫CoCo编辑器社区，目前提供自定义控件下载服务，后续会支持论坛的交流。' }
+  ]
+})
+</script>
+
+<style scoped>
+/*协议/**/ 
+    .button-book {
+    font-size: 17px;
+    padding: 0.5em 2em;
+    border: transparent;
+    box-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+    background: dodgerblue;
+    color: white;
+    border-radius: 4px;
+}
+
+.button-book:hover {
+    background: rgb(2,0,36);
+    background: linear-gradient(90deg, rgba(30,144,255,1) 0%, rgba(0,212,255,1) 100%);
+}
+
+.button-book:active {
+    transform: translate(0em, 0.2em);
+}
 </style>

@@ -6,7 +6,9 @@ import { resolve } from 'path'
 const useHttps = process.env.NODE_ENV !== 'production'
 
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [
+    vue(),
+  ],
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src'),
@@ -21,5 +23,8 @@ export default defineConfig({
         host: 'localhost',
         port: 5173,
       }
-    : undefined,
+    : {
+        host: 'localhost',
+        port: 5173,
+      },
 })
