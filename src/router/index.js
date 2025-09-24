@@ -18,7 +18,7 @@ const routes = [
 ]
 
 // 在 Cloudflare Pages 环境中使用正确的 base
-const base = import.meta.env.BASE_URL || '/';
+const base = '/';
 
 const router = createRouter({
   history: createWebHistory(base),
