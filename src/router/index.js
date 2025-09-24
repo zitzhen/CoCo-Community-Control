@@ -17,8 +17,11 @@ const routes = [
   { path: '/new-control', name:'new-control',component:() => import('@/views/essay/all/dev.vue') }
 ]
 
+// 在 Cloudflare Pages 环境中使用正确的 base
+const base = import.meta.env.BASE_URL || '/';
+
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(base),
   routes
 })
 
