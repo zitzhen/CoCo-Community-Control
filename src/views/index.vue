@@ -151,16 +151,10 @@ export default {
       );
     },
     async getSubDirs() {
-      const owner = 'zitzhen';
-      const repo = 'CoCo-Community';
-      const path = 'control';
-      const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
-      
       try {
-        const { data } = await axios.get(url);
-        let dirs = data.filter(item => item.type === "dir").map(item => item.name);
-        // 过滤掉 CS 和 JS 文件夹
-        dirs = dirs.filter(name => name !== 'css' && name !== 'js');
+        // 使用本地 list.json 文件获取控件列表
+        const { data } = await axios.get('/list.json');
+        const dirs = data.list || [];
         console.log("Directories:", dirs);
         
         const fileObjs = dirs.map(name => ({
