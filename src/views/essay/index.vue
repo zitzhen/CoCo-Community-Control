@@ -175,6 +175,17 @@ onMounted(() => {
 });
 </script>
 
+<script setup>
+import { useHead } from '@vueuse/head'
+
+useHead({
+  title: '文章|ZIT-CoCo-Community',
+  meta: [
+    {content: '这是CoCo-Community的文章页面，如果你有任何关于CoCo的好的文章，可在此处发布。' }
+  ]
+})
+</script>
+
 <style scoped>
 * {
     margin: 0;
