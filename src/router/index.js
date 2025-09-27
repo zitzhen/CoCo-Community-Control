@@ -14,7 +14,7 @@ const routes = [
   { path: '/essay/all', name:'ErrorEssay',component: () => import('@/views/user/No-parameters.vue')},
   { path: '/essay' ,name: 'Essay' ,component: () => import('@/views/essay/index.vue')},
   { path: '/safe', name:'Safe',component:() => import('@/views/safe/index.vue')},
-  { path: '/new-control', name:'new-control',component:() => import('@/views/essay/all/dev.vue') }
+  { path: '/new-control', name:'new-control',component: () => import('@/views/essay/all/dev.vue') }
 ]
 
 // 在 Cloudflare Pages 环境中使用正确的 base
@@ -25,4 +25,22 @@ const router = createRouter({
   routes
 })
 
-export default router
+// 添加路由守卫处理 Cloudflare Pages SPA 回退
+router.beforeEach((to, from, next) => {
+  // 如果是根路径，直接通过
+  if (to.path === '/') {
+    next();
+    return;
+  }
+  
+  // 检查目标路由是否存在
+  const matched = router.resolve(to.path);
+  if (matched.route.name) {
+    next();
+  } else {
+    // 如果路由不存在，重定向到首页
+    next({ name: 'Home' });
+  }
+});
+
+export default router;
