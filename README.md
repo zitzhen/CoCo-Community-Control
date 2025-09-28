@@ -1,6 +1,6 @@
 # 这是CoCo-Community 的控件存放仓库
 
->![TIP]
+> [!tip]
 >自2025年09月28日开始迁移，目的是为了让[CoCo-Community](https://github.com/zitzhen/CoCo-Community)显示正确的技术栈，节约时间，节省开发者上传的难度。
 
 ## 控件贡献列表
