@@ -1,58 +1,51 @@
-# 贡献指南 (Contributing Guidelines)
-感谢你愿意为CoCo-Community做贡献！🎉 无论是提交 Bug、建议新功能，还是直接贡献代码，我们都非常欢迎。
+# 上传控件贡献指南
+感谢你愿意为CoCo-Community上传您的控件！🎉 无论是UI控件还是功能控件，我们都非常欢迎。
 
-在参与之前，请花几分钟时间阅读本指南，以确保贡献流程顺畅高效。
+在参与之前，请花几分钟时间阅读本指南，以确您能正确的上传您的控件。
 
-## 📌 如何贡献？
-1. ### 报告问题 (Issues)
-在提交 Issue 前，请先搜索是否已有类似问题。
-
-如果是 Bug，请提供：
-
-环境信息（操作系统、版本等）
-
-重现步骤（如何触发 Bug？）
-
-预期行为 vs 实际行为
-
-如果是功能请求，请说明 为什么需要这个功能 以及 可能的实现思路。
-
-2. ### 提交代码 (Pull Requests)
-Fork 本仓库，并在你的 Fork 上修改代码。
-
-创建分支（推荐命名方式）：
-
-```sh
-git checkout -b feat/add-new-feature   # 新功能
-git checkout -b fix/bug-description    # Bug 修复
+## 📌 如何提交控件
+### 方法1:发送电子邮件
+这是最简单的控件推送方式，您只需要将以下材料发送给`oliverxiaozhen@outlook.com`我们会在7天内将您的控件添加。
+材料：
+- 控件源文件
+- 控件描述
+- Github信息
+- 版本信息
+### 方法2:自行提交
+这是复杂的方式，但会在Github仓库贡献者列表中出现：）
+#### 1. 第一步：克隆仓库
+您需要克隆[CoCo-Community-Control](https://github.com/zitzhen/CoCo-Community-Control)仓库。
+>[!Warning]
+>克隆仓库后，请勿脱离复刻网络（Fork Network）否则您将无法通过您克隆的仓库上传控件。
+在您克隆的仓库中，创建新的分支并命名为`new-control/your_control`
+在新的分支中导入文件。
+文件格式
 ```
-编写代码，并确保：
-
-* 遵循项目的代码风格（如 ESLint、Prettier 等）。
-
-* 如果可以，请添加必要的测试。
-
-* 更新相关文档（如 README.md）。
-
-提交 PR，并：
-
-* 关联相关 Issue。
-
-* 提供清晰的 修改说明。
-
-* 等待测试通过，并处理 Review 意见。
-
-1. 代码风格
-* 缩进：项目现有风格。
- 命名：遵循现有风格。
-
-
-1. 本地开发
-请参阅：[如何调试CoCo-Community](https://github.com/zitzhen/CoCo-Community/wiki/%E8%B0%83%E8%AF%95CoCo%E2%80%90Community)
+your_control|
+    |1.0.0-->版本号
+        |control.jsx-->控件文件 必须命名为此文件名
+    |README.md -->控件描述文件
+    |information.json  -->控件配置文件
+```
+information.json文件内容示范
+```json
+{
+    "Release_input": "发行版数量",
+    "Current_version":"最新版本号",
+    "author":"Github作者用户名",
+    "Latest_submission_time":false,
+    "Version_number_list":[
+        "第一个版本号",
+        "第二的版本号"
+    ]
+}
+```
+完成上述操作后，向源仓库提交拉取请求（PR）
 ## ❓ 需要帮助？
 如果你对如何贡献有疑问，可以：
 
-* 询问项目所有者
+联系项目工程师
+- 刘小圳（oliverxiaozhen@outlook.com）
 
 ## 🙏 致谢
 感谢每一位贡献者的支持！你的努力让这个项目变得更好！✨
