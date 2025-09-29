@@ -1,7 +1,8 @@
 # 这是CoCo-Community 的控件存放仓库
 
 > [!tip]
->自2025年09月28日开始迁移，目的是为了让[CoCo-Community](https://github.com/zitzhen/CoCo-Community)显示正确的技术栈，节约时间，节省开发者上传的难度。
+>自2025年09月28日开始迁移，目的是为了让[CoCo-Community](https://github.com/zitzhen/CoCo-Community)显示正确的技术栈，节约时间，节省开发者上传的难度。  
+> 此仓库作为子仓库使用，于2025年09月29日公开。
 
 ## 控件贡献列表
 | 昵称   |头像| 贡献数量/个 |
