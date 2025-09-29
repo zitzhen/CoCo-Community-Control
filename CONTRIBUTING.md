@@ -18,7 +18,7 @@
 >[!Warning]
 >克隆仓库后，请勿脱离复刻网络（Fork Network）否则您将无法通过您克隆的仓库上传控件。
 在您克隆的仓库中，创建新的分支并命名为`new-control/your_control`
-在新的分支中导入文件。
+在新的分支中导入文件。  
 文件格式
 ```
 your_control|
