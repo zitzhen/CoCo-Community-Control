@@ -15,6 +15,8 @@
 这是复杂的方式，但会在Github仓库贡献者列表中出现：）
 #### 1. 第一步：克隆仓库
 您需要克隆[CoCo-Community-Control](https://github.com/zitzhen/CoCo-Community-Control)仓库。
+>[!Warning]
+>克隆仓库后，请勿脱离复刻网络（Fork Network）否则您将无法通过您克隆的仓库上传控件。
 在您克隆的仓库中，创建新的分支并命名为`new-control/your_control`
 在新的分支中导入文件。
 文件格式
@@ -38,6 +40,7 @@ information.json文件内容示范
     ]
 }
 ```
+完成上述操作后，向源仓库提交拉取请求（PR）
 ## ❓ 需要帮助？
 如果你对如何贡献有疑问，可以：
 
