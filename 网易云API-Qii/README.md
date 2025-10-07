@@ -10,11 +10,11 @@
 
 ### 1. 获取音乐信息
 
-![积木：获取音乐信息](https://cc.zitzhen.cn/contorl/网易云API-Qii/images/1.png)
+![积木：获取音乐信息](https://cc.zitzhen.cn/control/网易云API-Qii/images/1.png)
 
 ### 2. 搜索音乐
 
-![积木：搜索音乐](https://cc.zitzhen.cn/contorl/网易云API-Qii/images/images/2.png)
+![积木：搜索音乐](https://cc.zitzhen.cn/control/网易云API-Qii/images/2.png)
 
 搜索音乐事件会重复执行多次，每次输出一个音乐的信息。
 
