@@ -7,7 +7,7 @@
 
 **基础用法：**
 
-![截屏2025-06-01 23.02.49.png](https://cc.zitzhen.cn/contronl/随机获取网易云音乐一首歌曲-LJT/images/1.png)
+![调用/获取](https://cc.zitzhen.cn/control/随机获取网易云音乐一首歌曲-LJT/images/1.png)
 
 ## 下载
 请点击ZIT-CoCo-Community上方的下载按钮
