@@ -10,7 +10,7 @@
 
 **基础用法：**
 
-![截屏2025-06-01 22.51.47.png](https://cc.zitzhen.cn/contronl/触摸板-LJT/images/1.png)
+![积木：打印坐标](https://cc.zitzhen.cn/control/触摸板-LJT/images/1.png)
 
 **其它功能请自行探索o(≧口≦)o**
 
