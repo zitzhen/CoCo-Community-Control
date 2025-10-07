@@ -8,7 +8,7 @@
 <h2> 使用</h2>
 </div>
 
-![积木：代码示范](http://cc.zitzhen.cn/control/%E5%85%A8%E5%B1%80%E5%B9%BF%E6%92%AD-Qii/images/1.png)
+![积木：代码示范](https://cc.zitzhen.cn/control/%E5%85%A8%E5%B1%80%E5%B9%BF%E6%92%AD-Qii/images/1.png)
 
 <span>
 调用全局广播 <span style="color: blue;">发送广播</span> 后，所有屏幕中的 <span style="color: blue;">收到广播</span> 事件都会被调用。
