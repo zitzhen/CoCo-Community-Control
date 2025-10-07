@@ -3,7 +3,7 @@
   bong ~，放礼花啦！！！
 </div>
 
-![效果图](https://cc.zitzhen.cn/control/五彩纸屑-Qii/images/1gif)
+![效果图](https://cc.zitzhen.cn/control/五彩纸屑-Qii/images/1.gif)
 
 <div style="border-left: 5px solid rgb(0, 225, 255); padding-left: 10px;">
 <h2>使用方法</h2>
