@@ -10,7 +10,7 @@
 <h2>特点</h2>
 </div>
 
-![效果图](https://cc.zitzhen.cn/control/歌词展示-Qii/1.gif)
+![效果图](https://cc.zitzhen.cn/control/歌词展示-Qii/images/1.gif)
 
 
 使用方法简单，只有两块积木。
