@@ -4,7 +4,7 @@
 
 ## **食用方法：**
 
-![截屏2025-06-01 15.45.38.png](https://cc.zitzhen.cn/contronl/执行积木-LJT/images/1.png)
+![](https://cc.zitzhen.cn/control/执行积木-LJT/images/1.png)
 
 **以上图片来自旧文档(ﾉ*･ω･)ﾉ**
 
