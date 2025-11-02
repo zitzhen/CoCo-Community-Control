@@ -55,7 +55,7 @@ jobs:
           BRANCH="d1-sync-${{ github.run_id }}"
           gh pr create \
             --title "Update D1 data ($(date +%Y-%m-%d))" \
-            --body "Automated data sync from Cloudflare D1" \
+            --body "Automated data sync from Cloudflare D1 I need @Iamliuxiaozhen to handle this pull request." \
             --base main \
             --head "$BRANCH"
         env:
