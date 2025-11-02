@@ -3,156 +3,115 @@ name: Sync Cloudflare D1 to JSON
 
 on:
   schedule:
+    # 每小时执行一次
     - cron: '0 * * * *'
-  workflow_dispatch:
+  workflow_dispatch: # 允许手动触发
 
 jobs:
   sync-d1:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
           
       - name: Setup tools
-        run: sudo apt-get install -y sqlite3 jq curl
+        run: sudo apt-get install -y jq curl
         
-      - name: Test API token permissions
-        env:
-          ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-        run: |
-          echo "测试 API Token 权限..."
-          
-          # 测试基本的账户访问权限
-          RESPONSE=$(curl -s -X GET \
-            "https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID" \
-            -H "Authorization: Bearer $API_TOKEN" \
-            -H "Content-Type: application/json" \
-            -w "\n%{http_code}")
-          
-          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
-          RESPONSE_BODY=$(echo "$RESPONSE" | head -n -1)
-          
-          echo "账户信息请求状态码: $HTTP_CODE"
-          if [ "$HTTP_CODE" = "200" ]; then
-            echo "✅ API Token 基本权限正常"
-            echo "账户名称: $(echo "$RESPONSE_BODY" | jq -r '.result.name // "未知"')"
-          else
-            echo "❌ API Token 无法访问账户"
-            echo "$RESPONSE_BODY" | jq .
-            exit 1
-          fi
-          
-      - name: List D1 databases
-        env:
-          ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-        run: |
-          echo "获取 D1 数据库列表..."
-          
-          RESPONSE=$(curl -s -X GET \
-            "https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/d1/database" \
-            -H "Authorization: Bearer $API_TOKEN" \
-            -H "Content-Type: application/json" \
-            -w "\n%{http_code}")
-          
-          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
-          RESPONSE_BODY=$(echo "$RESPONSE" | head -n -1)
-          
-          echo "D1 列表请求状态码: $HTTP_CODE"
-          if [ "$HTTP_CODE" = "200" ]; then
-            echo "✅ 成功获取 D1 数据库列表"
-            echo "数据库列表:"
-            echo "$RESPONSE_BODY" | jq -r '.result[] | "\(.name) - \(.uuid)"'
-          else
-            echo "❌ 无法获取 D1 数据库列表"
-            echo "$RESPONSE_BODY" | jq .
-            exit 1
-          fi
-          
-      - name: Query D1 data directly
+      - name: Query D1 database
         env:
           ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           DATABASE_ID: ${{ secrets.CLOUDFLARE_D1_DATABASE_ID }}
           API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
-          echo "直接查询 D1 数据（不使用导出功能）..."
+          echo "🔄 开始查询 Cloudflare D1 数据库..."
           
-          # 使用 D1 查询 API 而不是导出 API
+          # 执行 SQL 查询
           RESPONSE=$(curl -s -X POST \
             "https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/d1/database/$DATABASE_ID/query" \
             -H "Authorization: Bearer $API_TOKEN" \
             -H "Content-Type: application/json" \
             -d '{
               "sql": "SELECT name, size, downloads, likes, collections, author FROM components ORDER BY name"
-            }' \
-            -w "\n%{http_code}")
+            }')
           
-          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
-          RESPONSE_BODY=$(echo "$RESPONSE" | head -n -1)
-          
-          echo "查询请求状态码: $HTTP_CODE"
-          
-          if [ "$HTTP_CODE" = "200" ]; then
-            SUCCESS=$(echo "$RESPONSE_BODY" | jq -r '.success')
-            if [ "$SUCCESS" = "true" ]; then
-              echo "✅ D1 查询成功"
-              
-              # 提取数据并生成 JSON
-              echo "$RESPONSE_BODY" | jq '.result[0].results' | jq '{list: .}' > new_list.json
-              
-              echo "数据行数: $(jq '.list | length' new_list.json)"
-              echo "预览数据:"
-              jq '.list[0:3]' new_list.json
-            else
-              echo "❌ D1 查询返回失败"
-              echo "$RESPONSE_BODY" | jq .
-              exit 1
-            fi
+          # 检查响应是否成功
+          SUCCESS=$(echo "$RESPONSE" | jq -r '.success')
+          if [ "$SUCCESS" = "true" ]; then
+            echo "✅ D1 查询成功"
+            
+            # 提取数据并生成 JSON 文件
+            echo "$RESPONSE" | jq '.result[0].results' | jq '{list: .}' > new_list.json
+            
+            # 统计数据
+            COUNT=$(jq '.list | length' new_list.json)
+            echo "📊 获取到 $COUNT 条数据"
+            
+            # 显示前3条数据预览
+            echo "📋 数据预览:"
+            jq '.list[0:3]' new_list.json
+            
           else
-            echo "❌ D1 查询请求失败"
-            echo "$RESPONSE_BODY" | jq .
+            echo "❌ D1 查询失败"
+            echo "$RESPONSE" | jq .
             exit 1
           fi
           
       - name: Check for changes
-        id: changes
+        id: check_changes
         run: |
-          echo "检查数据变化..."
+          echo "🔍 检查数据变化..."
           if [ ! -f list.json ]; then
-            echo "📝 首次生成 list.json"
-            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "📝 首次生成 list.json 文件"
+            echo "changes_detected=true" >> $GITHUB_OUTPUT
           elif cmp -s new_list.json list.json; then
             echo "✅ 数据无变化"
-            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "changes_detected=false" >> $GITHUB_OUTPUT
           else
             echo "📝 检测到数据变化"
-            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "changes_detected=true" >> $GITHUB_OUTPUT
+            echo "差异统计:"
+            OLD_COUNT=$(jq '.list | length' list.json 2>/dev/null || echo 0)
+            NEW_COUNT=$(jq '.list | length' new_list.json)
+            echo "原数据: $OLD_COUNT 条，新数据: $NEW_COUNT 条"
           fi
           
       - name: Update JSON file
-        if: steps.changes.outputs.changed == 'true'
+        if: steps.check_changes.outputs.changes_detected == 'true'
         run: |
           mv new_list.json list.json
-          echo "✅ 已更新 list.json"
+          echo "✅ 已更新 list.json 文件"
+          echo "🕐 更新时间: $(date -u +'%Y-%m-%d %H:%M UTC')"
           
       - name: Create Pull Request
-        if: steps.changes.outputs.changed == 'true'
+        if: steps.check_changes.outputs.changes_detected == 'true'
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "chore: 自动同步 Cloudflare D1 数据"
+          commit-message: "chore: 自动同步 Cloudflare D1 数据 [$(date -u +'%Y-%m-%d %H:%M')]"
           title: "🔄 自动同步: Cloudflare D1 数据更新"
           body: |
-            自动同步 Cloudflare D1 数据库内容到 JSON 文件。
+            此 PR 由自动同步工作流创建，包含最新的 Cloudflare D1 数据库内容。
             
-            **同步时间:** $(date -u +'%Y-%m-%d %H:%M UTC')
-            **数据行数:** $(jq '.list | length' list.json)
-          branch: "auto-sync/d1-$(date +%s)"
+            ## 变更详情
+            - 更新了 `list.json` 文件
+            - 数据表: `components`
+            - 数据行数: $(jq '.list | length' list.json)
+            
+            **同步时间:** $(date -u +'%Y-%m-%d %H:%M UTC')  
+            **触发方式:** ${{ github.event.schedule && '定时任务' || '手动触发' }}  
+            **工作流运行:** [${{ github.workflow }} #${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            
+            > 🔄 自动同步 - 仅在检测到数据变化时创建 PR
+          branch: "auto-sync/d1-data-$(date +%Y%m%d-%H%M%S)"
           delete-branch: true
+          labels: "automated-pr,data-sync,d1"
           
-      - name: Cleanup
-        if: always()
-        run: rm -f new_list.json
+      - name: Cleanup on no changes
+        if: steps.check_changes.outputs.changes_detected == 'false'
+        run: |
+          rm -f new_list.json
+          echo "✅ 数据无变化，已清理临时文件"
+          echo "🕐 检查时间: $(date -u +'%Y-%m-%d %H:%M UTC')"
