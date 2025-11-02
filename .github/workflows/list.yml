@@ -1,3 +1,4 @@
+# .github/workflows/sync-d1-to-json.yml
 name: Sync Cloudflare D1 to JSON
 
 on:
@@ -17,20 +18,16 @@ jobs:
       - name: Setup tools
         run: sudo apt-get install -y sqlite3 jq curl
         
-      - name: Debug D1 export request
+      - name: Test API token permissions
         env:
           ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          DATABASE_ID: ${{ secrets.CLOUDFLARE_D1_DATABASE_ID }}
           API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
-          echo "调试 D1 导出请求..."
-          echo "账户 ID: $ACCOUNT_ID"
-          echo "数据库 ID: $DATABASE_ID"
-          echo "API Token 长度: ${#API_TOKEN}"
+          echo "测试 API Token 权限..."
           
-          # 测试导出 API
-          RESPONSE=$(curl -s -X POST \
-            "https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/d1/database/$DATABASE_ID/export" \
+          # 测试基本的账户访问权限
+          RESPONSE=$(curl -s -X GET \
+            "https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID" \
             -H "Authorization: Bearer $API_TOKEN" \
             -H "Content-Type: application/json" \
             -w "\n%{http_code}")
@@ -38,76 +35,87 @@ jobs:
           HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
           RESPONSE_BODY=$(echo "$RESPONSE" | head -n -1)
           
-          echo "HTTP 状态码: $HTTP_CODE"
-          echo "响应内容:"
-          echo "$RESPONSE_BODY" | jq .
-          
-          if [ "$HTTP_CODE" != "200" ]; then
-            echo "❌ D1 导出请求失败"
-            exit 1
-          fi
-          
-          # 提取下载 URL
-          DOWNLOAD_URL=$(echo "$RESPONSE_BODY" | jq -r '.result.url')
-          echo "下载 URL: $DOWNLOAD_URL"
-          
-          if [ "$DOWNLOAD_URL" = "null" ] || [ -z "$DOWNLOAD_URL" ]; then
-            echo "❌ 无法获取下载 URL，响应详情:"
+          echo "账户信息请求状态码: $HTTP_CODE"
+          if [ "$HTTP_CODE" = "200" ]; then
+            echo "✅ API Token 基本权限正常"
+            echo "账户名称: $(echo "$RESPONSE_BODY" | jq -r '.result.name // "未知"')"
+          else
+            echo "❌ API Token 无法访问账户"
             echo "$RESPONSE_BODY" | jq .
             exit 1
           fi
           
-          echo "DOWNLOAD_URL=$DOWNLOAD_URL" >> $GITHUB_ENV
-          
-      - name: Download D1 database
+      - name: List D1 databases
         env:
-          DOWNLOAD_URL: ${{ env.DOWNLOAD_URL }}
+          ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
-          echo "下载数据库文件..."
-          wget -O database.sqlite "$DOWNLOAD_URL"
+          echo "获取 D1 数据库列表..."
           
-          # 检查文件是否下载成功
-          if [ ! -f database.sqlite ] || [ ! -s database.sqlite ]; then
-            echo "❌ 数据库文件下载失败或为空"
+          RESPONSE=$(curl -s -X GET \
+            "https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/d1/database" \
+            -H "Authorization: Bearer $API_TOKEN" \
+            -H "Content-Type: application/json" \
+            -w "\n%{http_code}")
+          
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          RESPONSE_BODY=$(echo "$RESPONSE" | head -n -1)
+          
+          echo "D1 列表请求状态码: $HTTP_CODE"
+          if [ "$HTTP_CODE" = "200" ]; then
+            echo "✅ 成功获取 D1 数据库列表"
+            echo "数据库列表:"
+            echo "$RESPONSE_BODY" | jq -r '.result[] | "\(.name) - \(.uuid)"'
+          else
+            echo "❌ 无法获取 D1 数据库列表"
+            echo "$RESPONSE_BODY" | jq .
             exit 1
           fi
           
-          echo "✅ 数据库文件下载成功"
-          ls -la database.sqlite
-          
-      - name: Extract data from SQLite
+      - name: Query D1 data directly
+        env:
+          ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          DATABASE_ID: ${{ secrets.CLOUDFLARE_D1_DATABASE_ID }}
+          API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
-          echo "从 SQLite 提取数据..."
+          echo "直接查询 D1 数据（不使用导出功能）..."
           
-          # 检查表是否存在
-          if ! sqlite3 database.sqlite ".tables" | grep -q components; then
-            echo "❌ 数据库中不存在 'components' 表"
-            sqlite3 database.sqlite ".tables"
+          # 使用 D1 查询 API 而不是导出 API
+          RESPONSE=$(curl -s -X POST \
+            "https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/d1/database/$DATABASE_ID/query" \
+            -H "Authorization: Bearer $API_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "sql": "SELECT name, size, downloads, likes, collections, author FROM components ORDER BY name"
+            }' \
+            -w "\n%{http_code}")
+          
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          RESPONSE_BODY=$(echo "$RESPONSE" | head -n -1)
+          
+          echo "查询请求状态码: $HTTP_CODE"
+          
+          if [ "$HTTP_CODE" = "200" ]; then
+            SUCCESS=$(echo "$RESPONSE_BODY" | jq -r '.success')
+            if [ "$SUCCESS" = "true" ]; then
+              echo "✅ D1 查询成功"
+              
+              # 提取数据并生成 JSON
+              echo "$RESPONSE_BODY" | jq '.result[0].results' | jq '{list: .}' > new_list.json
+              
+              echo "数据行数: $(jq '.list | length' new_list.json)"
+              echo "预览数据:"
+              jq '.list[0:3]' new_list.json
+            else
+              echo "❌ D1 查询返回失败"
+              echo "$RESPONSE_BODY" | jq .
+              exit 1
+            fi
+          else
+            echo "❌ D1 查询请求失败"
+            echo "$RESPONSE_BODY" | jq .
             exit 1
           fi
-          
-          # 检查表结构
-          echo "表结构:"
-          sqlite3 database.sqlite ".schema components"
-          
-          # 检查数据行数
-          COUNT=$(sqlite3 database.sqlite "SELECT COUNT(*) FROM components")
-          echo "数据行数: $COUNT"
-          
-          # 提取数据生成 JSON
-          sqlite3 database.sqlite "
-            SELECT json_group_array(json_object(
-              'name', name,
-              'size', size,
-              'Downloads', downloads,
-              'Likes', likes,
-              'Collections', collections,
-              'Author', author
-            )) FROM components ORDER BY name;
-          " | jq '{list: .}' > new_list.json
-          
-          echo "✅ 数据提取完成"
-          echo "生成的 JSON 文件大小: $(wc -c < new_list.json) 字节"
           
       - name: Check for changes
         id: changes
@@ -129,8 +137,6 @@ jobs:
         run: |
           mv new_list.json list.json
           echo "✅ 已更新 list.json"
-          echo "预览前3条数据:"
-          jq '.list[0:3]' list.json
           
       - name: Create Pull Request
         if: steps.changes.outputs.changed == 'true'
@@ -143,10 +149,10 @@ jobs:
             自动同步 Cloudflare D1 数据库内容到 JSON 文件。
             
             **同步时间:** $(date -u +'%Y-%m-%d %H:%M UTC')
-            **数据行数:** $(sqlite3 database.sqlite "SELECT COUNT(*) FROM components" 2>/dev/null || echo "N/A")
+            **数据行数:** $(jq '.list | length' list.json)
           branch: "auto-sync/d1-$(date +%s)"
           delete-branch: true
           
       - name: Cleanup
         if: always()
-        run: rm -f database.sqlite new_list.json
+        run: rm -f new_list.json
