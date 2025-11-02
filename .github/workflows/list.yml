@@ -1,117 +1,52 @@
 # .github/workflows/sync-d1-to-json.yml
-name: Sync Cloudflare D1 to JSON
+name: Sync D1 to JSON
 
 on:
   schedule:
-    # 每小时执行一次
     - cron: '0 * * * *'
-  workflow_dispatch: # 允许手动触发
+  workflow_dispatch:
 
 jobs:
-  sync-d1:
+  sync:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          fetch-depth: 0
           
-      - name: Setup tools
+      - name: Install tools
         run: sudo apt-get install -y jq curl
         
-      - name: Query D1 database
+      - name: Get D1 data
         env:
           ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           DATABASE_ID: ${{ secrets.CLOUDFLARE_D1_DATABASE_ID }}
           API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
-          echo "🔄 开始查询 Cloudflare D1 数据库..."
-          
-          # 执行 SQL 查询
-          RESPONSE=$(curl -s -X POST \
+          # 查询数据
+          curl -s -X POST \
             "https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/d1/database/$DATABASE_ID/query" \
             -H "Authorization: Bearer $API_TOKEN" \
             -H "Content-Type: application/json" \
-            -d '{
-              "sql": "SELECT name, size, downloads, likes, collections, author FROM components ORDER BY name"
-            }')
+            -d '{"sql":"SELECT * FROM components"}' | \
+          jq '.result[0].results' | jq '{list: .}' > list_new.json
           
-          # 检查响应是否成功
-          SUCCESS=$(echo "$RESPONSE" | jq -r '.success')
-          if [ "$SUCCESS" = "true" ]; then
-            echo "✅ D1 查询成功"
-            
-            # 提取数据并生成 JSON 文件
-            echo "$RESPONSE" | jq '.result[0].results' | jq '{list: .}' > new_list.json
-            
-            # 统计数据
-            COUNT=$(jq '.list | length' new_list.json)
-            echo "📊 获取到 $COUNT 条数据"
-            
-            # 显示前3条数据预览
-            echo "📋 数据预览:"
-            jq '.list[0:3]' new_list.json
-            
+          # 检查变化
+          if [ ! -f list.json ] || ! cmp -s list_new.json list.json; then
+            mv list_new.json list.json
+            echo "CREATE_PR=1" >> $GITHUB_ENV
           else
-            echo "❌ D1 查询失败"
-            echo "$RESPONSE" | jq .
-            exit 1
+            echo "CREATE_PR=0" >> $GITHUB_ENV
+            rm list_new.json
           fi
           
-      - name: Check for changes
-        id: check_changes
-        run: |
-          echo "🔍 检查数据变化..."
-          if [ ! -f list.json ]; then
-            echo "📝 首次生成 list.json 文件"
-            echo "changes_detected=true" >> $GITHUB_OUTPUT
-          elif cmp -s new_list.json list.json; then
-            echo "✅ 数据无变化"
-            echo "changes_detected=false" >> $GITHUB_OUTPUT
-          else
-            echo "📝 检测到数据变化"
-            echo "changes_detected=true" >> $GITHUB_OUTPUT
-            echo "差异统计:"
-            OLD_COUNT=$(jq '.list | length' list.json 2>/dev/null || echo 0)
-            NEW_COUNT=$(jq '.list | length' new_list.json)
-            echo "原数据: $OLD_COUNT 条，新数据: $NEW_COUNT 条"
-          fi
-          
-      - name: Update JSON file
-        if: steps.check_changes.outputs.changes_detected == 'true'
-        run: |
-          mv new_list.json list.json
-          echo "✅ 已更新 list.json 文件"
-          echo "🕐 更新时间: $(date -u +'%Y-%m-%d %H:%M UTC')"
-          
-      - name: Create Pull Request
-        if: steps.check_changes.outputs.changes_detected == 'true'
+      - name: Create PR
+        if: env.CREATE_PR == '1'
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "chore: 自动同步 Cloudflare D1 数据 [$(date -u +'%Y-%m-%d %H:%M')]"
-          title: "🔄 自动同步: Cloudflare D1 数据更新"
-          body: |
-            此 PR 由自动同步工作流创建，包含最新的 Cloudflare D1 数据库内容。
-            
-            ## 变更详情
-            - 更新了 `list.json` 文件
-            - 数据表: `components`
-            - 数据行数: $(jq '.list | length' list.json)
-            
-            **同步时间:** $(date -u +'%Y-%m-%d %H:%M UTC')  
-            **触发方式:** ${{ github.event.schedule && '定时任务' || '手动触发' }}  
-            **工作流运行:** [${{ github.workflow }} #${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
-            
-            > 🔄 自动同步 - 仅在检测到数据变化时创建 PR
-          branch: "auto-sync/d1-data-$(date +%Y%m%d-%H%M%S)"
+          commit-message: "chore: update D1 data"
+          title: "Update D1 data"
+          body: "Auto-sync from Cloudflare D1"
+          branch: "d1-sync-$(date +%s)"
           delete-branch: true
-          labels: "automated-pr,data-sync,d1"
-          
-      - name: Cleanup on no changes
-        if: steps.check_changes.outputs.changes_detected == 'false'
-        run: |
-          rm -f new_list.json
-          echo "✅ 数据无变化，已清理临时文件"
-          echo "🕐 检查时间: $(date -u +'%Y-%m-%d %H:%M UTC')"
