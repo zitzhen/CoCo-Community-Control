@@ -3,99 +3,55 @@ name: Sync Cloudflare D1 to JSON
 
 on:
   schedule:
-    # 每小时执行一次
     - cron: '0 * * * *'
-  workflow_dispatch: # 允许手动触发
+  workflow_dispatch:
 
 jobs:
   sync-d1:
     runs-on: ubuntu-latest
-    
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        fetch-depth: 0
-        
-    - name: Setup SQLite
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y sqlite3 jq
-        
-    - name: Download D1 database
-      run: |
-        # 使用 Cloudflare API 导出整个 D1 数据库
-        curl -X POST \
-          "https://api.cloudflare.com/client/v4/accounts/${{ secrets.CLOUDFLARE_ACCOUNT_ID }}/d1/database/${{ secrets.CLOUDFLARE_D1_DATABASE_ID }}/export" \
-          -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_TOKEN }}" \
-          -H "Content-Type: application/json" \
-          --output d1_export.json
-        
-        # 从响应中获取下载 URL
-        DOWNLOAD_URL=$(jq -r '.result.url' d1_export.json)
-        
-        # 下载 SQLite 数据库文件
-        wget -O database.sqlite "$DOWNLOAD_URL"
-        
-    - name: Extract data and generate JSON
-      run: |
-        # 从 SQLite 数据库查询数据并生成 JSON
-        sqlite3 database.sqlite "SELECT json_group_array(json_object(
-          'name', name,
-          'size', size,
-          'Downloads', downloads,
-          'Likes', likes,
-          'Collections', collections,
-          'Author', author
-        )) FROM components;" | jq '{list: .}' > new_list.json
-        
-        # 格式化 JSON
-        jq . new_list.json > formatted_new_list.json
-        mv formatted_new_list.json new_list.json
-        
-    - name: Check for changes
-      id: check_changes
-      run: |
-        # 比较新生成的 JSON 与现有文件
-        if cmp -s new_list.json list.json; then
-          echo "changes_detected=false" >> $GITHUB_OUTPUT
-          echo "✅ 没有检测到数据变化"
-        else
-          echo "changes_detected=true" >> $GITHUB_OUTPUT
-          echo "📝 检测到数据变化"
-          echo "差异:"
-          diff -u list.json new_list.json || true
-        fi
-        
-    - name: Update JSON file
-      if: steps.check_changes.outputs.changes_detected == 'true'
-      run: |
-        mv new_list.json list.json
-        echo "🔄 已更新 list.json 文件"
-        
-    - name: Create Pull Request
-      if: steps.check_changes.outputs.changes_detected == 'true'
-      uses: peter-evans/create-pull-request@v5
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        commit-message: "chore: 自动同步 Cloudflare D1 数据"
-        title: "🔄 自动同步: Cloudflare D1 数据更新"
-        body: |
-          此 PR 由自动同步工作流创建，包含最新的 Cloudflare D1 数据。
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           
-          ## 变更详情
-          更新了 `list.json` 文件以反映最新的数据库状态。
-          
-          **同步时间:** ${{ fromJSON('["🕐","🕑","🕒","🕓","🕔","🕕","🕖","🕗","🕘","🕙","🕚","🕛"]')[github.run_attempt % 12] }} $(date -u +'%Y-%m-%d %H:%M UTC')
-          **触发方式:** ${{ github.event.schedule && '定时任务' || '手动触发' }}
-          
-          > 自动生成 - 数据有变化时才会创建此 PR
-        branch: "auto-sync/d1-data-$(date +%Y%m%d-%H%M%S)"
-        delete-branch: true
-        labels: "automated-pr,data-sync"
+      - name: Setup tools
+        run: sudo apt-get install -y sqlite3 jq curl
         
-    - name: Cleanup
-      if: always()
-      run: |
-        rm -f d1_export.json database.sqlite new_list.json
+      - name: Export D1 data
+        env:
+          ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          DATABASE_ID: ${{ secrets.CLOUDFLARE_D1_DATABASE_ID }}
+          API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          # 导出 D1 数据库
+          curl -s -X POST \
+            "https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/d1/database/$DATABASE_ID/export" \
+            -H "Authorization: Bearer $API_TOKEN" \
+            -H "Content-Type: application/json" | jq -r '.result.url' | xargs wget -O database.sqlite
+          
+      - name: Generate JSON
+        run: |
+          sqlite3 database.sqlite "SELECT json_group_array(json_object(
+            'name', name, 'size', size, 'Downloads', downloads, 
+            'Likes', likes, 'Collections', collections, 'Author', author
+          )) FROM components;" | jq '{list: .}' > new_list.json
+          
+      - name: Check changes
+        id: changes
+        run: |
+          if [ -f list.json ] && cmp -s new_list.json list.json; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+            
+      - name: Create PR
+        if: steps.changes.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: sync D1 data"
+          title: "🔄 Update D1 data"
+          branch: "auto-sync/d1-$(date +%s)"
+          delete-branch: true
