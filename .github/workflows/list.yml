@@ -1,5 +1,5 @@
 # .github/workflows/sync-d1-to-json.yml
-name: Sync D1 to JSON
+name: Sync Cloudflare D1 to JSON
 
 on:
   schedule:
@@ -7,46 +7,93 @@ on:
   workflow_dispatch:
 
 jobs:
-  sync:
+  sync-d1:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           
-      - name: Install tools
-        run: sudo apt-get install -y jq curl
-        
-      - name: Get D1 data
+      - name: Setup tools and prepare PR
+        id: prep
+        run: |
+          sudo apt-get install -y jq curl
+          # 生成唯一分支名
+          echo "branch_name=d1-sync-${{ github.run_id }}-${{ github.run_attempt }}" >> $GITHUB_OUTPUT
+          echo "PR_TITLE=🔄 D1 Data Sync - $(date -u +'%Y-%m-%d %H:%M UTC')" >> $GITHUB_OUTPUT
+          
+      - name: Query D1 database
         env:
           ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           DATABASE_ID: ${{ secrets.CLOUDFLARE_D1_DATABASE_ID }}
           API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
-          # 查询数据
-          curl -s -X POST \
+          echo "🔄 Querying Cloudflare D1 database..."
+          
+          RESPONSE=$(curl -s -X POST \
             "https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/d1/database/$DATABASE_ID/query" \
             -H "Authorization: Bearer $API_TOKEN" \
             -H "Content-Type: application/json" \
-            -d '{"sql":"SELECT * FROM components"}' | \
-          jq '.result[0].results' | jq '{list: .}' > list_new.json
+            -d '{
+              "sql": "SELECT name, size, downloads, likes, collections, author FROM components ORDER BY name"
+            }')
           
-          # 检查变化
-          if [ ! -f list.json ] || ! cmp -s list_new.json list.json; then
-            mv list_new.json list.json
-            echo "CREATE_PR=1" >> $GITHUB_ENV
+          if echo "$RESPONSE" | jq -e '.success == true' > /dev/null; then
+            echo "✅ D1 query successful"
+            echo "$RESPONSE" | jq '.result[0].results' | jq '{list: .}' > new_list.json
+            COUNT=$(jq '.list | length' new_list.json)
+            echo "📊 Retrieved $COUNT records"
           else
-            echo "CREATE_PR=0" >> $GITHUB_ENV
-            rm list_new.json
+            echo "❌ D1 query failed"
+            echo "$RESPONSE" | jq .
+            exit 1
           fi
           
-      - name: Create PR
-        if: env.CREATE_PR == '1'
-        uses: peter-evans/create-pull-request@v5
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "chore: update D1 data"
-          title: "Update D1 data"
-          body: "Auto-sync from Cloudflare D1"
-          branch: "d1-sync-$(date +%s)"
-          delete-branch: true
+      - name: Check for changes
+        id: changes
+        run: |
+          if [ ! -f list.json ]; then
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "📝 First time generating list.json"
+          elif cmp -s new_list.json list.json; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "✅ No data changes detected"
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "📝 Data changes detected"
+          fi
+          
+      - name: Update JSON file and create PR
+        if: steps.changes.outputs.has_changes == 'true'
+        run: |
+          # 更新文件
+          mv new_list.json list.json
+          
+          # 配置 Git
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          
+          # 创建分支并提交
+          git checkout -b ${{ steps.prep.outputs.branch_name }}
+          git add list.json
+          git commit -m "chore: sync D1 data"
+          
+          # 推送到远程
+          git push origin ${{ steps.prep.outputs.branch_name }}
+          
+          # 创建 PR
+          gh pr create \
+            --title "${{ steps.prep.outputs.PR_TITLE }}" \
+            --body "Automated sync from Cloudflare D1 database" \
+            --base main \
+            --head ${{ steps.prep.outputs.branch_name }} \
+            --label "automated-pr"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Cleanup on no changes
+        if: steps.changes.outputs.has_changes == 'false'
+        run: |
+          rm -f new_list.json
+          echo "✅ No changes, cleanup completed"
