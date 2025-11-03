@@ -1,0 +1,38 @@
+name: Sync GitHub Repo to Gitee
+permissions:
+  contents: read
+
+on:
+  push:
+    branches:
+      - main  # 监听 main 分支推送事件
+
+jobs:
+  sync-main:
+    name: Sync Main Repo to Gitee
+    runs-on: ubuntu-latest
+    env:
+      GITEE_USERNAME: hello-oliver
+      GITEE_ORG: zitzhen
+      GITEE_REPO: CoCo-Community-Control
+      GITEE_TOKEN: ${{ secrets.GITEE_TOKEN }}
+
+    steps:
+      - name: Clone GitHub Repo
+        run: |
+          echo "🚀 克隆 GitHub 主仓库..."
+          git clone --bare https://github.com/zitzhen/CoCo-Community-Control.git repo
+          cd repo
+
+          echo "🔗 添加 Gitee 远程仓库..."
+          git remote remove gitee 2>/dev/null || true
+          git remote add gitee "https://${GITEE_USERNAME}:${GITEE_TOKEN}@gitee.com/${GITEE_ORG}/${GITEE_REPO}.git"
+
+          echo "✅ 验证远程："
+          git remote -v
+
+          echo "⬆️ 推送所有分支和标签到 Gitee..."
+          git push gitee --all --verbose
+          git push gitee --tags --verbose
+
+          echo "🎉 主仓库推送完成！"
