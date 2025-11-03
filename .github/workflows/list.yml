@@ -9,12 +9,14 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository (full history)
+        uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
 
       - name: Install tools
-        run: sudo apt-get install -y jq curl gh
+        run: sudo apt-get update && sudo apt-get install -y jq curl gh
 
       - name: Fetch and update D1 data
         env:
@@ -30,35 +32,48 @@ jobs:
             -d '{"sql":"SELECT * FROM components"}' | \
           jq '.result[0].results' | jq '{list: .}' > list.json
 
-          # 检查是否为空
+          # 如果数据为空则直接退出（运行正常）
           if [ "$(jq '.list | length' list.json)" -eq 0 ]; then
             echo "✅ 没有任何可比较的内容，运行正常，结束工作流。"
             exit 0
           fi
 
-      - name: Commit and push changes
+      - name: Compare with remote main and commit if changed
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          BRANCH="d1-sync-${{ github.run_id }}"
+          set -euo pipefail
+
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
 
-          # 创建并切换分支
-          git checkout -b "$BRANCH"
+          # 确保远端 main 已获取
+          git fetch origin main:refs/remotes/origin/main
 
-          # 添加文件
-          git add list.json
-
-          # 如果没有变化则退出
-          if git diff --staged --quiet; then
-            echo "✅ 没有变化，运行正常，结束工作流。"
-            exit 0
+          # 如果远端 main 有 list.json，保存旧版本以便比较
+          OLD_FILE_EXISTS=0
+          if git ls-tree -r origin/main --name-only | grep -q '^list.json$'; then
+            git show origin/main:list.json > old_list.json
+            OLD_FILE_EXISTS=1
           fi
 
-          # 提交并推送
+          # 比较：如果远端存在且相同，则退出；如果远端不存在也当作有变化
+          if [ "$OLD_FILE_EXISTS" -eq 1 ]; then
+            if cmp -s old_list.json list.json; then
+              echo "✅ list.json 与 origin/main 相同，暂无变化，结束工作流。"
+              exit 0
+            fi
+          else
+            echo "ℹ️ origin/main 上没有 list.json，视为有变化，继续提交流程。"
+          fi
+
+          # 创建分支并提交（确保提交在新分支上）
+          BRANCH="d1-sync-${{ github.run_id }}"
+          git checkout -b "$BRANCH"
+
+          git add list.json
           git commit -m "chore: sync D1 data"
-          git push origin "$BRANCH"
+          git push --set-upstream origin "$BRANCH"
 
       - name: Create Pull Request
         env:
