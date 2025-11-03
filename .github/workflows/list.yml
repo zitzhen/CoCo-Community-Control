@@ -22,7 +22,7 @@ jobs:
           DATABASE_ID: ${{ secrets.CLOUDFLARE_D1_DATABASE_ID }}
           API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
-          # 获取数据
+          echo "📦 正在从 Cloudflare D1 获取数据..."
           curl -s -X POST \
             "https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/d1/database/$DATABASE_ID/query" \
             -H "Authorization: Bearer $API_TOKEN" \
@@ -37,25 +37,32 @@ jobs:
           fi
 
       - name: Commit and push changes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          BRANCH="d1-sync-${{ github.run_id }}"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
+
+          # 创建并切换分支
+          git checkout -b "$BRANCH"
+
+          # 添加文件
           git add list.json
 
-          # 只在有变化时提交
+          # 如果没有变化则退出
           if git diff --staged --quiet; then
             echo "✅ 没有变化，运行正常，结束工作流。"
             exit 0
           fi
 
+          # 提交并推送
           git commit -m "chore: sync D1 data"
-          BRANCH="d1-sync-${{ github.run_id }}"
-          git checkout -b "$BRANCH"
           git push origin "$BRANCH"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create Pull Request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           BRANCH="d1-sync-${{ github.run_id }}"
           gh pr create \
@@ -63,5 +70,3 @@ jobs:
             --body "Automated data sync from Cloudflare D1. I need @Iamliuxiaozhen to handle this pull request." \
             --base main \
             --head "$BRANCH"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
