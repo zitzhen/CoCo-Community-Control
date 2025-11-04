@@ -16,6 +16,9 @@
 
 快来给你的作品换上吧~
 
+## 开源协议
+[https://gitee.com/xjwangdage/coco-control/blob/master/LICENSE](https://gitee.com/xjwangdage/coco-control/blob/master/LICENSE)
+
 <div style="border-left: 5px solid rgb(0, 225, 255); padding-left: 10px;">
 <h2> 下载</h2>
 </div>
