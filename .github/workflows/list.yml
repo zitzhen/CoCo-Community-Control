@@ -77,14 +77,19 @@ jobs:
         run: |
           BRANCH="d1-sync"
           LABEL="CloudflareD1 auto-sync"
-          echo "🪄 检查是否已有 PR..."
 
-          # 检查是否有现有 PR
+          echo "🪄 检查是否已有 PR..."
           EXISTING_PR=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number')
+
+          # 🧠 再次确认分支是否真的有差异
+          echo "🔍 检查与 main 的差异..."
+          if [ "$(git rev-list origin/main..origin/$BRANCH | wc -l)" -eq 0 ]; then
+            echo "✅ main 与 $BRANCH 没有任何差异，跳过 PR 创建。"
+            exit 0
+          fi
 
           if [ -n "$EXISTING_PR" ]; then
             echo "🔄 已存在 PR #$EXISTING_PR，更新分支完成。"
-            # 尝试加上标签（如果不存在）
             gh pr edit "$EXISTING_PR" --add-label "$LABEL" || echo "⚠️ 无法添加标签，可能标签不存在。"
           else
             echo "✨ 创建新的 PR..."
@@ -94,7 +99,6 @@ jobs:
               --base main \
               --head "$BRANCH"
 
-            # 获取新创建的 PR 编号
             NEW_PR=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number')
             if [ -n "$NEW_PR" ]; then
               echo "🏷️ 为新 PR #$NEW_PR 添加标签 $LABEL"
