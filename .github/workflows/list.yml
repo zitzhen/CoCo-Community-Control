@@ -8,6 +8,10 @@ on:
 jobs:
   sync:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
     steps:
       - name: Checkout repository (full history)
         uses: actions/checkout@v4
@@ -32,56 +36,68 @@ jobs:
             -d '{"sql":"SELECT * FROM components"}' | \
           jq '.result[0].results' | jq '{list: .}' > list.json
 
-          # 如果数据为空则直接退出（运行正常）
           if [ "$(jq '.list | length' list.json)" -eq 0 ]; then
             echo "✅ 没有任何可比较的内容，运行正常，结束工作流。"
             exit 0
           fi
 
-      - name: Compare with remote main and commit if changed
+      - name: Compare and push changes
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
 
-          # 确保远端 main 已获取
-          git fetch origin main:refs/remotes/origin/main
+          git fetch origin main
 
-          # 如果远端 main 有 list.json，保存旧版本以便比较
           OLD_FILE_EXISTS=0
           if git ls-tree -r origin/main --name-only | grep -q '^list.json$'; then
             git show origin/main:list.json > old_list.json
             OLD_FILE_EXISTS=1
           fi
 
-          # 比较：如果远端存在且相同，则退出；如果远端不存在也当作有变化
-          if [ "$OLD_FILE_EXISTS" -eq 1 ]; then
-            if cmp -s old_list.json list.json; then
-              echo "✅ list.json 与 origin/main 相同，暂无变化，结束工作流。"
-              exit 0
-            fi
-          else
-            echo "ℹ️ origin/main 上没有 list.json，视为有变化，继续提交流程。"
+          if [ "$OLD_FILE_EXISTS" -eq 1 ] && cmp -s old_list.json list.json; then
+            echo "✅ list.json 与 origin/main 相同，暂无变化，结束工作流。"
+            exit 0
           fi
 
-          # 创建分支并提交（确保提交在新分支上）
-          BRANCH="d1-sync-${{ github.run_id }}"
-          git checkout -b "$BRANCH"
-
+          BRANCH="d1-sync"
+          git checkout -B "$BRANCH"
           git add list.json
-          git commit -m "chore: sync D1 data"
-          git push --set-upstream origin "$BRANCH"
+          git commit -m "chore: sync D1 data ($(date +%Y-%m-%d))" || echo "ℹ️ 没有文件变化可提交"
+          git push origin "$BRANCH" -f
 
-      - name: Create Pull Request
+      - name: Wait for branch sync
+        run: sleep 5
+
+      - name: Create or update Pull Request (with label)
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          BRANCH="d1-sync-${{ github.run_id }}"
-          gh pr create \
-            --title "Update D1 data ($(date +%Y-%m-%d))" \
-            --body "Automated data sync from Cloudflare D1. I need @Iamliuxiaozhen to handle this pull request." \
-            --base main \
-            --head "$BRANCH"
+          BRANCH="d1-sync"
+          LABEL="CloudflareD1 auto-sync"
+          echo "🪄 检查是否已有 PR..."
+
+          # 检查是否有现有 PR
+          EXISTING_PR=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number')
+
+          if [ -n "$EXISTING_PR" ]; then
+            echo "🔄 已存在 PR #$EXISTING_PR，更新分支完成。"
+            # 尝试加上标签（如果不存在）
+            gh pr edit "$EXISTING_PR" --add-label "$LABEL" || echo "⚠️ 无法添加标签，可能标签不存在。"
+          else
+            echo "✨ 创建新的 PR..."
+            gh pr create \
+              --title "Update D1 data ($(date +%Y-%m-%d))" \
+              --body "Automated data sync from Cloudflare D1. I need @Iamliuxiaozhen to handle this pull request." \
+              --base main \
+              --head "$BRANCH"
+
+            # 获取新创建的 PR 编号
+            NEW_PR=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number')
+            if [ -n "$NEW_PR" ]; then
+              echo "🏷️ 为新 PR #$NEW_PR 添加标签 $LABEL"
+              gh pr edit "$NEW_PR" --add-label "$LABEL" || echo "⚠️ 无法添加标签，可能标签不存在。"
+            fi
+          fi
