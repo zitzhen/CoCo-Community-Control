@@ -49,7 +49,9 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
 
-          git fetch origin main
+          BRANCH="d1-sync"
+          git fetch origin
+          git checkout -B "$BRANCH" "origin/$BRANCH" || git checkout -B "$BRANCH"
 
           OLD_FILE_EXISTS=0
           if git ls-tree -r origin/main --name-only | grep -q '^list.json$'; then
@@ -62,11 +64,12 @@ jobs:
             exit 0
           fi
 
-          BRANCH="d1-sync"
-          git checkout -B "$BRANCH"
           git add list.json
           git commit -m "chore: sync D1 data ($(date +%Y-%m-%d))" || echo "ℹ️ 没有文件变化可提交"
-          git push origin "$BRANCH"
+
+          # ⭐️ 关键：拉取远程变更避免 non-fast-forward 错误
+          git pull origin "$BRANCH" --rebase || echo "⚠️ rebase 失败，尝试强制推送"
+          git push origin "$BRANCH" || git push origin "$BRANCH" --force-with-lease
 
       - name: Wait for branch sync
         run: sleep 5
@@ -81,7 +84,6 @@ jobs:
           echo "🪄 检查是否已有 PR..."
           EXISTING_PR=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number')
 
-          # 🧠 再次确认分支是否真的有差异
           echo "🔍 检查与 main 的差异..."
           if [ "$(git rev-list origin/main..origin/$BRANCH | wc -l)" -eq 0 ]; then
             echo "✅ main 与 $BRANCH 没有任何差异，跳过 PR 创建。"
