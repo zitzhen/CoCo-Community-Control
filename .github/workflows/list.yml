@@ -118,4 +118,3 @@ jobs:
             echo "✨ 尝试自动合并现有 PR #$EXISTING_PR..."
             gh pr merge "$EXISTING_PR" --squash --auto || echo "⚠️ PR 可能已设置自动合并或存在检查未完成"
           fi
-          fi
