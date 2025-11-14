@@ -67,7 +67,6 @@ jobs:
           git add list.json
           git commit -m "chore: sync D1 data ($(date +%Y-%m-%d))" || echo "ℹ️ 没有文件变化可提交"
 
-          # ⭐️ 关键：拉取远程变更避免 non-fast-forward 错误
           git pull origin "$BRANCH" --rebase || echo "⚠️ rebase 失败，尝试强制推送"
           git push origin "$BRANCH" || git push origin "$BRANCH" --force-with-lease
 
@@ -93,6 +92,7 @@ jobs:
           if [ -n "$EXISTING_PR" ]; then
             echo "🔄 已存在 PR #$EXISTING_PR，更新分支完成。"
             gh pr edit "$EXISTING_PR" --add-label "$LABEL" || echo "⚠️ 无法添加标签，可能标签不存在。"
+
           else
             echo "✨ 创建新的 PR..."
             gh pr create \
@@ -105,9 +105,11 @@ jobs:
             if [ -n "$NEW_PR" ]; then
               echo "🏷️ 为新 PR #$NEW_PR 添加标签 $LABEL"
               gh pr edit "$NEW_PR" --add-label "$LABEL" || echo "⚠️ 无法添加标签，可能标签不存在。"
+
               echo "✨ 自动合并 PR #$NEW_PR..."
               gh pr merge "$NEW_PR" --squash --auto || echo "⚠️ 无法设置自动合并"
             fi
+          fi
 
       - name: Auto-merge existing PR
         env:
