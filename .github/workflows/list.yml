@@ -65,8 +65,12 @@ jobs:
           fi
 
           git add list.json
-          git commit -m "chore: sync D1 data ($(date +%Y-%m-%d))" || echo "ℹ️ 没有文件变化可提交"
+          if git diff --cached --quiet; then
+            echo "✅ 没有文件变化可提交，结束工作流。"
+            exit 0
+          fi
 
+          git commit -m "chore: sync D1 data ($(date +%Y-%m-%d))"
           git pull origin "$BRANCH" --rebase || echo "⚠️ rebase 失败，尝试强制推送"
           git push origin "$BRANCH" || git push origin "$BRANCH" --force-with-lease
 
@@ -92,7 +96,6 @@ jobs:
           if [ -n "$EXISTING_PR" ]; then
             echo "🔄 已存在 PR #$EXISTING_PR，更新分支完成。"
             gh pr edit "$EXISTING_PR" --add-label "$LABEL" || echo "⚠️ 无法添加标签，可能标签不存在。"
-
           else
             echo "✨ 创建新的 PR..."
             gh pr create \
@@ -121,4 +124,18 @@ jobs:
           if [ -n "$EXISTING_PR" ]; then
             echo "✨ 尝试自动合并现有 PR #$EXISTING_PR..."
             gh pr merge "$EXISTING_PR" --squash --auto || echo "⚠️ PR 可能已设置自动合并或存在检查未完成"
+          fi
+
+      - name: Delete branch after merge
+        if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BRANCH="d1-sync"
+          PR_INFO=$(gh pr list --head "$BRANCH" --state closed --json mergedAt,number --jq '.[0]')
+          if [ -n "$PR_INFO" ]; then
+            echo "🧹 PR 已合并，尝试删除分支 $BRANCH..."
+            gh api -X DELETE /repos/${{ github.repository }}/git/refs/heads/$BRANCH || echo "⚠️ 删除失败，可能分支已不存在"
+          else
+            echo "ℹ️ PR 尚未合并，跳过删除分支。"
           fi
